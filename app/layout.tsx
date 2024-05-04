@@ -3,6 +3,7 @@ import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/themeProvider";
 
 const fontSans = FontSans({ subsets: ["cyrillic"], variable: "--font-sans" });
 
@@ -20,7 +21,14 @@ export default function RootLayout({
     <html lang="ru">
       <ClerkProvider>
         <body className={cn("font-sans antialiased", fontSans.className)}>
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+          </ThemeProvider>
         </body>
       </ClerkProvider>
     </html>

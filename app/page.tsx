@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from '@/components/ui/themeToggle';
 import {
   UserButton,
   SignInButton,
@@ -22,6 +23,7 @@ export default function Home() {
           <SignInButton mode="modal">Авторизоваться</SignInButton>
         </Button>
       </SignedOut>
+      <ModeToggle/>
     </main>
   );
 }
