@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/themeProvider";
+import { ruRU } from "@clerk/localizations";
 
 const fontSans = FontSans({ subsets: ["cyrillic"], variable: "--font-sans" });
 
@@ -21,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <ClerkProvider>
+      <ClerkProvider localization={ruRU}>
         <body className={cn("font-sans antialiased", fontSans.className)}>
           <ThemeProvider
             attribute="class"
