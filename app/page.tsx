@@ -1,4 +1,11 @@
-import { UserButton, SignInButton, SignIn, SignedIn, SignedOut } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
+import {
+  UserButton,
+  SignInButton,
+  SignIn,
+  SignedIn,
+  SignedOut,
+} from "@clerk/nextjs";
 
 export default function Home() {
   return (
@@ -11,7 +18,9 @@ export default function Home() {
         <UserButton />
       </SignedIn>
       <SignedOut>
-        <SignInButton mode='modal' />
+        <Button>
+          <SignInButton mode="modal">Авторизоваться</SignInButton>
+        </Button>
       </SignedOut>
     </main>
   );
