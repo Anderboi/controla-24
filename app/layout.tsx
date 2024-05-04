@@ -14,8 +14,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="ru">
@@ -27,6 +29,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            {modal}
             {children}
           </ThemeProvider>
         </body>
