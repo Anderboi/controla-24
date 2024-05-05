@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "update-types": "npx supabase gen types typescript --project-id uhjwchmqgwrvkxwfgjsr > utils/database.types.ts"
   },
   "dependencies": {
     "@clerk/localizations": "^2.3.0",

@@ -11,18 +11,22 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Database } from "@/utils/database.types";
+import { postProject } from "@/utils/requests";
+import { useAuth } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React from "react";
+import { useRouter, redirect } from "next/navigation";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 function CreateBrief() {
   const formSchema = z.object({
-    projectName: z.string().min(2).max(50),
+    projectName: z.string().min(2).max(50).trim(),
     contractId: z.string().min(2).optional(),
-    address: z.string().min(2),
-    area: z.number().min(1),
-    residing: z.number().optional(),
+    address: z.string().min(2).trim(),
+    area: z.coerce.number().min(1),
+    residing: z.coerce.number().optional(),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -34,9 +38,41 @@ function CreateBrief() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const router = useRouter();
+  const { userId, getToken } = useAuth();
+
+  const [submitting, setSubmitting] = useState(false);
+  const [projects, setProjects] = useState<any[]>();
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+
+    try {
+      // e.preventDefault();
+      setSubmitting(true);
+      const token = await getToken({ template: "supabase" });
+      const formData: Database["public"]["Tables"]["projects"]["Insert"] = {
+        projectName: values.projectName,
+        contractId: values.contractId,
+        address: values.address,
+        area: values.area,
+        residing: values.residing,
+        user_id: userId || "",
+      };
+      const fetchedProjects = await postProject({ formData, userId, token });
+      if (fetchedProjects) {
+        setProjects(fetchedProjects);
+        router.push("/");
+      }
+      // console.log(posts);
+    } catch (error) {
+      // Handle the error here
+      console.error("An error occurred:", error);
+    } finally {
+      setSubmitting(false);
+    }
+
     console.log(values);
   }
 
@@ -77,7 +113,7 @@ function CreateBrief() {
           />
           <FormField
             control={form.control}
-            name="contractId"
+            name="address"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Адрес</FormLabel>
@@ -93,7 +129,7 @@ function CreateBrief() {
           />
           <FormField
             control={form.control}
-            name="contractId"
+            name="area"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Площадь объекта</FormLabel>
@@ -109,7 +145,7 @@ function CreateBrief() {
           />
           <FormField
             control={form.control}
-            name="contractId"
+            name="residing"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Количество проживающих</FormLabel>
