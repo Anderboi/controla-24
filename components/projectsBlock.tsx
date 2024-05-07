@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { getProjects, getProjectsByTitle } from "@/utils/requests";
+import { getProjectsByTitle } from "@/utils/requests";
 import { useAuth } from "@clerk/nextjs";
 
 import type { Database } from "@/utils/database.types";
