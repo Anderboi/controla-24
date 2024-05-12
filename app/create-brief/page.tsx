@@ -16,7 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { DatePickerDemo } from "@/components/ui/datePicker";
+import { roomList } from "@/utils/formSchema";
 import { Switch } from "@/components/ui/switch";
 import {
   Select,
@@ -34,6 +34,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Check } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { RangeSlider } from "@/components/ui/rangeSlider";
+import MultipleSelector from "@/components/ui/multiSelector";
 
 type Inputs = z.infer<typeof formSchema>;
 
@@ -139,7 +140,7 @@ const CreateBrief = () => {
     resolver: zodResolver(formSchema),
   });
 
-  const [currentStep, setCurrentStep] = useState(2);
+  const [currentStep, setCurrentStep] = useState(4);
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
@@ -147,9 +148,13 @@ const CreateBrief = () => {
 
   const purposeRef = form.register("purpose");
   const budgetRef = form.register("approxBudget");
+  const roomsRef = form.register("rooms");
   type FieldName = keyof Inputs;
+
   const next = async (e: any) => {
     e.preventDefault();
+
+    console.log(form.getValues("rooms"));
     const fields = steps[currentStep].fields;
     const output = await form.trigger(fields as FieldName[], {
       shouldFocus: true,
@@ -204,11 +209,7 @@ const CreateBrief = () => {
   return (
     <section className="h-full p-6 rounded-lg bg-neutral-900 max-w-[900px] m-auto mt-[10vh]">
       <Form {...form}>
-        <form
-          // method="dialog"
-          // onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-6"
-        >
+        <form className="space-y-6">
           <h2>{steps[currentStep].name}</h2>
           <article className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {currentStep === 0 && (
@@ -572,6 +573,36 @@ const CreateBrief = () => {
               </>
             )}
             {currentStep === 4 && (
+              <>
+                {/* <CreatableSelect options={roomList} {...roomsRef}/> */}
+                <FormField
+                  control={form.control}
+                  name="rooms"
+                  render={({ field }) => (
+                    <FormItem className="sm:col-span-2">
+                      {/* <FormLabel>Состав помещений</FormLabel> */}
+                      <FormControl>
+                        <MultipleSelector
+                          onChange={field.onChange}
+                          defaultOptions={roomList}
+                          placeholder="Укажите названия помещений..."
+                          creatable
+                          emptyIndicator={
+                            <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                              Не найдено.
+                            </p>
+                          }
+                          // {...roomsRef}
+                        />
+                      </FormControl>
+                      <FormDescription></FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
+            {currentStep === 5 && (
               <>
                 <h2 className="text-3xl font-bold">
                   Вы успешно создали проект!

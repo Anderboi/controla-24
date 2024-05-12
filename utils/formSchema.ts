@@ -1,3 +1,4 @@
+import { Option } from '@/components/ui/multiSelector';
 import { z } from 'zod';
 
 export const formSchema = z.object({
@@ -25,7 +26,7 @@ export const formSchema = z.object({
   children: z.coerce.number().positive().optional(),
   childrenAge: z.string().trim().optional(),
   //Room List
-  rooms: z.string().array(),
+  rooms: z.any().array(),
   //Demolition Info
   planChange: z.boolean().optional(),
   entranceDoorChange: z.boolean().optional(),
@@ -59,3 +60,42 @@ export const formSchema = z.object({
   //TODO Loundry Equipment
   loundryEquipment: z.string().array().optional(),
 });
+
+export const roomList: Option[] = [
+  {
+    value: "Прихожая",
+    label: "Прихожая",
+  },
+  {
+    value: "Гостиная",
+    label: "Гостиная",
+  },
+  {
+    value: "Кухня",
+    label: "Кухня",
+  },
+  {
+    value: "Столовая",
+    label: "Столовая",
+  },
+  {
+    value: "Спальня",
+    label: "Спальня",
+  },
+  {
+    value: "Детская",
+    label: "Детская",
+  },
+  {
+    value: "Ванная комната",
+    label: "Ванная комната",
+  },
+  {
+    value: "Санузел",
+    label: "Санузел",
+  },
+  {
+    value: "Постирочная",
+    label: "Постирочная",
+  },
+];
