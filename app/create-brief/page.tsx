@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +16,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { roomList } from "@/utils/formSchema";
+import {
+  ceilingMaterials,
+  floorMaterials,
+  roomList,
+  wallsMaterials,
+} from "@/utils/formSchema";
 import { Switch } from "@/components/ui/switch";
 import {
   Select,
@@ -25,16 +30,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+// import Select from "react-select";
 
 import { Database } from "@/utils/database.types";
 import { formSchema } from "@/utils/formSchema";
 import { postProject } from "@/utils/requests";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check } from "lucide-react";
+import { Check, FileDiff, Heater, Info } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { RangeSlider } from "@/components/ui/rangeSlider";
 import MultipleSelector from "@/components/ui/multiSelector";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Slider } from "@/components/ui/slider";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/utils/utils";
+import DataCard from "@/components/ui/dataCard";
 
 type Inputs = z.infer<typeof formSchema>;
 
@@ -67,7 +85,7 @@ const steps = [
   },
   {
     id: "step 6",
-    name: "Информация по демонтажу",
+    name: "Демонтаж",
     fields: [
       "planChange",
       "entranceDoorChange",
@@ -77,7 +95,7 @@ const steps = [
   },
   {
     id: "step 7",
-    name: "Информация по монтажу",
+    name: "Монтаж и отделка",
     fields: [
       "wallsMaterial",
       "floorMaterial",
@@ -90,46 +108,41 @@ const steps = [
   },
   {
     id: "step 8",
-    name: "Предпочтения по цвету в интерьере",
-    fields: ["preferedColors", "shouldIgnoreColors"],
-  },
-  {
-    id: "step 9",
     name: "Система отопления",
     fields: ["heatingSystem", "warmFloor", "warmFloorRooms"],
   },
   {
-    id: "step 10",
+    id: "step 9",
     name: "Система кондиционирования и вентиляции",
     fields: ["conditioningSystem"],
   },
   {
-    id: "step 11",
+    id: "step 10",
     name: "Система водоподготовки и фильтрации",
     fields: ["sanitaryEquipment"],
   },
   {
-    id: "step 12",
+    id: "step 11",
     name: "Электронная система и система управления",
     fields: ["electricSystem"],
   },
   {
-    id: "step 13",
+    id: "step 12",
     name: "Комплектация сантехническим оборудованием",
     fields: ["sanitaryEquipment"],
   },
   {
-    id: "step 14",
+    id: "step 13",
     name: "Комплектация кухонной зоны",
     fields: ["kitchenEquipment"],
   },
   {
-    id: "step 15",
+    id: "step 14",
     name: "Комплектация постирочной или кладовой",
     fields: ["loundryEquipment"],
   },
   {
-    id: "step 16",
+    id: "step 15",
     name: "Проект успешно создан",
   },
 ];
@@ -138,23 +151,35 @@ const CreateBrief = () => {
   // Define your form component
   const form = useForm<Inputs>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      // rooms:[],
+      innerDoorsHeight: [2100],
+      warmFloorRooms: [],
+    },
   });
 
-  const [currentStep, setCurrentStep] = useState(4);
+  // const { fields:rooms, append, remove } = useFieldArray({
+    
+  //   name: "rooms",
+  //   control: form.control,
+  // });
+
+
+  const [currentStep, setCurrentStep] = useState(6);
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
   const { userId, getToken } = useAuth();
 
-  const purposeRef = form.register("purpose");
   const budgetRef = form.register("approxBudget");
-  const roomsRef = form.register("rooms");
+
   type FieldName = keyof Inputs;
 
   const next = async (e: any) => {
     e.preventDefault();
 
-    console.log(form.getValues("rooms"));
+    console.log(form.getValues("floorMaterial"));
+
     const fields = steps[currentStep].fields;
     const output = await form.trigger(fields as FieldName[], {
       shouldFocus: true,
@@ -178,30 +203,30 @@ const CreateBrief = () => {
     }
   };
   async function onSubmit(values: Inputs) {
-    try {
-      // e.preventDefault();
-      setSubmitting(true);
-      const token = await getToken({ template: "supabase" });
-      const formData: Database["public"]["Tables"]["projects"]["Insert"] = {
-        projectName: values.projectName,
-        contractId: values.contractId,
-        address: values.address,
-        area: values.area,
-        residing: values.adults + (values.children ? values.children : 0),
-        user_id: userId || "",
-      };
-      const fetchedProjects = await postProject({ formData, userId, token });
-      if (fetchedProjects) {
-        form.reset();
-        router.push("/");
-      }
-      // console.log(posts);
-    } catch (error) {
-      // Handle the error here
-      console.error("An error occurred:", error);
-    } finally {
-      setSubmitting(false);
-    }
+    // try {
+    //   // e.preventDefault();
+    //   setSubmitting(true);
+    //   const token = await getToken({ template: "supabase" });
+    //   const formData: Database["public"]["Tables"]["projects"]["Insert"] = {
+    //     projectName: values.projectName,
+    //     contractId: values.contractId,
+    //     address: values.address,
+    //     area: values.area,
+    //     residing: values.adults + (values.children ? values.children : 0),
+    //     user_id: userId || "",
+    //   };
+    //   const fetchedProjects = await postProject({ formData, userId, token });
+    //   if (fetchedProjects) {
+    //     form.reset();
+    //     router.push("/");
+    //   }
+    //   // console.log(posts);
+    // } catch (error) {
+    //   // Handle the error here
+    //   console.error("An error occurred:", error);
+    // } finally {
+    //   setSubmitting(false);
+    // }
 
     console.log(values);
   }
@@ -211,7 +236,7 @@ const CreateBrief = () => {
       <Form {...form}>
         <form className="space-y-6">
           <h2>{steps[currentStep].name}</h2>
-          <article className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <article className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 sm:gap-x-6">
             {currentStep === 0 && (
               <>
                 <FormField
@@ -384,11 +409,11 @@ const CreateBrief = () => {
                 <FormField
                   control={form.control}
                   name="purpose"
-                  render={({ field }) => (
+                  render={({ field: { onChange, value } }) => (
                     <FormItem>
                       <FormLabel>Назначение</FormLabel>
                       <FormControl>
-                        <Select {...purposeRef}>
+                        <Select onValueChange={onChange} defaultValue={value}>
                           <SelectTrigger className="w-full">
                             <SelectValue placeholder="-" />
                           </SelectTrigger>
@@ -574,7 +599,6 @@ const CreateBrief = () => {
             )}
             {currentStep === 4 && (
               <>
-                {/* <CreatableSelect options={roomList} {...roomsRef}/> */}
                 <FormField
                   control={form.control}
                   name="rooms"
@@ -592,7 +616,6 @@ const CreateBrief = () => {
                               Не найдено.
                             </p>
                           }
-                          // {...roomsRef}
                         />
                       </FormControl>
                       <FormDescription></FormDescription>
@@ -603,6 +626,540 @@ const CreateBrief = () => {
               </>
             )}
             {currentStep === 5 && (
+              <>
+                <div
+                  className="
+                  rounded-lg 
+                  sm:col-span-2 
+                  border border-neutral-600 
+                  p-4 space-y-4
+                  "
+                >
+                  <FormField
+                    control={form.control}
+                    name="planChange"
+                    render={({ field }) => (
+                      <FormItem
+                        className="
+                        flex flex-row 
+                        items-center justify-between
+                        "
+                      >
+                        <FormLabel>Демонтаж перегородок</FormLabel>
+                        <FormControl>
+                          <Switch
+                            className="!m-0"
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  {form.watch("planChange") && (
+                    <FormField
+                      control={form.control}
+                      name="pets"
+                      render={({ field }) => (
+                        <FormItem className="sm:col-span-2">
+                          {/* <FormLabel>Необходимо предусмотреть</FormLabel> */}
+                          <FormControl>
+                            <Textarea
+                              placeholder="Морская свинка. Клетка 800/400/400 мм."
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormDescription>
+                            Вид домашнего животного, особенности размещения.
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="entranceDoorChange"
+                  render={({ field }) => (
+                    <FormItem
+                      className="
+                        rounded-lg 
+                        sm:col-span-2 
+                        border border-neutral-600 
+                        p-4 space-y-4
+                        flex flex-row 
+                        items-center justify-between
+                        "
+                    >
+                      <FormLabel>Замена входной двери</FormLabel>
+                      <FormControl>
+                        <Switch
+                          className="!m-0"
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="windowsChange"
+                  render={({ field }) => (
+                    <FormItem
+                      className="
+                        rounded-lg 
+                        sm:col-span-2 
+                        border border-neutral-600 
+                        p-4 space-y-4
+                        flex flex-row 
+                        items-center justify-between
+                        "
+                    >
+                      <FormLabel>Замена окон</FormLabel>
+                      <FormControl>
+                        <Switch
+                          className="!m-0"
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                <div
+                  className="
+                  rounded-lg 
+                  sm:col-span-2 
+                  border border-neutral-600 
+                  p-4 space-y-4
+                  "
+                >
+                  <FormField
+                    control={form.control}
+                    name="furnitureDemolition"
+                    render={({ field }) => (
+                      <FormItem
+                        className="
+                        flex flex-row 
+                        items-center justify-between
+                        "
+                      >
+                        <FormLabel>Демонтаж встроенной мебели</FormLabel>
+                        <FormControl>
+                          <Switch
+                            className="!m-0"
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  {form.watch("furnitureDemolition") && (
+                    <FormField
+                      control={form.control}
+                      name="pets"
+                      render={({ field }) => (
+                        <FormItem className="sm:col-span-2">
+                          {/* <FormLabel>Необходимо предусмотреть</FormLabel> */}
+                          <FormControl>
+                            <Textarea
+                              placeholder="Морская свинка. Клетка 800/400/400 мм."
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormDescription>
+                            Вид домашнего животного, особенности размещения.
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
+                </div>
+              </>
+            )}
+            {currentStep === 6 && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="wallsMaterial"
+                  render={({ field: { onChange, value } }) => (
+                    <FormItem className="sm:col-span-2">
+                      <div className="flex justify-between items-center">
+                        <FormLabel>Материал перегородок</FormLabel>
+                        <Sheet>
+                          <SheetTrigger asChild className="cursor-pointer">
+                            <Info className="text-neutral-500 size-5" />
+                          </SheetTrigger>
+                          <SheetContent>
+                            <SheetHeader>
+                              <SheetTitle>Материал перегородок</SheetTitle>
+                              <SheetDescription>
+                                Выберите один или несколько материалов.
+                              </SheetDescription>
+                            </SheetHeader>
+                            <div className="py-4 grid gap-4">
+                              <p>
+                                Lorem, ipsum dolor sit amet consectetur
+                                adipisicing elit. Tempora vero voluptatem
+                                ratione magnam, incidunt odit asperiores placeat
+                                eius. Numquam veritatis a earum deleniti maiores
+                                commodi iusto nemo aliquam incidunt quisquam!
+                              </p>
+                            </div>
+                          </SheetContent>
+                        </Sheet>
+                      </div>
+                      <FormControl>
+                        <MultipleSelector
+                          onChange={(val) =>
+                            onChange(val.map((item: any) => item.value))
+                          }
+                          defaultOptions={wallsMaterials}
+                          placeholder="Укажите один или несколько материалов..."
+                          creatable
+                          emptyIndicator={
+                            <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                              Не найдено.
+                            </p>
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="ceilingMaterial"
+                  render={({ field: { onChange, value } }) => (
+                    <FormItem className="sm:col-span-2">
+                      <div className="flex justify-between items-center">
+                        <FormLabel>Потолок</FormLabel>
+                        <Sheet>
+                          <SheetTrigger asChild className="cursor-pointer">
+                            <Info className="text-neutral-500 size-5" />
+                          </SheetTrigger>
+                          <SheetContent>
+                            <SheetHeader>
+                              <SheetTitle>Материал потолка</SheetTitle>
+                              <SheetDescription>
+                                Выберите один или несколько материалов.
+                              </SheetDescription>
+                            </SheetHeader>
+                            <div className="py-4 grid gap-4">
+                              <p>
+                                Lorem, ipsum dolor sit amet consectetur
+                                adipisicing elit. Tempora vero voluptatem
+                                ratione magnam, incidunt odit asperiores placeat
+                                eius. Numquam veritatis a earum deleniti maiores
+                                commodi iusto nemo aliquam incidunt quisquam!
+                              </p>
+                            </div>
+                          </SheetContent>
+                        </Sheet>
+                      </div>
+                      <FormControl>
+                        <MultipleSelector
+                          onChange={(val) =>
+                            onChange(val.map((item: any) => item.value))
+                          }
+                          defaultOptions={ceilingMaterials}
+                          placeholder="Укажите один или несколько материалов..."
+                          creatable
+                          emptyIndicator={
+                            <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                              Не найдено.
+                            </p>
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="floorMaterial"
+                  render={({ field }) => (
+                    <FormItem className="sm:col-span-2">
+                      <div className="flex justify-between items-center">
+                        <FormLabel>Напольные покрытия</FormLabel>
+                        <Sheet>
+                          <SheetTrigger asChild className="cursor-pointer">
+                            <Info className="text-neutral-500 size-5" />
+                          </SheetTrigger>
+                          <SheetContent>
+                            <SheetHeader>
+                              <SheetTitle>Материал перегородок</SheetTitle>
+                              <SheetDescription>
+                                Выберите один или несколько материалов.
+                              </SheetDescription>
+                            </SheetHeader>
+                            <div className="py-4 grid gap-4">
+                              <p>
+                                Lorem, ipsum dolor sit amet consectetur
+                                adipisicing elit. Tempora vero voluptatem
+                                ratione magnam, incidunt odit asperiores placeat
+                                eius. Numquam veritatis a earum deleniti maiores
+                                commodi iusto nemo aliquam incidunt quisquam!
+                              </p>
+                            </div>
+                          </SheetContent>
+                        </Sheet>
+                      </div>
+                      <FormControl>
+                        <MultipleSelector
+                          onChange={(val) =>
+                            field.onChange(val.map((item: any) => item.value))
+                          }
+                          defaultOptions={floorMaterials}
+                          placeholder="Укажите один или несколько материалов..."
+                          creatable
+                          emptyIndicator={
+                            <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                              Не найдено.
+                            </p>
+                          }
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div
+                  className="rounded-lg 
+                  sm:col-span-2 
+                  border border-neutral-600 
+                  p-4 space-y-4
+                  "
+                >
+                  <FormField
+                    control={form.control}
+                    name="hasIsolationSurfaces"
+                    render={({ field }) => (
+                      <FormItem
+                        className="
+                        
+                        flex flex-row 
+                        items-center justify-between
+                        "
+                      >
+                        <FormLabel>Звукоизоляция</FormLabel>
+                        <FormControl>
+                          <Switch
+                            className="!m-0"
+                            checked={field.value}
+                            onCheckedChange={field.onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  {form.watch("hasIsolationSurfaces") && (
+                    <>
+                      <FormField
+                        control={form.control}
+                        name="isolationMaterials"
+                        render={({ field }) => (
+                          <FormItem className="sm:col-span-2">
+                            {/* <FormLabel>Необходимо предусмотреть</FormLabel> */}
+                            <FormControl>
+                              <Textarea {...field} />
+                            </FormControl>
+                            <FormDescription>
+                              Предпочтительные материалы для звукоизоляции.
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="roomsForIsolation"
+                        render={({ field }) => (
+                          <FormItem className="sm:col-span-2">
+                            {/* <FormLabel>Необходимо предусмотреть</FormLabel> */}
+                            <FormControl>
+                              <MultipleSelector
+                                onChange={field.onChange}
+                                defaultOptions={[
+                                  { value: "rooms", label: "Все комнаты" },
+                                ]}
+                                placeholder="Выберите помещения..."
+                                creatable
+                                options={form.getValues("rooms")}
+                                emptyIndicator={
+                                  <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                                    Не найдено.
+                                  </p>
+                                }
+                              />
+                            </FormControl>
+                            <FormDescription>
+                              Помещения в которых необходима звукоизоляция.
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </>
+                  )}
+                </div>
+                <FormField
+                  control={form.control}
+                  name="innerDoorsHeight"
+                  render={({ field: { onChange, value } }) => (
+                    <FormItem className="sm:col-span-2">
+                      <div className="flex justify-between items-center">
+                        <FormLabel>Высота дверей</FormLabel>
+                        <span className="text-xs bg-neutral-800 py-1 px-2 rounded-md text-neutral-100">{`${value} мм`}</span>
+                      </div>
+                      <FormControl>
+                        <div className="py-2">
+                          <Slider
+                            min={2100}
+                            max={3000}
+                            step={100}
+                            value={value}
+                            onValueChange={onChange}
+                          />
+                          <div className="flex justify-between text-sm mt-3 text-neutral-600">
+                            <span>{`2100 мм`}</span>
+                            <span>{`+3000 мм`}</span>
+                          </div>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
+            {currentStep === 7 && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="heatingSystem"
+                  render={({ field: { onChange, value } }) => (
+                    <FormItem className="sm:col-span-2">
+                      {/* <FormLabel>Материал стен</FormLabel> */}
+                      <FormControl>
+                        <div className="grid sm:grid-cols-4 gap-2">
+                          <DataCard
+                            value={value}
+                            name="Радиаторы"
+                            isChecked={value?.includes("Радиаторы") || false}
+                            onChange={onChange}
+                            icon={<Heater size={44} strokeWidth={1} />}
+                          />
+                          <DataCard
+                            value={value}
+                            name="Конвекторы"
+                            isChecked={value?.includes("Конвекторы") || false}
+                            onChange={onChange}
+                            icon={<Heater size={44} strokeWidth={1} />}
+                          />
+                          <DataCard
+                            value={value}
+                            name="ИК-радиаторы"
+                            isChecked={value?.includes("ИК-радиаторы") || false}
+                            onChange={onChange}
+                            icon={<Heater size={44} strokeWidth={1} />}
+                          />
+                          <DataCard
+                            value={value}
+                            name="Теплый пол"
+                            isChecked={value?.includes("Теплый пол") || false}
+                            onChange={onChange}
+                            icon={<Heater size={44} strokeWidth={1} />}
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <div className="border border-neutral-600 rounded-lg p-4 col-span-2 space-y-4">
+                  {/* <FormField
+                    control={form.control}
+                    name="warmFloor"
+                    render={({ field: { onChange, value } }) => (
+                      <FormItem
+                        className="
+                        col-span-2
+                        flex flex-row 
+                        items-center justify-between
+                        "
+                      >
+                        <FormLabel>Теплый пол</FormLabel>
+                        <FormControl>
+                          <Switch
+                            className="!m-0"
+                            checked={value}
+                            onCheckedChange={onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  /> */}
+                  {form.watch("heatingSystem")?.includes("Теплый пол") ? (
+                    <FormField
+                      control={form.control}
+                      name="warmFloorRooms"
+                      render={({ field }) => (
+                        <>
+                          <FormItem
+                            className="
+                            col-span-2
+                            "
+                          >
+                            <FormLabel>Помещения с теплым полом</FormLabel>
+                            <FormControl className="flex flex-wrap gap-2">
+                              <>
+                                {form
+                                  .getValues("rooms")
+                                  ?.map(({ value, label }, index) => (
+                                    <Badge
+                                      id={value}
+                                      key={index}
+                                      variant={
+                                        field.value?.includes(value)
+                                          ? "default"
+                                          : "outline"
+                                      }
+                                      className="cursor-pointer"
+                                      onClick={() => {
+                                        field.onChange(
+                                          field.value?.includes(value)
+                                            ? field.value?.filter(
+                                                (v) => v !== value
+                                              )
+                                            : [...(field.value || []), value]
+                                        );
+                                      }}
+                                    >
+                                      {label}
+                                    </Badge>
+                                  ))}
+                              </>
+                            </FormControl>
+                          </FormItem>
+                        </>
+                      )}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              </>
+            )}
+            {currentStep === 8 && (
               <>
                 <h2 className="text-3xl font-bold">
                   Вы успешно создали проект!
