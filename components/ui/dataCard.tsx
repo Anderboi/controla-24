@@ -23,7 +23,6 @@ const DataCard = ({
   return (
     <div
       onClick={() => {
-        console.log("click", name);
 
         onChange(
           value?.includes(name)
@@ -40,7 +39,7 @@ const DataCard = ({
     >
       {/* <Checkbox {...props}/> */}
       {/* {icon} */}
-      <h3>{name}</h3>
+      <h3 className='text-sm'>{name}</h3>
       <p className="text-xs text-neutral-500">{description}</p>
     </div>
   );

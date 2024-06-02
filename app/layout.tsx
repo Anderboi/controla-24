@@ -3,8 +3,10 @@ import { Rubik as FontSans } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { cn } from "@/utils/utils";
-import { ThemeProvider } from "@/components/themeProvider";
+import { ThemeProvider } from "@/app/components/themeProvider";
 import { ruRU } from "@clerk/localizations";
+import Header from './components/Header';
+import { Toaster } from '@/components/ui/sonner';
 
 const fontSans = FontSans({ subsets: ["cyrillic"], variable: "--font-sans" });
 
@@ -31,7 +33,9 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {/* {modal} */}
+            <Header/>
             {children}
+            <Toaster/>
           </ThemeProvider>
         </body>
       </ClerkProvider>

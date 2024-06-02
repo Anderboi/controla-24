@@ -1,8 +1,15 @@
-import { createClient } from "@supabase/supabase-js";
+import { SupabaseClient, createClient } from "@supabase/supabase-js";
 
-export function createBrowserClient(supabaseToken: any) {
+let cachedSupabaseClient: SupabaseClient | null = null;
+let lastToken: string | null = null;
 
-  return createClient(
+const createBrowserClient = async (supabaseToken: string | null) => {
+  if (supabaseToken === lastToken && cachedSupabaseClient !== null) {
+    return cachedSupabaseClient;
+  }
+  lastToken = supabaseToken;
+
+  const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
@@ -11,4 +18,9 @@ export function createBrowserClient(supabaseToken: any) {
       },
     }
   );
-}
+  cachedSupabaseClient = supabase
+
+  return supabase
+};
+
+export default createBrowserClient;

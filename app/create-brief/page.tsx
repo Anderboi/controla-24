@@ -190,7 +190,7 @@ const CreateBrief = () => {
     },
   });
 
-  const [currentStep, setCurrentStep] = useState(5);
+  const [currentStep, setCurrentStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [roomscount, setRoomscount] = useState([{ id: "01", name: "" }]);
 
@@ -771,7 +771,7 @@ const CreateBrief = () => {
                   render={({ field }) => (
                     <>
                       <Sortable
-                        value={roomList}
+                        value={roomscount}
                         onMove={({ activeIndex, overIndex }) =>
                           move(activeIndex, overIndex)
                         }
@@ -799,7 +799,7 @@ const CreateBrief = () => {
                                   render={({ field }) => (
                                     <FormItem>
                                       <FormControl>
-                                        <CreatableSelect 
+                                        <CreatableSelect
                                           isClearable
                                           onChange={field.onChange}
                                           options={roomList}

@@ -1,14 +1,76 @@
-import { createBrowserClient } from "./supabase/browser";
+import { Database } from "./database.types";
+import createBrowserClient from "./supabase/browser";
+
+type Projects = Database["public"]["Tables"]["projects"]["Insert"];
+type Rooms = Database["public"]["Tables"]["rooms"]["Insert"];
+type Equipment = Database["public"]["Tables"]["equipment"]["Insert"];
 
 // Function to fetch todos from Supabase
 export const getProjects = async ({ userId, token }: any) => {
-  const supabase = createBrowserClient(token);
+  const supabase = await createBrowserClient(token);
   const { data: projects } = await supabase
     .from("projects")
     .select("*")
     .eq("user_id", userId);
 
   return projects;
+};
+
+export const getCurrentProject = async ({
+  projectId,
+  token,
+}: {
+  projectId: string;
+  token: any;
+}): Promise<Database["public"]["Tables"]["projects"]["Row"]> => {
+  const supabase = await createBrowserClient(token);
+
+  const { data: project, error } = await supabase
+    .from("projects")
+    .select("*")
+    .eq("id", projectId)
+    .single();
+
+  if (error) {
+    console.log(error.message);
+  }
+
+  return project;
+};
+
+export const getCurrentRooms = async (
+  projectId: number,
+  token: any
+): Promise<Database["public"]["Tables"]["rooms"]["Row"][]> => {
+  const supabase = await createBrowserClient(token);
+
+  const { data: rooms, error } = await supabase
+    .from("rooms")
+    .select("*")
+    .eq("project_id", projectId);
+
+  if (error) {
+    console.log(error.message);
+  }
+
+  return rooms || [];
+};
+export const getCurrentProjectEquipment = async (
+  roomId: number,
+  token: any
+): Promise<Database["public"]["Tables"]["rooms"]["Row"][]> => {
+  const supabase = await createBrowserClient(token);
+
+  const { data: rooms, error } = await supabase
+    .from("rooms")
+    .select("*")
+    .eq("project_id", roomId);
+
+  if (error) {
+    console.log(error.message);
+  }
+
+  return rooms || [];
 };
 
 export const getProjectsByTitle = async ({
@@ -20,10 +82,14 @@ export const getProjectsByTitle = async ({
   token: any;
   userId: any;
 }) => {
-  const supabase = createBrowserClient(token);
+  const supabase = await createBrowserClient(token);
 
   if (!title) {
-    const projects = await getProjects({ userId, token });
+    const { data: projects } = await supabase
+      .from("projects")
+      .select("*")
+      .eq("user_id", userId);
+
     return projects;
   }
 
@@ -31,7 +97,8 @@ export const getProjectsByTitle = async ({
     .from("projects")
     .select()
     .eq("user_id", userId)
-    .ilike("address", `%${title}%`)
+    .or(`address.ilike.%${title}%, projectName.ilike.%${title}%`)
+    // .like("address", `%${title}%`)
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -41,17 +108,102 @@ export const getProjectsByTitle = async ({
   return (data as any) || [];
 };
 
-export const postProject = async ({ formData, userId, token }: any) => {
-  const supabase = createBrowserClient(token);
-  const { data, error } = await supabase
+export const postProject = async ({
+  values,
+  userId,
+  token,
+}: {
+  values: any;
+  userId: any;
+  token: any;
+}) => {
+  const supabase = await createBrowserClient(token);
+
+  const formData: Projects = {
+    user_id: userId || "",
+    address: values.address,
+    area: values.area,
+    contractId: values.contractId,
+    projectName: values.projectName,
+    residing: values.adults,
+    children: values.children,
+    childrenAge: values.childrenAge,
+    purpose: values.purpose,
+    approxBudget: values.approxBudget,
+    floorsNumber: values.floorsNumber,
+    pets: values.pets,
+    hobbies: values.hobbies,
+    healthFeatures: values.healthFeatures,
+    planChange: values.planChange,
+    entranceDoorChange: values.entranceDoorChange,
+    windowsChange: values.windowsChange,
+    furnitureDemolition: values.furnitureDemolition,
+    wallsMaterial: values.wallsMaterial,
+    ceilingMaterial: values.ceilingMaterial,
+    floorMaterial: values.floorMaterial,
+    hasIsolationSurfaces: values.hasIsolationSurfaces,
+    isolationMaterials: values.isolationMaterials,
+    innerDoorsHeight: values.innerDoorsHeight && values.innerDoorsHeight[0],
+    heatingSystem: values.heatingSystem,
+    conditioningSystem: values.conditioningSystem,
+    plumbingSystem: values.plumbingSystem,
+    electricSystem: values.electricSystem,
+  };
+
+  const { data: project, error: projectError } = await supabase
     .from("projects")
     .insert(formData)
-    .select();
+    .select()
+    .single();
 
-  if (error) {
-    console.error("Error posting todo:", error.message);
+  if (projectError) {
+    console.error("Error posting todo:", projectError.message);
     return null;
   }
 
-  return data;
+  if (project) {
+    const roomsData: Rooms[] = [];
+
+    values.rooms.map((room: { value: string; label: string }) =>
+      roomsData.push({
+        project_id: project.id,
+        name: room.value,
+        hasWarmFloor: values.warmFloorRooms?.includes(room.value),
+        hasIsolation: values.roomsForIsolation?.includes(room.value),
+        isolationMaterials: values.isolationMaterials,
+      })
+    );
+
+    const rooms = await supabase.from("rooms").upsert(roomsData).select();
+
+    if (rooms.error) {
+      console.error("Error posting todo:", rooms.error.message);
+      return null;
+    }
+    const equipmentData: Equipment[] = [];
+    values.kitchenEquipment.map((equipment: string) =>
+      equipmentData.push({
+        project_id: project.id,
+        room_id: rooms.data.find((room) => room.name === "Кухня" || 'Кухня-столовая').id,
+        name: equipment,
+        type: "kitchen",
+      })
+    );
+    values.sanitaryEquipment.map((equipment: string) =>
+      equipmentData.push({
+        room_id: rooms.data.find((room) => room.name === "Ванная комната").id,
+        name: equipment,
+        project_id: project.id,
+        type: "sanitary",
+      })
+    );
+
+    const equipment = await supabase.from("equipment").insert(equipmentData);
+
+    if (equipment.error) {
+      console.log(equipment.error.message);
+    }
+  }
+
+  return project;
 };

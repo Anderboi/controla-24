@@ -21,8 +21,6 @@ import {
   InfoBlockLabel,
   InfoBlockTitle,
 } from "@/components/ui/infoBlock";
-import { Sortable, SortableItem } from '@/components/ui/sortable';
-import { Skeleton } from '@/components/ui/skeleton';
 
 async function ProjectPage({
   searchParams,
@@ -39,7 +37,10 @@ async function ProjectPage({
     token,
   });
 
-  const rooms = await getCurrentRooms(project.id, token);
+
+
+    const rooms = await getCurrentRooms(project.id, token);
+  
 
   return (
     <section className="space-y-8 max-w-[100vw] px-2">
