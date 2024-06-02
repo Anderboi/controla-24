@@ -3,59 +3,59 @@ import { z } from "zod";
 
 export const formSchema = z.object({
   //Client Info
-  firstName: z.string().min(1).trim(),
-  lastName: z.string().min(1).trim(),
-  middleName: z.string().min(1).trim().optional(),
+  firstName: z.string().min(1, { message: "Необходимо ввести имя" }).trim(),
+  lastName: z.string().min(1, { message: "Необходимо ввести фамилию" }).trim(),
+  middleName: z.string().trim().optional(),
   email: z.string().email().trim().optional(),
   phone: z.string().trim().optional(),
   //Project Info
   projectName: z.string().trim().optional(),
-  contractId: z.string().min(1).trim().optional(),
-  address: z.string().min(1).trim(),
+  contractId: z.string().trim().optional(),
+  address: z.string().min(1, { message: "Необходимо ввести адрес" }).trim(),
   //Project additional info
-  area: z.coerce.number().min(1),
+  area: z.coerce.number().min(1, { message: "Необходимо указать площадь" }),
   floorsNumber: z.coerce.number().optional(),
   purpose: z.string().optional(),
-  approxBudget: z.string().array().optional(),
+  approxBudget: z.coerce.number().array().optional(),
   //Inhabitant Info
+  adults: z.coerce.number().positive(),
+  children: z.coerce.number().optional(),
+  childrenAge: z.string().trim().optional(),
   hasPets: z.boolean().optional(),
   pets: z.string().trim().optional(),
   hobbies: z.string().trim().optional(),
-  allergy: z.string().trim().optional(),
-  adults: z.coerce.number().positive(),
-  children: z.coerce.number().positive().optional(),
-  childrenAge: z.string().trim().optional(),
+  healthFeatures: z.string().trim().optional(),
   //Room List
-  rooms: z.any().array(),
+  rooms: z.any().array().optional(),
   //Demolition Info
   planChange: z.boolean().optional(),
   entranceDoorChange: z.boolean().optional(),
   windowsChange: z.boolean().optional(),
   furnitureDemolition: z.boolean().optional(),
   //Construction Info
-  wallsMaterial: z.string().array().optional(),
-  ceilingMaterial: z.string().optional(),
+  wallsMaterial: z.array(z.string()).optional(),
+  ceilingMaterial: z.array(z.string()).optional(),
   floorMaterial: z.array(z.string()).optional(),
   hasIsolationSurfaces: z.boolean().optional(),
   isolationMaterials: z.string().optional(),
-  roomsForIsolation: z.string().array().optional(),
+  roomsForIsolation: z.array(z.string()).optional(),
   innerDoorsHeight: z.coerce.number().array().optional(),
   //Heating System
-  heatingSystem: z.string().array().optional(),
+  heatingSystem: z.array(z.string()).optional(),
   // warmFloor: z.boolean().optional(),
-  warmFloorRooms: z.string().array().optional(),
+  warmFloorRooms: z.array(z.string()).optional(),
   //Conditioning System
-  conditioningSystem: z.string().array().optional(),
+  conditioningSystem: z.array(z.string()).optional(),
   //Plumbing System
-  plumbingSystem: z.string().array().optional(),
+  plumbingSystem: z.array(z.string()).optional(),
   //Electric Systems
-  electricSystem: z.string().array().optional(),
+  electricSystem: z.array(z.string()).optional(),
   //TODO Sanitary Equipment
-  sanitaryEquipment: z.string().array().optional(),
+  sanitaryEquipment: z.array(z.string()).optional(),
   //TODO Kitchen Equipment
-  kitchenEquipment: z.string().array().optional(),
+  kitchenEquipment: z.array(z.string()).optional(),
   //TODO Loundry Equipment
-  loundryEquipment: z.string().array().optional(),
+  loundryEquipment: z.array(z.string()).optional(),
 });
 
 export const roomList: Option[] = [
@@ -194,4 +194,62 @@ export const ceilingMaterials: Option[] = [
   { value: "Гипсокартон", label: "Гипсокартон" },
   { value: "Натяжной потолок", label: "Натяжной потолок" },
   { value: "Без подшивки", label: "Без подшивки" },
+];
+
+export const heatingSystems = [
+  "Радиаторы",
+  "Конвекторы",
+  "Воздушная система отопления",
+  "Теплый пол водяной",
+  "Теплый пол электрический",
+  "ИК-радиаторы",
+];
+
+export const conditioningSystems = [
+  "Сплит-система кондиционирования",
+  "Канальная система кондиционирования",
+  "Приточно-вытяжная система вентиляции",
+  "Бризер",
+  "Увлажнитель воздуха канальный",
+  "Увлажнитель воздуха ультразвуковой",
+  
+];
+
+export const electricSystems = [
+  "Управление климатом",
+  "Управление отоплением",
+  "Управление освещением",
+  "Управление медиа",
+  "Управление сигнализацией",
+  "Управление видеонаблюдением",
+  "Установка датчиков протечки воды",
+  "Управление шторами",
+  "Установка RJ45 розеток (интернет)",
+];
+
+export const plumbingSystems = [
+  "Станция очистки воды",
+  "Магистральные фильтры",
+  "Фильтр обратного осмоса",
+  "УФ очистка воды",
+];
+
+export const kitchenEquipment = [
+  { value: "Холодильник", label: "Холодильник" },
+  { value: "Духовой шкаф", label: "Духовой шкаф" },
+  { value: "Варочная панель", label: "Варочная панель" },
+  { value: "Посудомоечная машина", label: "Посудомоечная машина" },
+  { value: "Вытяжка", label: "Вытяжка" },
+  { value: "Винный шкаф", label: "Винный шкаф" },
+  { value: "Морозильник", label: "Морозильник" },
+  { value: "Микроволновая печь", label: "Микроволновая печь" },
+  { value: "Измельчитель отходов", label: "Измельчитель отходов" },
+];
+
+export const sanitaryEquipment = [
+  { value: "Унитаз", label: "Унитаз" },
+  { value: "Биде", label: "Биде" },
+  { value: "Гигиенический душ", label: "Гигиенический душ" },
+  { value: "Умывальник", label: "Умывальник" },
+  { value: "Полотенцесушитель", label: "Полотенцесушитель" },
 ];

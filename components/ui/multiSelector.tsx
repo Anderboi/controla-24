@@ -74,6 +74,7 @@ interface MultipleSelectorProps {
     React.ComponentPropsWithoutRef<typeof CommandPrimitive.Input>,
     "value" | "placeholder" | "disabled"
   >;
+  removableBadge?: boolean;
 }
 
 export interface MultipleSelectorRef {
@@ -116,13 +117,19 @@ function transToGroupOption(options: Option[], groupBy?: string) {
   return groupOption;
 }
 
-function removePickedOption(groupOption: GroupOption, picked: Option[]) {
+function removePickedOption(
+  groupOption: GroupOption,
+  picked: Option[],
+  isRemovable: boolean
+) {
   const cloneOption = JSON.parse(JSON.stringify(groupOption)) as GroupOption;
 
-  for (const [key, value] of Object.entries(cloneOption)) {
-    cloneOption[key] = value.filter(
-      (val) => !picked.find((p) => p.value === val.value)
-    );
+  if (isRemovable) {
+    for (const [key, value] of Object.entries(cloneOption)) {
+      cloneOption[key] = value.filter(
+        (val) => !picked.find((p) => p.value === val.value)
+      );
+    }
   }
   return cloneOption;
 }
@@ -192,6 +199,7 @@ const MultipleSelector = React.forwardRef<
       triggerSearchOnFocus = false,
       commandProps,
       inputProps,
+      removableBadge = true,
     }: MultipleSelectorProps,
     ref: React.Ref<MultipleSelectorRef>
   ) => {
@@ -344,7 +352,7 @@ const MultipleSelector = React.forwardRef<
     }, [creatable, emptyIndicator, onSearch, options]);
 
     const selectables = React.useMemo<GroupOption>(
-      () => removePickedOption(options, selected),
+      () => removePickedOption(options, selected, removableBadge),
       [options, selected]
     );
 
@@ -382,10 +390,10 @@ const MultipleSelector = React.forwardRef<
         filter={commandFilter()}
       >
         <div className="flex flex-wrap gap-1 pb-2">
-          {selected.map((option) => {
+          {selected.map((option, index) => {
             return (
               <Badge
-                key={option.value}
+                key={index}
                 className={cn(
                   "data-[disabled='true']:bg-muted-foreground data-[disabled='true']:text-muted data-[disabled='true']:hover:bg-muted-foreground",
                   "data-[fixed]:bg-muted-foreground data-[fixed]:text-muted data-[fixed]:hover:bg-muted-foreground",
@@ -419,7 +427,7 @@ const MultipleSelector = React.forwardRef<
         </div>
         <div
           className={cn(
-            "group rounded-md border border-input px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2",
+            "group rounded-md border border-input dark:border-neutral-800 px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2",
             className
           )}
         >
@@ -508,7 +516,7 @@ const MultipleSelector = React.forwardRef<
                       className="h-full overflow-auto"
                     >
                       <>
-                        {dropdowns.map((option) => {
+                        {dropdowns.map((option, index) => {
                           return (
                             <CommandItem
                               key={option.value}

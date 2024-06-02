@@ -9,6 +9,48 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      equipment: {
+        Row: {
+          created_at: string
+          id: number
+          name: string | null
+          project_id: number | null
+          room_id: number | null
+          type: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name?: string | null
+          project_id?: number | null
+          room_id?: number | null
+          type?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string | null
+          project_id?: number | null
+          room_id?: number | null
+          type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "equipment_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "equipment_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -47,35 +89,142 @@ export type Database = {
       projects: {
         Row: {
           address: string
+          approxBudget: number[] | null
           area: number | null
+          ceilingMaterial: string[]
+          children: number
+          childrenAge: string | null
+          conditioningSystem: string[] | null
           contractId: string | null
           created_at: string
+          electricSystem: string[] | null
+          entranceDoorChange: boolean
+          floorMaterial: string[]
+          floorsNumber: number
+          furnitureDemolition: boolean
+          hasIsolationSurfaces: boolean
+          healthFeatures: string | null
+          heatingSystem: string[]
+          hobbies: string | null
           id: number
+          innerDoorsHeight: number | null
+          isolationMaterials: string
+          pets: string | null
+          planChange: boolean
+          plumbingSystem: string[] | null
           projectName: string | null
+          purpose: string
           residing: number | null
           user_id: string
+          wallsMaterial: string[]
+          windowsChange: boolean
         }
         Insert: {
           address: string
+          approxBudget?: number[] | null
           area?: number | null
+          ceilingMaterial?: string[]
+          children?: number
+          childrenAge?: string | null
+          conditioningSystem?: string[] | null
           contractId?: string | null
           created_at?: string
+          electricSystem?: string[] | null
+          entranceDoorChange?: boolean
+          floorMaterial?: string[]
+          floorsNumber?: number
+          furnitureDemolition?: boolean
+          hasIsolationSurfaces?: boolean
+          healthFeatures?: string | null
+          heatingSystem?: string[]
+          hobbies?: string | null
           id?: number
+          innerDoorsHeight?: number | null
+          isolationMaterials?: string
+          pets?: string | null
+          planChange?: boolean
+          plumbingSystem?: string[] | null
           projectName?: string | null
+          purpose?: string
           residing?: number | null
           user_id?: string
+          wallsMaterial?: string[]
+          windowsChange?: boolean
         }
         Update: {
           address?: string
+          approxBudget?: number[] | null
           area?: number | null
+          ceilingMaterial?: string[]
+          children?: number
+          childrenAge?: string | null
+          conditioningSystem?: string[] | null
           contractId?: string | null
           created_at?: string
+          electricSystem?: string[] | null
+          entranceDoorChange?: boolean
+          floorMaterial?: string[]
+          floorsNumber?: number
+          furnitureDemolition?: boolean
+          hasIsolationSurfaces?: boolean
+          healthFeatures?: string | null
+          heatingSystem?: string[]
+          hobbies?: string | null
           id?: number
+          innerDoorsHeight?: number | null
+          isolationMaterials?: string
+          pets?: string | null
+          planChange?: boolean
+          plumbingSystem?: string[] | null
           projectName?: string | null
+          purpose?: string
           residing?: number | null
           user_id?: string
+          wallsMaterial?: string[]
+          windowsChange?: boolean
         }
         Relationships: []
+      }
+      rooms: {
+        Row: {
+          area: number | null
+          created_at: string
+          hasIsolation: boolean
+          hasWarmFloor: boolean
+          id: number
+          isolationMaterials: string | null
+          name: string
+          project_id: number
+        }
+        Insert: {
+          area?: number | null
+          created_at?: string
+          hasIsolation?: boolean
+          hasWarmFloor?: boolean
+          id?: number
+          isolationMaterials?: string | null
+          name?: string
+          project_id: number
+        }
+        Update: {
+          area?: number | null
+          created_at?: string
+          hasIsolation?: boolean
+          hasWarmFloor?: boolean
+          id?: number
+          isolationMaterials?: string | null
+          name?: string
+          project_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rooms_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
