@@ -164,12 +164,12 @@ export const postProject = async ({
   if (project) {
     const roomsData: Rooms[] = [];
 
-    values.rooms.map((room: { value: string; label: string }) =>
+    values.rooms.map((room: { name: string }) =>
       roomsData.push({
         project_id: project.id,
-        name: room.value,
-        hasWarmFloor: values.warmFloorRooms?.includes(room.value),
-        hasIsolation: values.roomsForIsolation?.includes(room.value),
+        name: room.name,
+        hasWarmFloor: values.warmFloorRooms?.includes(room.name),
+        hasIsolation: values.roomsForIsolation?.includes(room.name),
         isolationMaterials: values.isolationMaterials,
       })
     );

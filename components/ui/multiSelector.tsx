@@ -389,7 +389,7 @@ const MultipleSelector = React.forwardRef<
         } // When onSearch is provided, we don't want to filter the options. You can still override it.
         filter={commandFilter()}
       >
-        <div className="flex flex-wrap gap-1 pb-2">
+        {/* <div className="flex flex-wrap gap-1 pb-2">
           {selected.map((option, index) => {
             return (
               <Badge
@@ -424,7 +424,7 @@ const MultipleSelector = React.forwardRef<
               </Badge>
             );
           })}
-        </div>
+        </div> */}
         <div
           className={cn(
             "group rounded-md border border-input dark:border-neutral-800 px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2",
@@ -432,7 +432,7 @@ const MultipleSelector = React.forwardRef<
           )}
         >
           <div className="flex flex-wrap gap-1">
-            {/* {selected.map((option) => {
+            {selected.map((option) => {
               return (
                 <Badge
                   key={option.value}
@@ -465,7 +465,7 @@ const MultipleSelector = React.forwardRef<
                   </button>
                 </Badge>
               );
-            })} */}
+            })}
             {/* Avoid having the "Search" Icon */}
             <CommandPrimitive.Input
               {...inputProps}

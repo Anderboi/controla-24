@@ -89,7 +89,7 @@ const steps = [
   {
     id: "Шаг 3",
     name: "Дополнительная информация",
-    fields: ["area", "floorsNumber", "purpose", "approxBudget"],
+    fields: ["area", "purpose", "approxBudget"],
   },
   {
     id: "Шаг 4",
@@ -104,7 +104,7 @@ const steps = [
   {
     id: "Шаг 6",
     name: "Какие помещения будут в проекте?",
-    fields: ["rooms"],
+    fields: ["floorsNumber", "rooms"],
   },
   {
     id: "Шаг 7",
@@ -187,17 +187,17 @@ const CreateBrief = () => {
       windowsChange: false,
       furnitureDemolition: false,
       approxBudget: [1000000, 10000000],
+      rooms: [],
     },
   });
 
   const [currentStep, setCurrentStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
-  const [roomscount, setRoomscount] = useState([{ id: "01", name: "" }]);
 
   const router = useRouter();
   const { userId, getToken } = useAuth();
 
-  const { fields, append, move, remove } = useFieldArray({
+  const { fields, append, move, remove, update } = useFieldArray({
     control: form.control,
     name: "rooms",
   });
@@ -205,7 +205,7 @@ const CreateBrief = () => {
   const next = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
-    console.log(form.getValues("approxBudget"));
+    console.log(form.getValues("rooms"));
 
     const fields = steps[currentStep].fields;
     const output = await form.trigger(fields as FieldName[], {
@@ -247,7 +247,7 @@ const CreateBrief = () => {
             label: "Перейти к проекту",
             onClick: () =>
               router.push(
-                `/dashboard/${uploadedProject.id}?&projectId=${uploadedProject.id}`
+                `/dashboard/${uploadedProject.id}?&projectId=${uploadedProject.id}`,
               ),
           },
         });
@@ -263,34 +263,34 @@ const CreateBrief = () => {
   }
 
   return (
-    <section className="h-full p-6 rounded-lg dark:bg-neutral-900 max-w-[900px] m-auto mt-[10vh] sm:border dark:border-neutral-800 flex md:flex-col">
+    <section className="m-auto mt-[10vh] flex h-full max-w-[900px] rounded-lg p-6 dark:border-neutral-800 dark:bg-neutral-900 sm:border md:flex-col">
       <nav aria-label="Progress">
         <ol
           role="list"
-          className="space-y-2 md:flex md:space-x-2 md:space-y-0 mb-4"
+          className="mb-4 space-y-2 md:flex md:space-x-2 md:space-y-0"
         >
           {steps.map((step, index) => (
             <li key={step.name} className="md:flex-1">
               {currentStep > index ? (
                 <div className="group flex w-full min-w-2 flex-col border-l-4 border-teal-800 py-2 pl-4 transition-colors md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
-                  <span className="hidden md:block text-xs font-medium text-teal-600 transition-colors">
+                  <span className="hidden text-xs font-medium text-teal-600 transition-colors md:block">
                     {step.id}
                   </span>
                   {/* <span className="text-sm font-medium">{step.name}</span> */}
                 </div>
               ) : currentStep === index ? (
                 <div
-                  className="flex w-full  min-w-2 flex-col border-l-4 border-teal-400 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
+                  className="flex w-full min-w-2 flex-col border-l-4 border-teal-400 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
                   aria-current="step"
                 >
-                  <span className="hidden md:block  text-xs font-medium text-teal-400">
+                  <span className="hidden text-xs font-medium text-teal-400 md:block">
                     {step.id}
                   </span>
                   {/* <span className="text-sm font-medium">{step.name}</span> */}
                 </div>
               ) : (
-                <div className="group  min-w-2 flex w-full flex-col border-l-4 border-gray-200 py-2 pl-4 transition-colors md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
-                  <span className="hidden md:block text-xs font-medium text-gray-500 transition-colors">
+                <div className="group flex w-full min-w-2 flex-col border-l-4 border-gray-200 py-2 pl-4 transition-colors md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
+                  <span className="hidden text-xs font-medium text-gray-500 transition-colors md:block">
                     {step.id}
                   </span>
                   {/* <span className="text-sm font-medium">{step.name}</span> */}
@@ -302,10 +302,10 @@ const CreateBrief = () => {
       </nav>
       <Form {...form}>
         <form className="space-y-6">
-          <h2 className="text-3xl font-bold tracking-tight text-balance">
+          <h2 className="text-balance text-3xl font-bold tracking-tight">
             {steps[currentStep].name}
           </h2>
-          <article className="grid grid-cols-1 sm:grid-cols-2 gap-y-6 sm:gap-x-6">
+          <article className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
             {currentStep === 0 && (
               <>
                 <FormField
@@ -460,40 +460,23 @@ const CreateBrief = () => {
             )}
             {currentStep === 2 && (
               <>
-                <div className="grid grid-cols-2 sm:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="area"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Площадь</FormLabel>
-                        <FormControl>
-                          <Input type="number" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          Площадь подлежащая проектированию.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="floorsNumber"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Этажность</FormLabel>
-                        <FormControl>
-                          <Input type="number" {...field} />
-                        </FormControl>
-                        <FormDescription>
-                          Количество этажей на объекте.
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                <FormField
+                  control={form.control}
+                  name="area"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Площадь</FormLabel>
+                      <FormControl>
+                        <Input type="number" {...field} />
+                      </FormControl>
+                      <FormDescription>
+                        Площадь подлежащая проектированию.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <FormField
                   control={form.control}
                   name="purpose"
@@ -545,9 +528,9 @@ const CreateBrief = () => {
                             minStepsBetweenThumbs={1}
                             onValueChange={onChange}
                           />
-                          <div className="flex gap-6 justify-between pt-4">
-                            <div className="border dark:border-neutral-800 rounded-lg w-full">
-                              <label className="text-xs px-3">
+                          <div className="flex justify-between gap-6 pt-4">
+                            <div className="w-full rounded-lg border dark:border-neutral-800">
+                              <label className="px-3 text-xs">
                                 Минимальная сумма
                               </label>
                               <Input
@@ -570,8 +553,8 @@ const CreateBrief = () => {
                                 }
                               />
                             </div>
-                            <div className="border dark:border-neutral-800 rounded-lg w-full">
-                              <label className="text-xs px-3">
+                            <div className="w-full rounded-lg border dark:border-neutral-800">
+                              <label className="px-3 text-xs">
                                 Максимальная сумма
                               </label>
                               <div className="flex items-center">
@@ -592,7 +575,7 @@ const CreateBrief = () => {
                                       value?.[0],
                                       parseLocaleNumber(
                                         i.target.value,
-                                        "ru-RU"
+                                        "ru-RU",
                                       ),
                                     ]);
                                   }}
@@ -666,24 +649,12 @@ const CreateBrief = () => {
                     )}
                   />
                 </div>
-                <div
-                  className="rounded-lg 
-                  sm:col-span-2 
-                  border border-neutral-600 
-                  p-4 space-y-4
-                  "
-                >
+                <div className="space-y-4 rounded-lg border border-neutral-600 p-4 sm:col-span-2">
                   <FormField
                     control={form.control}
                     name="hasPets"
                     render={({ field }) => (
-                      <FormItem
-                        className="
-                        
-                        flex flex-row 
-                        items-center justify-between
-                        "
-                      >
+                      <FormItem className="flex flex-row items-center justify-between">
                         <FormLabel>Домашние животные</FormLabel>
                         <FormControl>
                           <Switch
@@ -764,170 +735,199 @@ const CreateBrief = () => {
               </>
             )}
             {currentStep === 5 && (
-              <>
-                <FormField
+              <div className="space-y-4 sm:col-span-2">
+                {/* <FormField
                   control={form.control}
-                  name="rooms"
+                  name="floorsNumber"
                   render={({ field }) => (
-                    <>
-                      <Sortable
-                        value={roomscount}
-                        onMove={({ activeIndex, overIndex }) =>
-                          move(activeIndex, overIndex)
-                        }
-                        overlay={
-                          <div className="grid grid-cols-[auto,1fr,auto,auto] items-center gap-2 ">
-                            <Skeleton className="h-8 w-full rounded-sm" />
-                            <Skeleton className="h-8 w-full rounded-sm" />
-                            <Skeleton className="size-8 shrink-0 rounded-sm" />
-                            <Skeleton className="size-8 shrink-0 rounded-sm" />
+                    <FormItem>
+                      <FormLabel>Количество этажей на объекте</FormLabel>
+                      <FormControl>
+                        <Input type="number" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                /> */}
+
+                <Sortable
+                  value={fields}
+                  onMove={({ activeIndex, overIndex }) =>
+                    move(activeIndex, overIndex)
+                  }
+                  overlay={
+                    <div className="grid grid-cols-[0.3fr,2fr,0.5fr,auto,auto] items-center gap-2">
+                      <Skeleton className="h-8 w-full rounded-sm" />
+                      <Skeleton className="h-8 w-full rounded-sm" />
+                      <Skeleton className="size-8 shrink-0 rounded-sm" />
+                      <Skeleton className="size-8 shrink-0 rounded-sm" />
+                    </div>
+                  }
+                >
+                  {/* {Array.from(Array(Number(form.watch("floorsNumber")))).map(
+                    (_, floorindex) => ( */}
+                      <FormItem className="sm:col-span-2">
+                        {/* {Number(form.watch("floorsNumber")) > 1 && (
+                          <FormLabel>
+                            Помещения {floorindex + 1} этажа
+                          </FormLabel>
+                        )} */}
+                        <div className="w-full space-y-2">
+                          <div className="grid grid-cols-[0.3fr,2fr,0.5fr,40px,40px] items-center gap-2 text-xs text-neutral-500">
+                            <span>№ пом.</span>
+                            <span>Наименование</span>
+                            <span>Площадь</span>
                           </div>
-                        }
-                      >
-                        <div className="w-full space-y-2 sm:col-span-2 ">
-                          {roomscount.map((field, index) => (
-                            <SortableItem
-                              key={field.id}
-                              value={field.id}
-                              asChild
-                            >
-                              <div className="grid grid-cols-[auto,1fr,auto,auto] items-center gap-2">
-                                <div>{field.id}</div>
-                                <FormField
-                                  control={form.control}
-                                  name={`rooms.${index}.name`}
-                                  render={({ field }) => (
-                                    <FormItem>
-                                      <FormControl>
-                                        <CreatableSelect
-                                          isClearable
-                                          onChange={field.onChange}
-                                          options={roomList}
-                                        />
-                                        {/* <MultipleSelector
-                                          
-                                          maxSelected={1}
-                                          hidePlaceholderWhenSelected
-                                          // selectFirstItem
-                                          onChange={field.onChange}
-                                          defaultOptions={roomList}
-                                          placeholder="Укажите названия помещений..."
-                                          creatable
-                                          emptyIndicator={
-                                            <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                                              Не найдено.
-                                            </p>
-                                          }
-                                        /> */}
-                                      </FormControl>
-                                    </FormItem>
-                                  )}
-                                />
+                          {fields.map(
+                            (fieldItem, index) =>
+                              
+                                <SortableItem
+                                  key={fieldItem.id}
+                                  value={fieldItem.id}
+                                  asChild
+                                >
+                                  <div className="grid grid-cols-[0.3fr,2fr,0.5fr,auto,auto] items-center gap-2">
+                                    <FormField
+                                      control={form.control}
+                                      name={`rooms.${index}.number`}
+                                      defaultValue={`0${index + 1}`}
+                                      render={({ field }) => (
+                                        <FormItem>
+                                          <FormControl>
+                                            <>
+                                              <span className="text-sm">
+                                                {`0${index + 1}`}
+                                              </span>
+                                            </>
+                                          </FormControl>
+                                        </FormItem>
+                                      )}
+                                    />
 
-                                <SortableDragHandle
-                                  variant="outline"
-                                  size="icon"
-                                  className="size-8 shrink-0"
-                                >
-                                  <GripVertical
-                                    className="size-4"
-                                    aria-hidden="true"
-                                  />
-                                </SortableDragHandle>
-                                <Button
-                                  type="button"
-                                  variant="outline"
-                                  size="icon"
-                                  className="size-8 shrink-0"
-                                  onClick={() => remove(index)}
-                                >
-                                  <TrashIcon
-                                    className="size-4 text-destructive"
-                                    aria-hidden="true"
-                                  />
-                                  <span className="sr-only">Remove</span>
-                                </Button>
-                              </div>
-                            </SortableItem>
-                          ))}
-                          <Button
-                            size={"icon"}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              setRoomscount([
-                                ...roomscount,
-                                {
-                                  id: String(roomscount.length + 1).padStart(
-                                    2,
-                                    "0"
-                                  ),
-                                  name: "",
-                                },
-                              ]);
-                            }}
-                          >
-                            <Plus />
-                          </Button>
+                                    <FormField
+                                      control={form.control}
+                                      name={`rooms.${index}.name`}
+                                      render={({ field }) => (
+                                        <FormItem>
+                                          <FormControl>
+                                            <>
+                                              <CreatableSelect
+                                                formatCreateLabel={(value) =>
+                                                  `Создать '${value}'`
+                                                }
+                                                placeholder="Новое помещение ..."
+                                                options={roomList}
+                                                onChange={(val) =>
+                                                  field.onChange(val?.value)
+                                                }
+                                                className="h-8 !rounded-lg"
+                                                classNames={{
+                                                  control: (
+                                                    state,
+                                                  ) => `h-8 !rounded-md border-red-300 !border-neutral-200 !focused:border-teal-500
+                                                  !focused:ring-teal-500 
+                                                  dark:bg-neutral-900 
+                                                  dark:!text-neutral-50 dark:!border-neutral-800`,
+
+                                                  input: (state) =>
+                                                    "//bg-red-300 text-sm",
+                                                  valueContainer: (state) => "",
+                                                  singleValue: (state) =>
+                                                    "text-sm dark:text-neutral-50",
+                                                  placeholder: (state) =>
+                                                    "text-sm dark:text-neutral-50",
+                                                  menu: (state) =>
+                                                    "text-sm dark:text-neutral-50 dark:!bg-neutral-800",
+                                                  option: (state) =>
+                                                    state.isFocused
+                                                      ? "text-sm dark:text-neutral-50 !bg-teal-200 dark:!bg-neutral-600 //dark:text-red-400 !text-black"
+                                                      : state.isSelected
+                                                        ? " !bg-teal-500 hover:!bg-teal-600"
+                                                        : "dark:!bg-neutral-800",
+
+                                                  menuPortal: (state) =>
+                                                    "text-sm dark:text-neutral-50 dark:!bg-neutral-800",
+                                                }}
+                                              />
+                                            </>
+                                          </FormControl>
+                                        </FormItem>
+                                      )}
+                                    />
+                                    <FormField
+                                      // control={form.control}
+                                      name={`rooms.${index}.area`}
+                                      render={({ field }) => (
+                                        <FormItem>
+                                          <FormControl>
+                                            <Input
+                                              className="h-8"
+                                              type="number"
+                                              {...field}
+                                            />
+                                          </FormControl>
+                                        </FormItem>
+                                      )}
+                                    />
+                                    <SortableDragHandle
+                                      variant="outline"
+                                      size="icon"
+                                      className="size-8 shrink-0"
+                                    >
+                                      <GripVertical
+                                        className="size-4"
+                                        aria-hidden="true"
+                                      />
+                                    </SortableDragHandle>
+                                    <Button
+                                      type="button"
+                                      variant="outline"
+                                      size="icon"
+                                      className="size-8 shrink-0"
+                                      onClick={() => remove(index)}
+                                    >
+                                      <TrashIcon
+                                        className="text-destructive size-4"
+                                        aria-hidden="true"
+                                      />
+                                      <span className="sr-only">Remove</span>
+                                    </Button>
+                                  </div>
+                                </SortableItem>
+                              )
+                          }
                         </div>
-                      </Sortable>
-                    </>
-                  )}
-                />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          className="w-fit"
+                          onClick={() =>
+                            append({
+                              name: "",
+                              area: 0,
+                              number: "",
+                              // floor: floorindex + 1,
+                            })
+                          }
+                        >
+                          Add room
+                        </Button>
+                      </FormItem>
+                    {/* ),
+                  )} */}
+                </Sortable>
 
-                <FormField
-                  control={form.control}
-                  name="rooms"
-                  render={({ field }) => (
-                    <>
-                      {Array.from(
-                        Array(Number(form.watch("floorsNumber")))
-                      ).map((_, index) => (
-                        <FormItem key={index} className="sm:col-span-2">
-                          {Number(form.watch("floorsNumber")) > 1 && (
-                            <FormLabel>Помещения {index + 1} этажа</FormLabel>
-                          )}
-                          <FormControl>
-                            <MultipleSelector
-                              onChange={field.onChange}
-                              defaultOptions={roomList}
-                              placeholder="Укажите названия помещений..."
-                              creatable
-                              emptyIndicator={
-                                <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                                  Не найдено.
-                                </p>
-                              }
-                            />
-                          </FormControl>
-                          <FormDescription></FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      ))}
-                    </>
-                  )}
-                />
-              </>
+              </div>
             )}
             {currentStep === 6 && (
               <>
-                <div
-                  className="
-                  rounded-lg 
-                  sm:col-span-2 
-                  border border-neutral-600 
-                  p-4 space-y-4
-                  "
-                >
+                <div className="space-y-4 rounded-lg border border-neutral-600 p-4 sm:col-span-2">
                   <FormField
                     control={form.control}
                     name="planChange"
                     render={({ field }) => (
-                      <FormItem
-                        className="
-                        flex flex-row 
-                        items-center justify-between
-                        "
-                      >
+                      <FormItem className="flex flex-row items-center justify-between">
                         <FormLabel>Демонтаж перегородок</FormLabel>
                         <FormControl>
                           <Switch
@@ -945,16 +945,7 @@ const CreateBrief = () => {
                   control={form.control}
                   name="entranceDoorChange"
                   render={({ field }) => (
-                    <FormItem
-                      className="
-                        rounded-lg 
-                        sm:col-span-2 
-                        border border-neutral-600 
-                        p-4 space-y-4
-                        flex flex-row 
-                        items-center justify-between
-                        "
-                    >
+                    <FormItem className="flex flex-row items-center justify-between space-y-4 rounded-lg border border-neutral-600 p-4 sm:col-span-2">
                       <FormLabel>Замена входной двери</FormLabel>
                       <FormControl>
                         <Switch
@@ -971,16 +962,7 @@ const CreateBrief = () => {
                   control={form.control}
                   name="windowsChange"
                   render={({ field }) => (
-                    <FormItem
-                      className="
-                        rounded-lg 
-                        sm:col-span-2 
-                        border border-neutral-600 
-                        p-4 space-y-4
-                        flex flex-row 
-                        items-center justify-between
-                        "
-                    >
+                    <FormItem className="flex flex-row items-center justify-between space-y-4 rounded-lg border border-neutral-600 p-4 sm:col-span-2">
                       <FormLabel>Замена окон</FormLabel>
                       <FormControl>
                         <Switch
@@ -992,24 +974,12 @@ const CreateBrief = () => {
                     </FormItem>
                   )}
                 />
-                <div
-                  className="
-                  rounded-lg 
-                  sm:col-span-2 
-                  border border-neutral-600 
-                  p-4 space-y-4
-                  "
-                >
+                <div className="space-y-4 rounded-lg border border-neutral-600 p-4 sm:col-span-2">
                   <FormField
                     control={form.control}
                     name="furnitureDemolition"
                     render={({ field }) => (
-                      <FormItem
-                        className="
-                        flex flex-row 
-                        items-center justify-between
-                        "
-                      >
+                      <FormItem className="flex flex-row items-center justify-between">
                         <FormLabel>Демонтаж встроенной мебели</FormLabel>
                         <FormControl>
                           <Switch
@@ -1049,11 +1019,11 @@ const CreateBrief = () => {
                   name="wallsMaterial"
                   render={({ field: { onChange, value } }) => (
                     <FormItem className="sm:col-span-2">
-                      <div className="flex justify-between items-center">
+                      <div className="flex items-center justify-between">
                         <FormLabel>Материал перегородок</FormLabel>
                         <Sheet>
                           <SheetTrigger asChild className="cursor-pointer">
-                            <Info className="text-neutral-500 size-5" />
+                            <Info className="size-5 text-neutral-500" />
                           </SheetTrigger>
                           <SheetContent>
                             <SheetHeader>
@@ -1062,7 +1032,7 @@ const CreateBrief = () => {
                                 Выберите один или несколько материалов.
                               </SheetDescription>
                             </SheetHeader>
-                            <div className="py-4 grid gap-4">
+                            <div className="grid gap-4 py-4">
                               <p>
                                 Lorem, ipsum dolor sit amet consectetur
                                 adipisicing elit. Tempora vero voluptatem
@@ -1098,11 +1068,11 @@ const CreateBrief = () => {
                   name="ceilingMaterial"
                   render={({ field: { onChange, value } }) => (
                     <FormItem className="sm:col-span-2">
-                      <div className="flex justify-between items-center">
+                      <div className="flex items-center justify-between">
                         <FormLabel>Потолок</FormLabel>
                         <Sheet>
                           <SheetTrigger asChild className="cursor-pointer">
-                            <Info className="text-neutral-500 size-5" />
+                            <Info className="size-5 text-neutral-500" />
                           </SheetTrigger>
                           <SheetContent>
                             <SheetHeader>
@@ -1111,7 +1081,7 @@ const CreateBrief = () => {
                                 Выберите один или несколько материалов.
                               </SheetDescription>
                             </SheetHeader>
-                            <div className="py-4 grid gap-4">
+                            <div className="grid gap-4 py-4">
                               <p>
                                 Lorem, ipsum dolor sit amet consectetur
                                 adipisicing elit. Tempora vero voluptatem
@@ -1147,11 +1117,11 @@ const CreateBrief = () => {
                   name="floorMaterial"
                   render={({ field }) => (
                     <FormItem className="sm:col-span-2">
-                      <div className="flex justify-between items-center">
+                      <div className="flex items-center justify-between">
                         <FormLabel>Напольные покрытия</FormLabel>
                         <Sheet>
                           <SheetTrigger asChild className="cursor-pointer">
-                            <Info className="text-neutral-500 size-5" />
+                            <Info className="size-5 text-neutral-500" />
                           </SheetTrigger>
                           <SheetContent>
                             <SheetHeader>
@@ -1160,7 +1130,7 @@ const CreateBrief = () => {
                                 Выберите один или несколько материалов.
                               </SheetDescription>
                             </SheetHeader>
-                            <div className="py-4 grid gap-4">
+                            <div className="grid gap-4 py-4">
                               <p>
                                 Lorem, ipsum dolor sit amet consectetur
                                 adipisicing elit. Tempora vero voluptatem
@@ -1191,24 +1161,12 @@ const CreateBrief = () => {
                     </FormItem>
                   )}
                 />
-                <div
-                  className="rounded-lg 
-                  sm:col-span-2 
-                  border border-neutral-600 
-                  p-4 space-y-4
-                  "
-                >
+                <div className="space-y-4 rounded-lg border border-neutral-600 p-4 sm:col-span-2">
                   <FormField
                     control={form.control}
                     name="hasIsolationSurfaces"
                     render={({ field }) => (
-                      <FormItem
-                        className="
-                        
-                        flex flex-row 
-                        items-center justify-between
-                        "
-                      >
+                      <FormItem className="flex flex-row items-center justify-between">
                         <FormLabel>Звукоизоляция</FormLabel>
                         <FormControl>
                           <Switch
@@ -1238,17 +1196,17 @@ const CreateBrief = () => {
                           </FormItem>
                         )}
                       />
-                      <FormField
+                      {/* //TODO: Add rooms selector */}
+                      {/* <FormField
                         control={form.control}
                         name="roomsForIsolation"
                         render={({ field }) => (
                           <FormItem className="sm:col-span-2">
-                            {/* <FormLabel>Необходимо предусмотреть</FormLabel> */}
                             <FormControl>
                               <MultipleSelector
                                 onChange={(val) =>
                                   field.onChange(
-                                    val.map((item: any) => item.value)
+                                    val.map((item: any) => item.value),
                                   )
                                 }
                                 defaultOptions={[
@@ -1270,7 +1228,7 @@ const CreateBrief = () => {
                             <FormMessage />
                           </FormItem>
                         )}
-                      />
+                      /> */}
                     </>
                   )}
                 </div>
@@ -1279,9 +1237,9 @@ const CreateBrief = () => {
                   name="innerDoorsHeight"
                   render={({ field: { onChange, value } }) => (
                     <FormItem className="sm:col-span-2">
-                      <div className="flex justify-between items-center">
+                      <div className="flex items-center justify-between">
                         <FormLabel>Высота дверей</FormLabel>
-                        <span className="text-xs bg-neutral-800 py-1 px-2 rounded-md text-neutral-100">{`${value} мм`}</span>
+                        <span className="rounded-md bg-neutral-800 px-2 py-1 text-xs text-neutral-100">{`${value} мм`}</span>
                       </div>
                       <FormControl>
                         <div className="py-2">
@@ -1292,7 +1250,7 @@ const CreateBrief = () => {
                             value={value}
                             onValueChange={onChange}
                           />
-                          <div className="flex justify-between text-sm mt-3 text-neutral-600">
+                          <div className="mt-3 flex justify-between text-sm text-neutral-600">
                             <span>{`2100 мм`}</span>
                             <span>{`+3000 мм`}</span>
                           </div>
@@ -1313,7 +1271,7 @@ const CreateBrief = () => {
                     <FormItem className="sm:col-span-2">
                       {/* <FormLabel>Материал стен</FormLabel> */}
                       <FormControl>
-                        <div className="grid sm:grid-cols-4 gap-2">
+                        <div className="grid gap-2 sm:grid-cols-4">
                           {heatingSystems.map((system, index) => (
                             <DataCard
                               key={index}
@@ -1330,44 +1288,40 @@ const CreateBrief = () => {
                     </FormItem>
                   )}
                 />
-                <div className="border border-neutral-600 rounded-lg p-4 col-span-2 space-y-4">
+                <div className="col-span-2 space-y-4 rounded-lg border border-neutral-600 p-4">
                   {form.watch("heatingSystem")?.includes("Теплый пол") ? (
                     <FormField
                       control={form.control}
                       name="warmFloorRooms"
                       render={({ field }) => (
                         <>
-                          <FormItem
-                            className="
-                            col-span-2
-                            "
-                          >
+                          <FormItem className="col-span-2">
                             <FormLabel>Помещения с теплым полом</FormLabel>
                             <FormControl className="flex flex-wrap gap-2">
                               <>
                                 {form
                                   .getValues("rooms")
-                                  ?.map(({ value, label }, index) => (
+                                  ?.map(({ name }, index) => (
                                     <Badge
-                                      id={value}
+                                      id={name}
                                       key={index}
                                       variant={
-                                        field.value?.includes(value)
+                                        field.value?.includes(name)
                                           ? "default"
                                           : "outline"
                                       }
                                       className="cursor-pointer"
                                       onClick={() => {
                                         field.onChange(
-                                          field.value?.includes(value)
+                                          field.value?.includes(name)
                                             ? field.value?.filter(
-                                                (v) => v !== value
+                                                (v) => v !== name,
                                               )
-                                            : [...(field.value || []), value]
+                                            : [...(field.value || []), name],
                                         );
                                       }}
                                     >
-                                      {label}
+                                      {name}
                                     </Badge>
                                   ))}
                               </>
@@ -1387,7 +1341,7 @@ const CreateBrief = () => {
                     <FormItem className="sm:col-span-2">
                       {/* <FormLabel>Материал стен</FormLabel> */}
                       <FormControl>
-                        <div className="grid sm:grid-cols-4 gap-2">
+                        <div className="grid gap-2 sm:grid-cols-4">
                           {conditioningSystems.map((system, index) => (
                             <DataCard
                               key={index}
@@ -1411,7 +1365,7 @@ const CreateBrief = () => {
                     <FormItem className="sm:col-span-2">
                       {/* <FormLabel>Материал стен</FormLabel> */}
                       <FormControl>
-                        <div className="grid sm:grid-cols-4 gap-2">
+                        <div className="grid gap-2 sm:grid-cols-4">
                           {plumbingSystems.map((system, index) => (
                             <DataCard
                               key={index}
@@ -1437,10 +1391,10 @@ const CreateBrief = () => {
                   name="kitchenEquipment"
                   render={({ field: { onChange, value } }) => (
                     <FormItem className="sm:col-span-2">
-                      <div className="flex justify-between items-center">
+                      <div className="flex items-center justify-between">
                         <Sheet>
                           <SheetTrigger asChild className="cursor-pointer">
-                            <Info className="text-neutral-500 size-5" />
+                            <Info className="size-5 text-neutral-500" />
                           </SheetTrigger>
                           <SheetContent>
                             <SheetHeader>
@@ -1449,7 +1403,7 @@ const CreateBrief = () => {
                                 Выберите один или несколько материалов.
                               </SheetDescription>
                             </SheetHeader>
-                            <div className="py-4 grid gap-4">
+                            <div className="grid gap-4 py-4">
                               <p>
                                 Lorem, ipsum dolor sit amet consectetur
                                 adipisicing elit. Tempora vero voluptatem
@@ -1487,10 +1441,10 @@ const CreateBrief = () => {
                   name="sanitaryEquipment"
                   render={({ field: { onChange, value } }) => (
                     <FormItem className="sm:col-span-2">
-                      <div className="flex justify-between items-center">
+                      <div className="flex items-center justify-between">
                         <Sheet>
                           <SheetTrigger asChild className="cursor-pointer">
-                            <Info className="text-neutral-500 size-5" />
+                            <Info className="size-5 text-neutral-500" />
                           </SheetTrigger>
                           <SheetContent>
                             <SheetHeader>
@@ -1499,7 +1453,7 @@ const CreateBrief = () => {
                                 Выберите один или несколько материалов.
                               </SheetDescription>
                             </SheetHeader>
-                            <div className="py-4 grid gap-4">
+                            <div className="grid gap-4 py-4">
                               <p>
                                 Lorem, ipsum dolor sit amet consectetur
                                 adipisicing elit. Tempora vero voluptatem
@@ -1547,7 +1501,7 @@ const CreateBrief = () => {
                           <Check className="size-[14px]" />
                           <div className="text-xs">{step.name}</div>
                         </div>
-                      )
+                      ),
                   )}
                 </div>
               </>

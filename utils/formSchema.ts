@@ -26,7 +26,16 @@ export const formSchema = z.object({
   hobbies: z.string().trim().optional(),
   healthFeatures: z.string().trim().optional(),
   //Room List
-  rooms: z.any().array().optional(),
+  rooms: z
+    .array(
+      z.object({
+        name: z.string().trim(),
+        area: z.coerce.number(),
+        number: z.string(),
+        // floor: z.coerce.number(),
+      }),
+    )
+    .optional(),
   //Demolition Info
   planChange: z.boolean().optional(),
   entranceDoorChange: z.boolean().optional(),
@@ -212,7 +221,6 @@ export const conditioningSystems = [
   "Бризер",
   "Увлажнитель воздуха канальный",
   "Увлажнитель воздуха ультразвуковой",
-  
 ];
 
 export const electricSystems = [

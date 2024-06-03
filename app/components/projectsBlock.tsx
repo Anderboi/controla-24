@@ -1,8 +1,4 @@
-// "use client";
-
-import { useState, useEffect, useCallback } from "react";
 import { getProjectsByTitle } from "@/utils/requests";
-import { useAuth } from "@clerk/nextjs";
 
 import type { Database } from "@/utils/database.types";
 import Link from "next/link";
@@ -13,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 import { auth } from "@clerk/nextjs/server";
 
 export type Project = Database["public"]["Tables"]["projects"]["Row"];
@@ -29,27 +24,7 @@ async function ProjectsBlock({
   const token = await getToken({ template: "supabase" });
 
   const projects = await getProjectsByTitle({ title: query, userId, token });
-  // const { getToken, userId } = useAuth();
-  // const [loading, setLoading] = useState<boolean>(true);
-  // const [projects, setProjects] = useState<any>([]);
 
-  // useEffect(() => {
-  //   const fetchProjects = async () => {
-  //     try {
-  //       const token = await getToken({ template: "supabase" });
-  //       if (!token) {
-  //         throw new Error("No token");
-  //       }
-  //       const data = await getProjectsByTitle({ title: query, userId, token });
-  //       setProjects(data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchProjects();
-  // }, [query]);
 
   return (
     <>
@@ -75,7 +50,6 @@ async function ProjectsBlock({
                 </Card>
               </Link>
             ))}
-            {/* </ul> */}
           </>
         ) : (
           <p>У Вас еще нет проектов.</p>
