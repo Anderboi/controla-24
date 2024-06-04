@@ -168,12 +168,18 @@ const CreateBrief = () => {
   const form = useForm<Inputs>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      middleName: "",
+      email: "",
+      phone: "",
+      firstName: "",
+      lastName: "",
       area: 0,
       innerDoorsHeight: [2100],
       healthFeatures: "",
       adults: 1,
       children: 0,
       childrenAge: "",
+      hasPets: false,
       pets: "",
       hobbies: "",
       purpose: "Жилое помещение",
@@ -187,7 +193,20 @@ const CreateBrief = () => {
       windowsChange: false,
       furnitureDemolition: false,
       approxBudget: [1000000, 10000000],
-      rooms: [],
+      rooms: [{ name: "", area: 0, number: "" }],
+      hasIsolationSurfaces: false,
+      roomsForIsolation: [],
+      kitchenEquipment: [],
+      sanitaryEquipment: [],
+      ceilingMaterial: [],
+      floorMaterial: [],
+      wallsMaterial: [],
+      isolationMaterials: "",
+      heatingSystem: [],
+      conditioningSystem: [],
+      electricSystem: [],
+      plumbingSystem: [],
+      loundryEquipment: [],
     },
   });
 
@@ -766,158 +785,154 @@ const CreateBrief = () => {
                 >
                   {/* {Array.from(Array(Number(form.watch("floorsNumber")))).map(
                     (_, floorindex) => ( */}
-                      <FormItem className="sm:col-span-2">
-                        {/* {Number(form.watch("floorsNumber")) > 1 && (
+                  <FormItem className="sm:col-span-2">
+                    {/* {Number(form.watch("floorsNumber")) > 1 && (
                           <FormLabel>
                             Помещения {floorindex + 1} этажа
                           </FormLabel>
                         )} */}
-                        <div className="w-full space-y-2">
-                          <div className="grid grid-cols-[0.3fr,2fr,0.5fr,40px,40px] items-center gap-2 text-xs text-neutral-500">
-                            <span>№ пом.</span>
-                            <span>Наименование</span>
-                            <span>Площадь</span>
-                          </div>
-                          {fields.map(
-                            (fieldItem, index) =>
-                              
-                                <SortableItem
-                                  key={fieldItem.id}
-                                  value={fieldItem.id}
-                                  asChild
-                                >
-                                  <div className="grid grid-cols-[0.3fr,2fr,0.5fr,auto,auto] items-center gap-2">
-                                    <FormField
-                                      control={form.control}
-                                      name={`rooms.${index}.number`}
-                                      defaultValue={`0${index + 1}`}
-                                      render={({ field }) => (
-                                        <FormItem>
-                                          <FormControl>
-                                            <>
-                                              <span className="text-sm">
-                                                {`0${index + 1}`}
-                                              </span>
-                                            </>
-                                          </FormControl>
-                                        </FormItem>
-                                      )}
-                                    />
+                    <div className="w-full space-y-2">
+                      <div className="grid grid-cols-[0.3fr,2fr,0.5fr,40px,40px] items-center gap-2 text-xs text-neutral-500">
+                        <span>№ пом.</span>
+                        <span>Наименование</span>
+                        <span>Площадь</span>
+                      </div>
+                      {fields.map((fieldItem, index) => (
+                        <SortableItem
+                          key={fieldItem.id}
+                          value={fieldItem.id}
+                          asChild
+                        >
+                          <div className="grid grid-cols-[0.3fr,2fr,0.5fr,auto,auto] items-center gap-2">
+                            <FormField
+                              control={form.control}
+                              name={`rooms.${index}.number`}
+                              defaultValue={`0${index + 1}`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormControl>
+                                    <>
+                                      <span className="text-sm">
+                                        {`0${index + 1}`}
+                                      </span>
+                                    </>
+                                  </FormControl>
+                                </FormItem>
+                              )}
+                            />
 
-                                    <FormField
-                                      control={form.control}
-                                      name={`rooms.${index}.name`}
-                                      render={({ field }) => (
-                                        <FormItem>
-                                          <FormControl>
-                                            <>
-                                              <CreatableSelect
-                                                formatCreateLabel={(value) =>
-                                                  `Создать '${value}'`
-                                                }
-                                                placeholder="Новое помещение ..."
-                                                options={roomList}
-                                                onChange={(val) =>
-                                                  field.onChange(val?.value)
-                                                }
-                                                className="h-8 !rounded-lg"
-                                                classNames={{
-                                                  control: (
-                                                    state,
-                                                  ) => `h-8 !rounded-md border-red-300 !border-neutral-200 !focused:border-teal-500
+                            <FormField
+                              control={form.control}
+                              name={`rooms.${index}.name`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormControl>
+                                    <>
+                                      <CreatableSelect
+                                        formatCreateLabel={(value) =>
+                                          `Создать '${value}'`
+                                        }
+                                        placeholder="Новое помещение ..."
+                                        options={roomList}
+                                        onChange={(val) =>
+                                          field.onChange(val?.value)
+                                        }
+                                        className="h-8 !rounded-lg"
+                                        classNames={{
+                                          control: (
+                                            state,
+                                          ) => `h-8 !rounded-md border-red-300 !border-neutral-200 !focused:border-teal-500
                                                   !focused:ring-teal-500 
                                                   dark:bg-neutral-900 
                                                   dark:!text-neutral-50 dark:!border-neutral-800`,
 
-                                                  input: (state) =>
-                                                    "//bg-red-300 text-sm",
-                                                  valueContainer: (state) => "",
-                                                  singleValue: (state) =>
-                                                    "text-sm dark:text-neutral-50",
-                                                  placeholder: (state) =>
-                                                    "text-sm dark:text-neutral-50",
-                                                  menu: (state) =>
-                                                    "text-sm dark:text-neutral-50 dark:!bg-neutral-800",
-                                                  option: (state) =>
-                                                    state.isFocused
-                                                      ? "text-sm dark:text-neutral-50 !bg-teal-200 dark:!bg-neutral-600 //dark:text-red-400 !text-black"
-                                                      : state.isSelected
-                                                        ? " !bg-teal-500 hover:!bg-teal-600"
-                                                        : "dark:!bg-neutral-800",
+                                          input: (state) =>
+                                            "//bg-red-300 text-sm",
+                                          valueContainer: (state) => "",
+                                          singleValue: (state) =>
+                                            "text-sm dark:text-neutral-50",
+                                          placeholder: (state) =>
+                                            "text-sm dark:text-neutral-50",
+                                          menu: (state) =>
+                                            "text-sm dark:text-neutral-50 dark:!bg-neutral-800",
+                                          option: (state) =>
+                                            state.isFocused
+                                              ? "text-sm dark:text-neutral-50 !bg-teal-200 dark:!bg-neutral-600 //dark:text-red-400 !text-black"
+                                              : state.isSelected
+                                                ? " !bg-teal-500 hover:!bg-teal-600"
+                                                : "dark:!bg-neutral-800",
 
-                                                  menuPortal: (state) =>
-                                                    "text-sm dark:text-neutral-50 dark:!bg-neutral-800",
-                                                }}
-                                              />
-                                            </>
-                                          </FormControl>
-                                        </FormItem>
-                                      )}
-                                    />
-                                    <FormField
-                                      // control={form.control}
-                                      name={`rooms.${index}.area`}
-                                      render={({ field }) => (
-                                        <FormItem>
-                                          <FormControl>
-                                            <Input
-                                              className="h-8"
-                                              type="number"
-                                              {...field}
-                                            />
-                                          </FormControl>
-                                        </FormItem>
-                                      )}
-                                    />
-                                    <SortableDragHandle
-                                      variant="outline"
-                                      size="icon"
-                                      className="size-8 shrink-0"
-                                    >
-                                      <GripVertical
-                                        className="size-4"
-                                        aria-hidden="true"
+                                          menuPortal: (state) =>
+                                            "text-sm dark:text-neutral-50 dark:!bg-neutral-800",
+                                        }}
                                       />
-                                    </SortableDragHandle>
-                                    <Button
-                                      type="button"
-                                      variant="outline"
-                                      size="icon"
-                                      className="size-8 shrink-0"
-                                      onClick={() => remove(index)}
-                                    >
-                                      <TrashIcon
-                                        className="text-destructive size-4"
-                                        aria-hidden="true"
-                                      />
-                                      <span className="sr-only">Remove</span>
-                                    </Button>
-                                  </div>
-                                </SortableItem>
-                              )
-                          }
-                        </div>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          className="w-fit"
-                          onClick={() =>
-                            append({
-                              name: "",
-                              area: 0,
-                              number: "",
-                              // floor: floorindex + 1,
-                            })
-                          }
-                        >
-                          Add room
-                        </Button>
-                      </FormItem>
-                    {/* ),
+                                    </>
+                                  </FormControl>
+                                </FormItem>
+                              )}
+                            />
+                            <FormField
+                              // control={form.control}
+                              name={`rooms.${index}.area`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormControl>
+                                    <Input
+                                      className="h-8"
+                                      type="number"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                </FormItem>
+                              )}
+                            />
+                            <SortableDragHandle
+                              variant="outline"
+                              size="icon"
+                              className="size-8 shrink-0"
+                            >
+                              <GripVertical
+                                className="size-4"
+                                aria-hidden="true"
+                              />
+                            </SortableDragHandle>
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="icon"
+                              className="size-8 shrink-0"
+                              onClick={() => remove(index)}
+                            >
+                              <TrashIcon
+                                className="text-destructive size-4"
+                                aria-hidden="true"
+                              />
+                              <span className="sr-only">Remove</span>
+                            </Button>
+                          </div>
+                        </SortableItem>
+                      ))}
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      className="w-fit"
+                      onClick={() =>
+                        append({
+                          name: "",
+                          area: 0,
+                          number: "",
+                          // floor: floorindex + 1,
+                        })
+                      }
+                    >
+                      Add room
+                    </Button>
+                  </FormItem>
+                  {/* ),
                   )} */}
                 </Sortable>
-
               </div>
             )}
             {currentStep === 6 && (
@@ -1046,7 +1061,7 @@ const CreateBrief = () => {
                       </div>
                       <FormControl>
                         <MultipleSelector
-                          onChange={(val) =>
+                          onChange={(val:any) =>
                             onChange(val.map((item: any) => item.value))
                           }
                           defaultOptions={wallsMaterials}

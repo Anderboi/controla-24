@@ -353,7 +353,7 @@ const MultipleSelector = React.forwardRef<
 
     const selectables = React.useMemo<GroupOption>(
       () => removePickedOption(options, selected, removableBadge),
-      [options, selected]
+      [options, selected, removableBadge],
     );
 
     /** Avoid Creatable Selector freezing or lagging when paste a long string. */

@@ -236,7 +236,7 @@ async function ProjectPage({
         </article> */}
       {/* </div> */}
       <PDFDowloader project={project} rooms={rooms} />
-      {/* <PDFPage project={project} rooms={rooms} /> */}
+      <PDFPage project={project} rooms={rooms} />
     </section>
   );
 }

@@ -119,6 +119,9 @@ export const postProject = async ({
 }) => {
   const supabase = await createBrowserClient(token);
 
+  console.log(values);
+  
+
   const formData: Projects = {
     user_id: userId || "",
     address: values.address,
@@ -157,27 +160,31 @@ export const postProject = async ({
     .single();
 
   if (projectError) {
-    console.error("Error posting todo:", projectError.message);
+    console.error("Error posting PROJECT:", projectError.message);
     return null;
   }
 
   if (project) {
     const roomsData: Rooms[] = [];
 
-    values.rooms.map((room: { name: string }) =>
-      roomsData.push({
+    values.rooms.map((room: { name: string, area: number , number: string}) =>
+      {
+        console.log(room);
+        
+        roomsData.push({
         project_id: project.id,
         name: room.name,
+        area:room.area,
         hasWarmFloor: values.warmFloorRooms?.includes(room.name),
         hasIsolation: values.roomsForIsolation?.includes(room.name),
         isolationMaterials: values.isolationMaterials,
-      })
+      })}
     );
 
     const rooms = await supabase.from("rooms").upsert(roomsData).select();
 
     if (rooms.error) {
-      console.error("Error posting todo:", rooms.error.message);
+      console.error("Error posting ROOMS:", rooms.error.message);
       return null;
     }
     const equipmentData: Equipment[] = [];
