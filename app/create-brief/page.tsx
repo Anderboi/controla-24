@@ -70,6 +70,7 @@ import {
 } from "@/components/ui/sortable";
 import { Skeleton } from "@/components/ui/skeleton";
 import CreatableSelect from "react-select/creatable";
+import Stepper from '../components/Stepper';
 
 export type Inputs = z.infer<typeof formSchema>;
 type FieldName = keyof Inputs;
@@ -277,48 +278,11 @@ const CreateBrief = () => {
     } finally {
       setSubmitting(false);
     }
-
-    // console.log(values);
   }
 
   return (
     <section className="m-auto mt-[10vh] flex h-full max-w-[900px] rounded-lg p-6 dark:border-neutral-800 dark:bg-neutral-900 sm:border md:flex-col">
-      <nav aria-label="Progress">
-        <ol
-          role="list"
-          className="mb-4 space-y-2 md:flex md:space-x-2 md:space-y-0"
-        >
-          {steps.map((step, index) => (
-            <li key={step.name} className="md:flex-1">
-              {currentStep > index ? (
-                <div className="group flex w-full min-w-2 flex-col border-l-4 border-teal-800 py-2 pl-4 transition-colors md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
-                  <span className="hidden text-xs font-medium text-teal-600 transition-colors md:block">
-                    {step.id}
-                  </span>
-                  {/* <span className="text-sm font-medium">{step.name}</span> */}
-                </div>
-              ) : currentStep === index ? (
-                <div
-                  className="flex w-full min-w-2 flex-col border-l-4 border-teal-400 py-2 pl-4 md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4"
-                  aria-current="step"
-                >
-                  <span className="hidden text-xs font-medium text-teal-400 md:block">
-                    {step.id}
-                  </span>
-                  {/* <span className="text-sm font-medium">{step.name}</span> */}
-                </div>
-              ) : (
-                <div className="group flex w-full min-w-2 flex-col border-l-4 border-gray-200 py-2 pl-4 transition-colors md:border-l-0 md:border-t-4 md:pb-0 md:pl-0 md:pt-4">
-                  <span className="hidden text-xs font-medium text-gray-500 transition-colors md:block">
-                    {step.id}
-                  </span>
-                  {/* <span className="text-sm font-medium">{step.name}</span> */}
-                </div>
-              )}
-            </li>
-          ))}
-        </ol>
-      </nav>
+      <Stepper currentStep={currentStep} steps={steps}/>
       <Form {...form}>
         <form className="space-y-6">
           <h2 className="text-balance text-3xl font-bold tracking-tight">

@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="ru" suppressHydrationWarning>
       <ClerkProvider localization={ruRU}>
-        <body className={cn("font-sans antialiased", fontSans.className)}>
+        <body className={cn("font-sans antialiased dark:bg-neutral-950", fontSans.className)}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

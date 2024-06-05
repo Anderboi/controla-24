@@ -10,6 +10,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { auth } from "@clerk/nextjs/server";
+import { Button } from "@/components/ui/button";
+import { FilePlus2, Files } from "lucide-react";
 
 export type Project = Database["public"]["Tables"]["projects"]["Row"];
 
@@ -25,10 +27,9 @@ async function ProjectsBlock({
 
   const projects = await getProjectsByTitle({ title: query, userId, token });
 
-
   return (
     <>
-      <ul className="grid md:grid-cols-2 lg:grid-cols-4 gap-2 w-full">
+      <ul className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-4">
         {projects ? (
           <>
             {projects.map((project: Project, index: number) => (
@@ -38,12 +39,12 @@ async function ProjectsBlock({
               >
                 <Card className="shadow-lg hover:shadow-xl dark:shadow-none dark:hover:bg-neutral-900">
                   <CardHeader>
-                    <CardTitle className="line-clamp-2 min-h-[2lh]">
+                    <CardTitle className="line-clamp-1 sm:line-clamp-2 sm:min-h-[2lh]">
                       {project.projectName}
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <CardDescription className="text-xs line-clamp-2 min-h-[2lh]">
+                    <CardDescription className="line-clamp-2 sm:min-h-[2lh] text-xs">
                       {project.address}
                     </CardDescription>
                   </CardContent>
@@ -52,7 +53,10 @@ async function ProjectsBlock({
             ))}
           </>
         ) : (
-          <p>У Вас еще нет проектов.</p>
+          <div className="flex flex-col w-full items-center text-center sm:col-span-4 text-neutral-500">
+            <Files size={96} strokeWidth={0.5} />
+            <p className="w-full">У Вас еще нет проектов.</p>
+          </div>
         )}
       </ul>
     </>

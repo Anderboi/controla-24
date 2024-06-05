@@ -5,11 +5,7 @@ const InfoBlock = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <article
-    ref={ref}
-    className={cn("//space-y-2 ", className)}
-    {...props}
-  />
+  <article ref={ref} className={cn("", className)} {...props} />
 ));
 InfoBlock.displayName = "InfoBlock";
 
@@ -20,8 +16,8 @@ const InfoBlockTitle = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      "font-semibold text-lg leading-none tracking-tight mb-4",
-      className
+      "mb-4 text-lg font-semibold leading-none tracking-tight",
+      className,
     )}
     {...props}
   />
@@ -35,8 +31,8 @@ const InfoBlockContent = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "space-y-2 border dark:border-none dark:border-neutral-800 dark:bg-neutral-900 rounded-xl py-4 pl-4 relative",
-      className
+      "relative space-y-2 rounded-xl border py-4 pl-4 dark:border-none dark:bg-neutral-900",
+      className,
     )}
     {...props}
   />
@@ -49,10 +45,7 @@ const InfoBlockItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn(
-      "//grid gap-x-2 //md:grid-cols-[1fr_2fr] sm:flex justify-between pr-4",
-      className
-    )}
+    className={cn("justify-between gap-x-2 pr-4 sm:flex", className)}
     {...props}
   />
 ));
@@ -64,10 +57,7 @@ const InfoBlockLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn(
-      "//text-sm text-neutral-400 dark:text-neutral-400",
-      className
-    )}
+    className={cn("text-neutral-400 dark:text-neutral-400", className)}
     {...props}
   />
 ));
@@ -79,10 +69,7 @@ const InfoBlockValue = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn(
-      "//text-sm text-neutral-500 dark:text-neutral-400",
-      className
-    )}
+    className={cn("text-neutral-500 dark:text-neutral-400", className)}
     {...props}
   />
 ));
