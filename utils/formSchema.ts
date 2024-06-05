@@ -65,6 +65,8 @@ export const formSchema = z.object({
   kitchenEquipment: z.array(z.string()).optional(),
   //TODO Loundry Equipment
   loundryEquipment: z.array(z.string()).optional(),
+
+  equipment: z.array(z.object({name:z.string(), room_id:z.number(), room_name:z.string().optional()})).optional(),
 });
 
 export const roomList: Option[] = [
@@ -209,9 +211,8 @@ export const heatingSystems = [
   "Радиаторы",
   "Конвекторы",
   "Воздушная система отопления",
-  "Теплый пол водяной",
-  "Теплый пол электрический",
   "ИК-радиаторы",
+  "Теплый пол",
 ];
 
 export const conditioningSystems = [
@@ -242,16 +243,39 @@ export const plumbingSystems = [
   "УФ очистка воды",
 ];
 
-export const kitchenEquipment = [
-  { value: "Холодильник", label: "Холодильник" },
-  { value: "Духовой шкаф", label: "Духовой шкаф" },
-  { value: "Варочная панель", label: "Варочная панель" },
-  { value: "Посудомоечная машина", label: "Посудомоечная машина" },
-  { value: "Вытяжка", label: "Вытяжка" },
-  { value: "Винный шкаф", label: "Винный шкаф" },
-  { value: "Морозильник", label: "Морозильник" },
-  { value: "Микроволновая печь", label: "Микроволновая печь" },
-  { value: "Измельчитель отходов", label: "Измельчитель отходов" },
+export const equipment = [
+  { value: "Холодильник", label: "Холодильник", group: "Кухня" },
+  { value: "Духовой шкаф", label: "Духовой шкаф", group: "Кухня" },
+  { value: "Варочная панель", label: "Варочная панель", group: "Кухня" },
+  {
+    value: "Посудомоечная машина",
+    label: "Посудомоечная машина",
+    group: "Кухня",
+  },
+  { value: "Вытяжка", label: "Вытяжка", group: "Кухня" },
+  { value: "Винный шкаф", label: "Винный шкаф", group: "Кухня" },
+  { value: "Морозильник", label: "Морозильник", group: "Кухня" },
+  { value: "Микроволновая печь", label: "Микроволновая печь", group: "Кухня" },
+  {
+    value: "Измельчитель отходов",
+    label: "Измельчитель отходов",
+    group: "Кухня",
+  },
+  { value: "Унитаз", label: "Унитаз", group: "Сантехника" },
+  { value: "Биде", label: "Биде", group: "Сантехника" },
+  {
+    value: "Гигиенический душ",
+    label: "Гигиенический душ",
+    group: "Сантехника",
+  },
+  { value: "Душ", label: "Душ", group: "Сантехника" },
+  { value: "Ванна", label: "Ванна", group: "Сантехника" },
+  { value: "Умывальник", label: "Умывальник", group: "Сантехника" },
+  {
+    value: "Полотенцесушитель",
+    label: "Полотенцесушитель",
+    group: "Сантехника",
+  },
 ];
 
 export const sanitaryEquipment = [

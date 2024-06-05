@@ -19,9 +19,9 @@ import {
 import {
   ceilingMaterials,
   conditioningSystems,
+  equipment,
   floorMaterials,
   heatingSystems,
-  kitchenEquipment,
   plumbingSystems,
   roomList,
   sanitaryEquipment,
@@ -131,7 +131,7 @@ const steps = [
   },
   {
     id: "Шаг 9",
-    name: "Система отопления",
+    name: "Инженерные системы",
     fields: [
       "heatingSystem",
       "warmFloor",
@@ -143,22 +143,11 @@ const steps = [
   },
   {
     id: "Шаг 10",
-    name: "Комплектация кухонной зоны",
-    fields: ["kitchenEquipment"],
+    name: "Комплектация оборудованием",
+    fields: ["equipment"],
   },
   {
     id: "Шаг 11",
-    name: "Комплектация сантехническим оборудованием",
-    fields: ["sanitaryEquipment"],
-  },
-
-  // {
-  //   id: "step 11",
-  //   name: "Комплектация постирочной или кладовой",
-  //   fields: ["loundryEquipment"],
-  // },
-  {
-    id: "Шаг 12",
     name: "Проект успешно создан",
   },
 ];
@@ -207,10 +196,11 @@ const CreateBrief = () => {
       electricSystem: [],
       plumbingSystem: [],
       loundryEquipment: [],
+      equipment: [{ name: "", room_id: 0 }],
     },
   });
 
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(8);
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
@@ -220,11 +210,21 @@ const CreateBrief = () => {
     control: form.control,
     name: "rooms",
   });
+  const {
+    fields: equipmentFields,
+    append: equipmentAppend,
+    move: equipmentMove,
+    remove: equipmentRemove,
+    update: equipmentUpdate,
+  } = useFieldArray({
+    control: form.control,
+    name: "equipment",
+  });
 
   const next = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
-    console.log(form.getValues("rooms"));
+    console.log(form.getValues("equipment"));
 
     const fields = steps[currentStep].fields;
     const output = await form.trigger(fields as FieldName[], {
@@ -807,17 +807,20 @@ const CreateBrief = () => {
                             <FormField
                               control={form.control}
                               name={`rooms.${index}.number`}
-                              defaultValue={`0${index + 1}`}
                               render={({ field }) => (
-                                <FormItem>
-                                  <FormControl>
-                                    <>
-                                      <span className="text-sm">
-                                        {`0${index + 1}`}
-                                      </span>
-                                    </>
-                                  </FormControl>
-                                </FormItem>
+                                // <FormItem>
+                                //   <FormControl>
+                                <Input
+                                  className="h-8"
+                                  disabled
+                                  ref={field.ref}
+                                  value={(index + 1).toLocaleString("ru-RU", {
+                                    minimumIntegerDigits: 2,
+                                  })}
+                                  onChange={field.onChange}
+                                />
+                                //   </FormControl>
+                                // </FormItem>
                               )}
                             />
 
@@ -927,7 +930,7 @@ const CreateBrief = () => {
                         })
                       }
                     >
-                      Add room
+                      Добавить помещение
                     </Button>
                   </FormItem>
                   {/* ),
@@ -1061,7 +1064,7 @@ const CreateBrief = () => {
                       </div>
                       <FormControl>
                         <MultipleSelector
-                          onChange={(val:any) =>
+                          onChange={(val: any) =>
                             onChange(val.map((item: any) => item.value))
                           }
                           defaultOptions={wallsMaterials}
@@ -1176,7 +1179,7 @@ const CreateBrief = () => {
                     </FormItem>
                   )}
                 />
-                <div className="space-y-4 rounded-lg border border-neutral-600 p-4 sm:col-span-2">
+                <div className="space-y-4 rounded-lg border p-4 dark:border-neutral-800 sm:col-span-2">
                   <FormField
                     control={form.control}
                     name="hasIsolationSurfaces"
@@ -1212,30 +1215,39 @@ const CreateBrief = () => {
                         )}
                       />
                       {/* //TODO: Add rooms selector */}
-                      {/* <FormField
+                      <FormField
                         control={form.control}
                         name="roomsForIsolation"
                         render={({ field }) => (
-                          <FormItem className="sm:col-span-2">
+                          <FormItem className="gap-2 sm:col-span-2">
                             <FormControl>
-                              <MultipleSelector
-                                onChange={(val) =>
-                                  field.onChange(
-                                    val.map((item: any) => item.value),
-                                  )
-                                }
-                                defaultOptions={[
-                                  { value: "rooms", label: "Все комнаты" },
-                                ]}
-                                placeholder="Выберите помещения..."
-                                creatable
-                                options={form.getValues("rooms")}
-                                emptyIndicator={
-                                  <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                                    Не найдено.
-                                  </p>
-                                }
-                              />
+                              <>
+                                {form
+                                  .getValues("rooms")
+                                  ?.map(({ name }, index) => (
+                                    <Badge
+                                      id={name}
+                                      key={index}
+                                      variant={
+                                        field.value?.includes(name)
+                                          ? "default"
+                                          : "outline"
+                                      }
+                                      className="cursor-pointer"
+                                      onClick={() => {
+                                        field.onChange(
+                                          field.value?.includes(name)
+                                            ? field.value?.filter(
+                                                (v) => v !== name,
+                                              )
+                                            : [...(field.value || []), name],
+                                        );
+                                      }}
+                                    >
+                                      {name}
+                                    </Badge>
+                                  ))}
+                              </>
                             </FormControl>
                             <FormDescription>
                               Помещения в которых необходима звукоизоляция.
@@ -1243,7 +1255,7 @@ const CreateBrief = () => {
                             <FormMessage />
                           </FormItem>
                         )}
-                      /> */}
+                      />
                     </>
                   )}
                 </div>
@@ -1284,9 +1296,9 @@ const CreateBrief = () => {
                   name="heatingSystem"
                   render={({ field: { onChange, value } }) => (
                     <FormItem className="sm:col-span-2">
-                      {/* <FormLabel>Материал стен</FormLabel> */}
+                      <FormLabel>Система отопления</FormLabel>
                       <FormControl>
-                        <div className="grid gap-2 sm:grid-cols-4">
+                        <div className="grid gap-2 sm:grid-cols-3">
                           {heatingSystems.map((system, index) => (
                             <DataCard
                               key={index}
@@ -1303,60 +1315,62 @@ const CreateBrief = () => {
                     </FormItem>
                   )}
                 />
-                <div className="col-span-2 space-y-4 rounded-lg border border-neutral-600 p-4">
+                <>
                   {form.watch("heatingSystem")?.includes("Теплый пол") ? (
-                    <FormField
-                      control={form.control}
-                      name="warmFloorRooms"
-                      render={({ field }) => (
-                        <>
-                          <FormItem className="col-span-2">
-                            <FormLabel>Помещения с теплым полом</FormLabel>
-                            <FormControl className="flex flex-wrap gap-2">
-                              <>
-                                {form
-                                  .getValues("rooms")
-                                  ?.map(({ name }, index) => (
-                                    <Badge
-                                      id={name}
-                                      key={index}
-                                      variant={
-                                        field.value?.includes(name)
-                                          ? "default"
-                                          : "outline"
-                                      }
-                                      className="cursor-pointer"
-                                      onClick={() => {
-                                        field.onChange(
+                    <div className="col-span-2 space-y-3 rounded-lg border p-4 dark:border-neutral-800">
+                      <FormField
+                        control={form.control}
+                        name="warmFloorRooms"
+                        render={({ field }) => (
+                          <>
+                            <FormItem className="col-span-2">
+                              <FormLabel>Помещения с теплым полом</FormLabel>
+                              <FormControl className="flex flex-wrap gap-2">
+                                <>
+                                  {form
+                                    .getValues("rooms")
+                                    ?.map(({ name }, index) => (
+                                      <Badge
+                                        id={name}
+                                        key={index}
+                                        variant={
                                           field.value?.includes(name)
-                                            ? field.value?.filter(
-                                                (v) => v !== name,
-                                              )
-                                            : [...(field.value || []), name],
-                                        );
-                                      }}
-                                    >
-                                      {name}
-                                    </Badge>
-                                  ))}
-                              </>
-                            </FormControl>
-                          </FormItem>
-                        </>
-                      )}
-                    />
+                                            ? "default"
+                                            : "outline"
+                                        }
+                                        className="cursor-pointer"
+                                        onClick={() => {
+                                          field.onChange(
+                                            field.value?.includes(name)
+                                              ? field.value?.filter(
+                                                  (v) => v !== name,
+                                                )
+                                              : [...(field.value || []), name],
+                                          );
+                                        }}
+                                      >
+                                        {name}
+                                      </Badge>
+                                    ))}
+                                </>
+                              </FormControl>
+                            </FormItem>
+                          </>
+                        )}
+                      />
+                    </div>
                   ) : (
                     <></>
                   )}
-                </div>
+                </>
                 <FormField
                   control={form.control}
                   name="conditioningSystem"
                   render={({ field: { onChange, value } }) => (
                     <FormItem className="sm:col-span-2">
-                      {/* <FormLabel>Материал стен</FormLabel> */}
+                      <FormLabel>Система кондиционирования</FormLabel>
                       <FormControl>
-                        <div className="grid gap-2 sm:grid-cols-4">
+                        <div className="grid gap-2 sm:grid-cols-3">
                           {conditioningSystems.map((system, index) => (
                             <DataCard
                               key={index}
@@ -1378,9 +1392,9 @@ const CreateBrief = () => {
                   name="plumbingSystem"
                   render={({ field: { onChange, value } }) => (
                     <FormItem className="sm:col-span-2">
-                      {/* <FormLabel>Материал стен</FormLabel> */}
+                      <FormLabel>Система водоснабжения</FormLabel>
                       <FormControl>
-                        <div className="grid gap-2 sm:grid-cols-4">
+                        <div className="grid gap-2 sm:grid-cols-3">
                           {plumbingSystems.map((system, index) => (
                             <DataCard
                               key={index}
@@ -1401,106 +1415,100 @@ const CreateBrief = () => {
             )}
             {currentStep === 9 && (
               <>
-                <FormField
-                  control={form.control}
-                  name="kitchenEquipment"
-                  render={({ field: { onChange, value } }) => (
-                    <FormItem className="sm:col-span-2">
-                      <div className="flex items-center justify-between">
-                        <Sheet>
-                          <SheetTrigger asChild className="cursor-pointer">
-                            <Info className="size-5 text-neutral-500" />
-                          </SheetTrigger>
-                          <SheetContent>
-                            <SheetHeader>
-                              <SheetTitle>Оборудование</SheetTitle>
-                              <SheetDescription>
-                                Выберите один или несколько материалов.
-                              </SheetDescription>
-                            </SheetHeader>
-                            <div className="grid gap-4 py-4">
-                              <p>
-                                Lorem, ipsum dolor sit amet consectetur
-                                adipisicing elit. Tempora vero voluptatem
-                                ratione magnam, incidunt odit asperiores placeat
-                                eius.
-                              </p>
-                            </div>
-                          </SheetContent>
-                        </Sheet>
-                      </div>
-                      <FormControl>
-                        <MultipleSelector
-                          onChange={(val) =>
-                            onChange(val.map((item: any) => item.value))
-                          }
-                          defaultOptions={kitchenEquipment}
-                          creatable
-                          emptyIndicator={
-                            <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                              Не найдено.
-                            </p>
-                          }
-                        />
-                      </FormControl>
-                      {/* <FormMessage /> */}
-                    </FormItem>
-                  )}
-                />
+                {equipmentFields.map((fieldItem, index) => (
+                  <div
+                    key={index}
+                    className="items-srart grid grid-cols-[1fr,2fr,auto] gap-2 sm:col-span-2"
+                  >
+                    <FormField
+                      control={form.control}
+                      name={`equipment.${index}.room_id`}
+                      render={({ field }) => (
+                        <Select onValueChange={field.onChange}>
+                          <SelectTrigger className="h-8 w-full">
+                            <SelectValue placeholder="Выберите помещение" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {form.getValues("rooms")?.map(({ name }, index) => (
+                              <SelectItem
+                                key={index}
+                                value={(index + 1).toLocaleString("ru-Ru", {
+                                  minimumIntegerDigits: 2,
+                                })}
+                              >
+                                {name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name={`equipment.${index}.name`}
+                      render={({ field: { onChange, value } }) => (
+                        <FormItem>
+                          <FormControl>
+                            <MultipleSelector
+                              className="h-8"
+                              onChange={(
+                                val: { value: string; label: string }[],
+                              ) =>
+                                onChange(
+                                  val.map(
+                                    (item: { value: string; label: string }) =>
+                                      item.value,
+                                  ),
+                                )
+                              }
+                              defaultOptions={equipment}
+                              groupBy="group"
+                              placeholder="Выберите оборудование"
+                              creatable
+                              emptyIndicator={
+                                <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                                  Не найдено.
+                                </p>
+                              }
+                            />
+                          </FormControl>
+                          {/* <FormMessage /> */}
+                        </FormItem>
+                      )}
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="icon"
+                      className="size-8 shrink-0"
+                      onClick={() => equipmentRemove(index)}
+                    >
+                      <TrashIcon
+                        className="text-destructive size-4"
+                        aria-hidden="true"
+                      />
+                      <span className="sr-only">Remove</span>
+                    </Button>
+                  </div>
+                ))}
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="w-fit"
+                  onClick={() =>
+                    equipmentAppend({
+                      name: "",
+                      room_id: 0,
+                    })
+                  }
+                >
+                  Добавить помещение
+                </Button>
               </>
             )}
+
             {currentStep === 10 && (
-              <>
-                <FormField
-                  control={form.control}
-                  name="sanitaryEquipment"
-                  render={({ field: { onChange, value } }) => (
-                    <FormItem className="sm:col-span-2">
-                      <div className="flex items-center justify-between">
-                        <Sheet>
-                          <SheetTrigger asChild className="cursor-pointer">
-                            <Info className="size-5 text-neutral-500" />
-                          </SheetTrigger>
-                          <SheetContent>
-                            <SheetHeader>
-                              <SheetTitle>Оборудование</SheetTitle>
-                              <SheetDescription>
-                                Выберите один или несколько материалов.
-                              </SheetDescription>
-                            </SheetHeader>
-                            <div className="grid gap-4 py-4">
-                              <p>
-                                Lorem, ipsum dolor sit amet consectetur
-                                adipisicing elit. Tempora vero voluptatem
-                                ratione magnam, incidunt odit asperiores placeat
-                                eius. Numquam veritatis a earum deleniti maiores
-                                commodi iusto nemo aliquam incidunt quisquam!
-                              </p>
-                            </div>
-                          </SheetContent>
-                        </Sheet>
-                      </div>
-                      <FormControl>
-                        <MultipleSelector
-                          onChange={(val) =>
-                            onChange(val.map((item: any) => item.value))
-                          }
-                          defaultOptions={sanitaryEquipment}
-                          creatable
-                          emptyIndicator={
-                            <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                              Не найдено.
-                            </p>
-                          }
-                        />
-                      </FormControl>
-                      {/* <FormMessage /> */}
-                    </FormItem>
-                  )}
-                />
-              </>
-            )}
-            {currentStep === 11 && (
               <>
                 <h2 className="text-3xl font-bold">
                   Вы успешно создали проект!

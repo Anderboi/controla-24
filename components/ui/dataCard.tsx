@@ -1,6 +1,7 @@
 import { cn } from "@/utils/utils";
 import React from "react";
 import { Checkbox } from "./checkbox";
+import Image from "next/image";
 
 interface DataCardProps {
   name: string;
@@ -23,24 +24,31 @@ const DataCard = ({
   return (
     <div
       onClick={() => {
-
         onChange(
           value?.includes(name)
             ? value?.filter((v) => v !== name)
-            : [...(value || []), name]
+            : [...(value || []), name],
         );
       }}
       className={cn(
-        "peer border-2 rounded-lg p-4 flex sm:flex-col gap-4 sm:items-start items-center cursor-pointer",
+        "/p-4 peer flex h-[60px] cursor-pointer items-center gap-2 overflow-clip rounded-lg border sm:items-start",
         isChecked
-          ? "border-green-700 shadow-lg shadow-green-900/30"
-          : "border-neutral-600"
+          ? "border-teal-500 dark:border-teal-600"
+          : "shadow-md shadow-neutral-800/10 dark:border-neutral-800",
       )}
     >
-      {/* <Checkbox {...props}/> */}
       {/* {icon} */}
-      <h3 className='text-sm'>{name}</h3>
-      <p className="text-xs text-neutral-500">{description}</p>
+      <div
+        className={cn(
+          !isChecked
+            ? `bg-gradient-to-r from-violet-200 to-pink-200`
+            : `bg-gradient-to-r from-teal-200 to-teal-500`,
+          "h-full w-3",
+        )}
+      ></div>
+      {/* <Image src={""} className="aspect-square" alt="info-image" /> */}
+      <h3 className="line-clamp-2 h-fit py-2 pr-2 text-xs">{name}</h3>
+      {/* <p className="text-xs text-neutral-500">{description}</p> */}
     </div>
   );
 };
