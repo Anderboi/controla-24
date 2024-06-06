@@ -12,8 +12,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { auth } from "@clerk/nextjs/server";
-import RemoveProjectButton from './RemoveProjectButton';
 import { Files } from 'lucide-react';
+import MenuProjectButton from './MenuProjectButton';
 
 export type Project = Database["public"]["Tables"]["projects"]["Row"];
 
@@ -53,7 +53,7 @@ async function ProjectsBlock({
                     <span className="text-sm dark:text-neutral-500">
                       {formatDate(project.created_at)}
                     </span>
-                    <RemoveProjectButton projectId={project.id} token={token}/>
+                    <MenuProjectButton projectId={project.id} token={token} />
                   </CardFooter>
                 </Card>
               </Link>
