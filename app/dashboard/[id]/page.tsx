@@ -37,13 +37,10 @@ async function ProjectPage({
     token,
   });
 
-
-
-    const rooms = await getCurrentRooms(project.id, token);
-  
+  const rooms = await getCurrentRooms(project.id, token);
 
   return (
-    <section className="space-y-8 max-w-[100vw] px-2">
+    <section className="max-w-[100vw] space-y-8 px-2">
       {/* //? Общая информация */}
       <InfoBlock className="h-fit">
         <InfoBlockTitle>Общая информация</InfoBlockTitle>
@@ -104,7 +101,6 @@ async function ProjectPage({
       <InfoBlock className="h-fit">
         <InfoBlockTitle>Состав помещений</InfoBlockTitle>
         <InfoBlockContent className="p-0">
-          {" "}
           <Table className="w-full">
             <TableHeader>
               <TableRow>
@@ -123,7 +119,7 @@ async function ProjectPage({
               {rooms.map((room) => (
                 <TableRow key={room.id}>
                   <TableCell role="contentinfo" className="text-right">
-                    {room.id}
+                    {room.room_number}
                   </TableCell>
                   <TableCell>{room.name}</TableCell>
                   <TableCell className="text-right">
@@ -207,7 +203,7 @@ async function ProjectPage({
           </InfoBlockItem>
         </InfoBlockContent>
       </InfoBlock>
-      
+
       {/* <article className="space-y-2">
           <h3 className="font-semibold text-lg">Информация по монтажу</h3>
           <div className="space-y-2 border dark:border-none dark:border-neutral-800 dark:bg-neutral-900 rounded-xl py-4 pl-4">

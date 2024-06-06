@@ -177,18 +177,21 @@ export const postProject = async ({
   if (project) {
     const roomsData: Rooms[] = [];
 
-    values.rooms.map((room: { name: string; area: number; number: string }) => {
-      console.log(room);
-
-      roomsData.push({
-        project_id: project.id,
-        name: room.name,
-        area: room.area,
-        hasWarmFloor: values.warmFloorRooms?.includes(room.name),
-        hasIsolation: values.roomsForIsolation?.includes(room.name),
-        isolationMaterials: values.isolationMaterials,
-      });
-    });
+    values.rooms.map(
+      (room: { name: string; area: number; number: string }, index: number) => {
+        roomsData.push({
+          project_id: project.id,
+          name: room.name,
+          room_number: (index + 1).toLocaleString("ru-RU", {
+            minimumIntegerDigits: 2,
+          }),
+          area: room.area,
+          hasWarmFloor: values.warmFloorRooms?.includes(room.name),
+          hasIsolation: values.roomsForIsolation?.includes(room.name),
+          isolationMaterials: values.isolationMaterials,
+        });
+      },
+    );
 
     const rooms = await supabase.from("rooms").upsert(roomsData).select();
 

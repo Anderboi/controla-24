@@ -195,6 +195,7 @@ export type Database = {
           isolationMaterials: string | null
           name: string
           project_id: number
+          room_number: string
         }
         Insert: {
           area?: number | null
@@ -205,6 +206,7 @@ export type Database = {
           isolationMaterials?: string | null
           name?: string
           project_id: number
+          room_number?: string
         }
         Update: {
           area?: number | null
@@ -215,6 +217,7 @@ export type Database = {
           isolationMaterials?: string | null
           name?: string
           project_id?: number
+          room_number?: string
         }
         Relationships: [
           {
