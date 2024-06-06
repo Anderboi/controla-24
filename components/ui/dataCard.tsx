@@ -1,7 +1,5 @@
 import { cn } from "@/utils/utils";
 import React from "react";
-import { Checkbox } from "./checkbox";
-import Image from "next/image";
 
 interface DataCardProps {
   name: string;

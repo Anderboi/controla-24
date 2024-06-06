@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
-import { useFieldArray, useForm, useWatch } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,7 +24,6 @@ import {
   heatingSystems,
   plumbingSystems,
   roomList,
-  sanitaryEquipment,
   wallsMaterials,
 } from "@/utils/formSchema";
 import { Switch } from "@/components/ui/switch";
@@ -70,7 +69,7 @@ import {
 } from "@/components/ui/sortable";
 import { Skeleton } from "@/components/ui/skeleton";
 import CreatableSelect from "react-select/creatable";
-import Stepper from '../components/Stepper';
+import Stepper from "../components/Stepper";
 
 export type Inputs = z.infer<typeof formSchema>;
 type FieldName = keyof Inputs;
@@ -197,11 +196,11 @@ const CreateBrief = () => {
       electricSystem: [],
       plumbingSystem: [],
       loundryEquipment: [],
-      equipment: [{ name: "", room_id: 0 }],
+      equipment: [{ name: [], room_id: "" }],
     },
   });
 
-  const [currentStep, setCurrentStep] = useState(8);
+  const [currentStep, setCurrentStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
@@ -211,6 +210,7 @@ const CreateBrief = () => {
     control: form.control,
     name: "rooms",
   });
+
   const {
     fields: equipmentFields,
     append: equipmentAppend,
@@ -237,12 +237,10 @@ const CreateBrief = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep((step) => step + 1);
     }
-    // if (currentStep === steps.length - 1) {
     if (currentStep === steps.length - 1) {
       await form.handleSubmit(onSubmit)();
     }
-    //   router.push("/");
-    // }
+  
   };
   const previous = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
@@ -253,7 +251,6 @@ const CreateBrief = () => {
   };
   async function onSubmit(values: Inputs) {
     try {
-      // e.preventDefault();
       setSubmitting(true);
       const token = await getToken({ template: "supabase" });
 
@@ -282,7 +279,7 @@ const CreateBrief = () => {
 
   return (
     <section className="m-auto mt-[10vh] flex h-full max-w-[900px] rounded-lg p-6 dark:border-neutral-800 dark:bg-neutral-900 sm:border md:flex-col">
-      <Stepper currentStep={currentStep} steps={steps}/>
+      <Stepper currentStep={currentStep} steps={steps} />
       <Form {...form}>
         <form className="space-y-6">
           <h2 className="text-balance text-3xl font-bold tracking-tight">
@@ -1436,7 +1433,6 @@ const CreateBrief = () => {
                               }
                             />
                           </FormControl>
-                          {/* <FormMessage /> */}
                         </FormItem>
                       )}
                     />
@@ -1462,8 +1458,8 @@ const CreateBrief = () => {
                   className="w-fit"
                   onClick={() =>
                     equipmentAppend({
-                      name: "",
-                      room_id: 0,
+                      name: [],
+                      room_id: '',
                     })
                   }
                 >

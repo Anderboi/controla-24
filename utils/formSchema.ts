@@ -66,7 +66,7 @@ export const formSchema = z.object({
   //TODO Loundry Equipment
   loundryEquipment: z.array(z.string()).optional(),
 
-  equipment: z.array(z.object({name:z.string(), room_id:z.number(), room_name:z.string().optional()})).optional(),
+  equipment: z.array(z.object({name:z.array(z.string()), room_id:z.string()})).optional(),
 });
 
 export const roomList: Option[] = [

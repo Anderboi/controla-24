@@ -37,10 +37,23 @@ export const getCurrentProject = async ({
 
   return project;
 };
+export const removeProject = async (projectId: number, token: any) => {
+  const supabase = await createBrowserClient(token);
+
+  const { data: project, error } = await supabase
+    .from("projects")
+    .delete()
+    .eq("id", projectId)
+    .single();
+
+  if (error) {
+    console.log(error.message);
+  }
+};
 
 export const getCurrentRooms = async (
   projectId: number,
-  token: any
+  token: any,
 ): Promise<Database["public"]["Tables"]["rooms"]["Row"][]> => {
   const supabase = await createBrowserClient(token);
 
@@ -57,7 +70,7 @@ export const getCurrentRooms = async (
 };
 export const getCurrentProjectEquipment = async (
   roomId: number,
-  token: any
+  token: any,
 ): Promise<Database["public"]["Tables"]["rooms"]["Row"][]> => {
   const supabase = await createBrowserClient(token);
 
@@ -119,9 +132,6 @@ export const postProject = async ({
 }) => {
   const supabase = await createBrowserClient(token);
 
-  console.log(values);
-  
-
   const formData: Projects = {
     user_id: userId || "",
     address: values.address,
@@ -167,19 +177,18 @@ export const postProject = async ({
   if (project) {
     const roomsData: Rooms[] = [];
 
-    values.rooms.map((room: { name: string, area: number , number: string}) =>
-      {
-        console.log(room);
-        
-        roomsData.push({
+    values.rooms.map((room: { name: string; area: number; number: string }) => {
+      console.log(room);
+
+      roomsData.push({
         project_id: project.id,
         name: room.name,
-        area:room.area,
+        area: room.area,
         hasWarmFloor: values.warmFloorRooms?.includes(room.name),
         hasIsolation: values.roomsForIsolation?.includes(room.name),
         isolationMaterials: values.isolationMaterials,
-      })}
-    );
+      });
+    });
 
     const rooms = await supabase.from("rooms").upsert(roomsData).select();
 
@@ -191,10 +200,12 @@ export const postProject = async ({
     values.kitchenEquipment.map((equipment: string) =>
       equipmentData.push({
         project_id: project.id,
-        room_id: rooms.data.find((room) => room.name === "Кухня" || 'Кухня-столовая').id,
+        room_id: rooms.data.find(
+          (room) => room.name === "Кухня" || "Кухня-столовая",
+        ).id,
         name: equipment,
         type: "kitchen",
-      })
+      }),
     );
     values.sanitaryEquipment.map((equipment: string) =>
       equipmentData.push({
@@ -202,7 +213,7 @@ export const postProject = async ({
         name: equipment,
         project_id: project.id,
         type: "sanitary",
-      })
+      }),
     );
 
     const equipment = await supabase.from("equipment").insert(equipmentData);
