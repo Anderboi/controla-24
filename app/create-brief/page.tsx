@@ -240,8 +240,22 @@ const CreateBrief = () => {
     if (currentStep === steps.length - 1) {
       await form.handleSubmit(onSubmit)();
     }
-  
   };
+
+  const skipAll = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    e.preventDefault();
+    const fields = steps[currentStep].fields;
+    const output = await form.trigger(fields as FieldName[], {
+      shouldFocus: true,
+    });
+
+    if (!output) return;
+
+    setCurrentStep(steps.length - 1);
+  };
+
   const previous = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
@@ -1411,7 +1425,6 @@ const CreateBrief = () => {
                         <FormItem>
                           <FormControl>
                             <MultipleSelector
-                            
                               onChange={(
                                 val: { value: string; label: string }[],
                               ) =>
@@ -1459,7 +1472,7 @@ const CreateBrief = () => {
                   onClick={() =>
                     equipmentAppend({
                       name: [],
-                      room_id: '',
+                      room_id: "",
                     })
                   }
                 >
@@ -1490,17 +1503,22 @@ const CreateBrief = () => {
               </>
             )}
           </article>
-          <div className="flex justify-end gap-4">
-            <Button variant="ghost" onClick={previous}>
-              Назад
+          <div className="flex justify-between gap-4">
+            <Button variant="ghost" onClick={skipAll}>
+              Пропустить всё
             </Button>
-            <Button className="bg-teal-600" onClick={next}>
-              {currentStep === steps.length - 1
-                ? submitting
-                  ? "Создание..."
-                  : "Создать"
-                : "Далее"}
-            </Button>
+            <div className="flex gap-4">
+              <Button variant="ghost" onClick={previous}>
+                Назад
+              </Button>
+              <Button className="bg-teal-600" onClick={next}>
+                {currentStep === steps.length - 1
+                  ? submitting
+                    ? "Создание..."
+                    : "Создать"
+                  : "Далее"}
+              </Button>
+            </div>
           </div>
         </form>
       </Form>
