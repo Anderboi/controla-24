@@ -491,7 +491,7 @@ const MultipleSelector = React.forwardRef<
                   : placeholder
               }
               className={cn(
-                "ml-2 flex-1 bg-transparent outline-none placeholder:text-muted-foreground",
+                "ml-2 flex-1 bg-transparent outline-none placeholder:text-muted-foreground !h-4",
                 inputProps?.className
               )}
             />
@@ -499,7 +499,7 @@ const MultipleSelector = React.forwardRef<
         </div>
         <div className="relative mt-2">
           {open && (
-            <CommandList className="absolute top-0 z-10 w-full rounded-md border dark:border-neutral-600 bg-popover text-popover-foreground shadow-md outline-none animate-in dark:bg-neutral-900">
+            <CommandList className="absolute top-0 z-10 w-full rounded-md border dark:border-neutral-600 bg-white text-popover-foreground shadow-md outline-none animate-in dark:bg-neutral-900">
               {isLoading ? (
                 <>{loadingIndicator}</>
               ) : (

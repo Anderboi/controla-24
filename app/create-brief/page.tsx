@@ -1411,7 +1411,7 @@ const CreateBrief = () => {
                         <FormItem>
                           <FormControl>
                             <MultipleSelector
-                              className="h-8"
+                            
                               onChange={(
                                 val: { value: string; label: string }[],
                               ) =>
