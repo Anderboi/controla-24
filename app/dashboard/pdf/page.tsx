@@ -91,17 +91,19 @@ const styles = StyleSheet.create({
   thirdItem: { width: "50%" },
 });
 
-export interface PDFProps {
-  project: Database["public"]["Tables"]["projects"]["Row"];
-  rooms: Database["public"]["Tables"]["rooms"]["Row"][];
+type ProjectProps = Database["public"]["Tables"]["projects"]["Row"];
+type RoomProps = Database["public"]["Tables"]["rooms"]["Row"];
+
+interface PDFProps {
+  project: ProjectProps;
+  rooms: RoomProps[];
 }
 
-
-function PDFPage({ project, rooms }: PDFProps) {
+const PDFPage = ({ project, rooms }: PDFProps) => {
   return (
     <Document
       author="Controla"
-      title={`${1} brief`}
+      title={`${project.id} brief`}
       language="ru"
       // pageMode="useOutlines"
       // pageLayout="singlePage"
@@ -247,13 +249,17 @@ function PDFPage({ project, rooms }: PDFProps) {
               <Text style={styles.secondHeaderItem}>Площадь</Text>
               <Text style={styles.thirdHeaderItem}>Наполнение</Text>
             </View>
-            {rooms.map((room, index) => (
-              <View key={index} style={styles.tableRow}>
-                <Text style={styles.firstItem}>{room.name}</Text>
-                <Text style={styles.secondItem}>{room.area}</Text>
-                <Text style={styles.thirdItem}>{room.id}</Text>
-              </View>
-            ))}
+            {rooms ? (
+              rooms.map((room, index) => (
+                <View key={index} style={styles.tableRow}>
+                  <Text style={styles.firstItem}>{room.name}</Text>
+                  <Text style={styles.secondItem}>{room.area}</Text>
+                  <Text style={styles.thirdItem}>{room.id}</Text>
+                </View>
+              ))
+            ) : (
+              <></>
+            )}
           </View>
         </View>
 
@@ -314,6 +320,6 @@ function PDFPage({ project, rooms }: PDFProps) {
       </Page>
     </Document>
   );
-}
+};
 
 export default PDFPage;
