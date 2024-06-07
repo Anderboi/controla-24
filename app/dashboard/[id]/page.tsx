@@ -1,7 +1,7 @@
 import React from "react";
 import { getCurrentProject, getCurrentRooms } from "@/utils/requests";
 import { auth } from "@clerk/nextjs/server";
-import PDFPage from "../pdf/page";
+import PDFPage from "../../components/PDFFile";
 import PDFDowloader from "@/app/components/PDFDowloader";
 import {
   Table,

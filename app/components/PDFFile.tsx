@@ -94,12 +94,12 @@ const styles = StyleSheet.create({
 type ProjectProps = Database["public"]["Tables"]["projects"]["Row"];
 type RoomProps = Database["public"]["Tables"]["rooms"]["Row"];
 
-interface PDFProps {
+export interface PDFProps {
   project: ProjectProps;
   rooms: RoomProps[];
 }
 
-const PDFPage = ({ project, rooms }: PDFProps) => {
+function PDFPage({ project, rooms }: PDFProps) {
   return (
     <Document
       author="Controla"
@@ -320,6 +320,6 @@ const PDFPage = ({ project, rooms }: PDFProps) => {
       </Page>
     </Document>
   );
-};
+}
 
 export default PDFPage;

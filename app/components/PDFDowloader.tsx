@@ -2,7 +2,7 @@
 
 // import { PDFDownloadLink } from '@react-pdf/renderer';
 import React from "react";
-import PDFPage, { PDFProps } from "../dashboard/pdf/page";
+import PDFPage, { PDFProps } from "./PDFFile";
 import { Button } from "@/components/ui/button";
 
 import dynamic from "next/dynamic";
