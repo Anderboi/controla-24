@@ -9,6 +9,36 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      clients: {
+        Row: {
+          created_at: string
+          email: string | null
+          firstname: string
+          id: number
+          lastname: string
+          middlename: string
+          phone: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          firstname?: string
+          id?: number
+          lastname?: string
+          middlename?: string
+          phone?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          firstname?: string
+          id?: number
+          lastname?: string
+          middlename?: string
+          phone?: string | null
+        }
+        Relationships: []
+      }
       equipment: {
         Row: {
           created_at: string
@@ -94,6 +124,7 @@ export type Database = {
           ceilingMaterial: string[]
           children: number
           childrenAge: string | null
+          client: number | null
           conditioningSystem: string[] | null
           contractId: string | null
           created_at: string
@@ -126,6 +157,7 @@ export type Database = {
           ceilingMaterial?: string[]
           children?: number
           childrenAge?: string | null
+          client?: number | null
           conditioningSystem?: string[] | null
           contractId?: string | null
           created_at?: string
@@ -158,6 +190,7 @@ export type Database = {
           ceilingMaterial?: string[]
           children?: number
           childrenAge?: string | null
+          client?: number | null
           conditioningSystem?: string[] | null
           contractId?: string | null
           created_at?: string
@@ -183,7 +216,15 @@ export type Database = {
           wallsMaterial?: string[]
           windowsChange?: boolean
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "projects_client_fkey"
+            columns: ["client"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       rooms: {
         Row: {

@@ -22,12 +22,13 @@ export const getCurrentProject = async ({
 }: {
   projectId: string;
   token: any;
-}): Promise<Database["public"]["Tables"]["projects"]["Row"]> => {
+}): Promise<Database["public"]["Tables"]["projects"]["Row"] & {
+  clients: Database["public"]["Tables"]["clients"]["Row"]}> => {
   const supabase = await createBrowserClient(token);
 
   const { data: project, error } = await supabase
     .from("projects")
-    .select("*")
+    .select(`* , clients(*)`)
     .eq("id", projectId)
     .single();
 
@@ -132,6 +133,18 @@ export const postProject = async ({
 }) => {
   const supabase = await createBrowserClient(token);
 
+  const client = await supabase
+    .from("clients")
+    .upsert({
+      firstname: values.firstName,
+      lastname: values.lastName,
+      middlename: values.middleName,
+      phone: values.phone,
+      email: values.email,
+    })
+    .select()
+    .single();
+
   const formData: Projects = {
     user_id: userId || "",
     address: values.address,
@@ -161,6 +174,7 @@ export const postProject = async ({
     conditioningSystem: values.conditioningSystem,
     plumbingSystem: values.plumbingSystem,
     electricSystem: values.electricSystem,
+    client: client.data.id,
   };
 
   const { data: project, error: projectError } = await supabase
@@ -199,6 +213,7 @@ export const postProject = async ({
       console.error("Error posting ROOMS:", rooms.error.message);
       return null;
     }
+
     const equipmentData: Equipment[] = [];
     values.kitchenEquipment.map((equipment: string) =>
       equipmentData.push({
@@ -212,7 +227,9 @@ export const postProject = async ({
     );
     values.sanitaryEquipment.map((equipment: string) =>
       equipmentData.push({
-        room_id: rooms.data.find((room) => room.name === "Ванная комната").id,
+        room_id: rooms.data.find(
+          (room) => room.name === "Ванная комната" || "Санузел",
+        ).id,
         name: equipment,
         project_id: project.id,
         type: "sanitary",

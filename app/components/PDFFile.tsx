@@ -91,7 +91,9 @@ const styles = StyleSheet.create({
   thirdItem: { width: "50%" },
 });
 
-type ProjectProps = Database["public"]["Tables"]["projects"]["Row"];
+type ProjectProps = Database["public"]["Tables"]["projects"]["Row"] & {
+  clients: Database["public"]["Tables"]["clients"]["Row"];
+};
 type RoomProps = Database["public"]["Tables"]["rooms"]["Row"];
 
 export interface PDFProps {
@@ -124,17 +126,19 @@ function PDFPage({ project, rooms }: PDFProps) {
           <View style={styles.infoblock}>
             <View style={styles.itemblock}>
               <Text style={styles.secondaryText}>ФИО</Text>
-              <Text style={styles.text}>Шмфтщм Шмфт</Text>
+              <Text
+                style={styles.text}
+              >{`${project.clients.lastname} ${project.clients.firstname} ${project.clients.middlename}`}</Text>
             </View>
 
             <View style={styles.infoblock}>
               <View style={styles.itemblock}>
                 <Text style={styles.secondaryText}>Телефон</Text>
-                <Text style={styles.text}>Телефон</Text>
+                <Text style={styles.text}>{project.clients.phone}</Text>
               </View>
               <View style={styles.itemblock}>
                 <Text style={styles.secondaryText}>Эл. почта</Text>
-                <Text style={styles.text}>Эл. почта</Text>
+                <Text style={styles.text}>{project.clients.email}</Text>
               </View>
             </View>
           </View>
