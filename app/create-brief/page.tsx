@@ -40,6 +40,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Check,
+  ChevronLeft,
   GripVertical,
   Heater,
   Info,
@@ -292,10 +293,10 @@ const CreateBrief = () => {
   }
 
   return (
-    <section className="m-auto mt-[10vh] flex h-full max-w-[900px] rounded-lg p-6 dark:border-neutral-800 dark:bg-neutral-900 sm:border md:flex-col">
+    <section className="//mt-[10vh] flex h-full rounded-lg p-4 dark:border-neutral-800 dark:bg-neutral-900 sm:m-auto sm:max-w-[900px] sm:border sm:p-6 md:flex-col">
       <Stepper currentStep={currentStep} steps={steps} />
       <Form {...form}>
-        <form className="space-y-6">
+        <form className="w-full space-y-6">
           <h2 className="text-balance text-3xl font-bold tracking-tight">
             {steps[currentStep].name}
           </h2>
@@ -352,7 +353,7 @@ const CreateBrief = () => {
                         Отчество клиента, используемое в договоре.
                       </FormDescription>
                       <FormMessage>
-                        {form.formState.errors.lastName?.message}
+                        {form.formState.errors.middleName?.message}
                       </FormMessage>
                     </FormItem>
                   )}
@@ -382,9 +383,8 @@ const CreateBrief = () => {
                       <FormControl>
                         <Input {...field} type="phone" />
                       </FormControl>
-                      {/* <FormDescription>Ваш адрес электронной почты.</FormDescription> */}
                       <FormMessage>
-                        {form.formState.errors.email?.message}
+                        {form.formState.errors.phone?.message}
                       </FormMessage>
                     </FormItem>
                   )}
@@ -768,9 +768,9 @@ const CreateBrief = () => {
                         )} */}
                     <div className="w-full space-y-2">
                       <div className="grid grid-cols-[0.3fr,2fr,0.5fr,40px,40px] items-center gap-2 text-xs text-neutral-500">
-                        <span>№ пом.</span>
+                        <span>№</span>
                         <span>Наименование</span>
-                        <span>Площадь</span>
+                        <span>м2</span>
                       </div>
                       {fields.map((fieldItem, index) => (
                         <SortableItem
@@ -783,19 +783,20 @@ const CreateBrief = () => {
                               control={form.control}
                               name={`rooms.${index}.number`}
                               render={({ field }) => (
-                                // <FormItem>
-                                //   <FormControl>
-                                <Input
-                                  className="h-8"
-                                  disabled
-                                  ref={field.ref}
-                                  value={(index + 1).toLocaleString("ru-RU", {
+                                
+                                <span className='text-xs text-neutral-500'>{(index + 1).toLocaleString("ru-RU", {
                                     minimumIntegerDigits: 2,
-                                  })}
-                                  onChange={field.onChange}
-                                />
-                                //   </FormControl>
-                                // </FormItem>
+                                  })}</span>
+                                // <Input
+                                //   className="h-8"
+                                //   disabled
+                                //   ref={field.ref}
+                                //   value={(index + 1).toLocaleString("ru-RU", {
+                                //     minimumIntegerDigits: 2,
+                                //   })}
+                                //   onChange={field.onChange}
+                                // />
+                               
                               )}
                             />
 
@@ -810,7 +811,7 @@ const CreateBrief = () => {
                                         formatCreateLabel={(value) =>
                                           `Создать '${value}'`
                                         }
-                                        placeholder="Новое помещение ..."
+                                        placeholder="Помещение..."
                                         options={roomList}
                                         onChange={(val) =>
                                           field.onChange(val?.value)
@@ -825,19 +826,19 @@ const CreateBrief = () => {
                                                   dark:!text-neutral-50 dark:!border-neutral-800`,
 
                                           input: (state) =>
-                                            "//bg-red-300 text-sm",
+                                            "text-sm",
                                           valueContainer: (state) => "",
                                           singleValue: (state) =>
                                             "text-sm dark:text-neutral-50",
                                           placeholder: (state) =>
-                                            "text-sm dark:text-neutral-50",
+                                            "text-sm dark:text-neutral-500",
                                           menu: (state) =>
                                             "text-sm dark:text-neutral-50 dark:!bg-neutral-800",
                                           option: (state) =>
                                             state.isFocused
                                               ? "text-sm dark:text-neutral-50 !bg-teal-200 dark:!bg-neutral-600 //dark:text-red-400 !text-black"
                                               : state.isSelected
-                                                ? " !bg-teal-500 hover:!bg-teal-600"
+                                                ? "!bg-teal-500 hover:!bg-teal-600"
                                                 : "dark:!bg-neutral-800",
 
                                           menuPortal: (state) =>
@@ -865,7 +866,7 @@ const CreateBrief = () => {
                               )}
                             />
                             <SortableDragHandle
-                              variant="outline"
+                              variant="ghost"
                               size="icon"
                               className="size-8 shrink-0"
                             >
@@ -876,7 +877,7 @@ const CreateBrief = () => {
                             </SortableDragHandle>
                             <Button
                               type="button"
-                              variant="outline"
+                              variant="ghost"
                               size="icon"
                               className="size-8 shrink-0"
                               onClick={() => remove(index)}
@@ -895,7 +896,7 @@ const CreateBrief = () => {
                       type="button"
                       variant="outline"
                       size="sm"
-                      className="w-fit"
+                      className="w-fit dark:bg-transparent"
                       onClick={() =>
                         append({
                           name: "",
@@ -1292,7 +1293,7 @@ const CreateBrief = () => {
                 />
                 <>
                   {form.watch("heatingSystem")?.includes("Теплый пол") ? (
-                    <div className="col-span-2 space-y-3 rounded-lg border p-4 dark:border-neutral-800">
+                    <div className="sm:col-span-2 space-y-3 rounded-lg border p-4 dark:border-neutral-800">
                       <FormField
                         control={form.control}
                         name="warmFloorRooms"
@@ -1503,13 +1504,18 @@ const CreateBrief = () => {
               </>
             )}
           </article>
-          <div className="flex justify-between gap-4">
-            <Button variant="ghost" onClick={skipAll}>
+          <div className="flex w-full justify-between gap-4">
+            <Button
+              variant="link"
+              onClick={skipAll}
+              className="!px-0 text-neutral-500 dark:text-neutral-500"
+            >
               Пропустить всё
             </Button>
             <div className="flex gap-4">
               <Button variant="ghost" onClick={previous}>
-                Назад
+                <ChevronLeft className="sm:hidden text-neutral-500 dark:text-neutral-500" />
+                <span className="hidden sm:block">Назад</span>
               </Button>
               <Button className="bg-teal-600" onClick={next}>
                 {currentStep === steps.length - 1
