@@ -1,18 +1,41 @@
-import { Button } from '@/components/ui/button';
-import { ModeToggle } from '@/components/ui/themeToggle';
-import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs';
-import Link from "next/link";
+"use client";
+
 import React from "react";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft } from "lucide-react";
+import { ModeToggle } from "@/components/ui/themeToggle";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+} from "@clerk/nextjs";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 function Header() {
+  const router = useRouter();
+
   return (
-    <nav className="sm:border-b sm:h-[10vh] //hidden sm:flex items-center dark:border-neutral-800 px-4 pt-4 sm:p-0">
-      <div className="sm:container flex items-center justify-between">
-        <Link href="/">
-          <h1 className="text-2xl font-bold dark:text-teal-400 text-teal-600 hidden sm:block">
-            Controla
-          </h1>
-        </Link>
+    <nav className="items-center px-4 pt-4 dark:border-neutral-800 sm:flex sm:h-[10vh] sm:border-b sm:p-0">
+      <div className="flex items-center justify-between sm:container">
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={() => router.back()}
+            className="size-8"
+            size={"icon"}
+            variant={"outline"}
+          >
+            <ChevronLeft />
+          </Button>
+
+          <Link href="/">
+            <h1 className="hidden text-2xl font-bold text-teal-600 dark:text-teal-400 sm:block">
+              Controla
+            </h1>
+          </Link>
+        </div>
 
         <div className="flex items-center gap-x-4">
           <ModeToggle />

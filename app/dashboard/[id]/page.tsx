@@ -40,7 +40,7 @@ async function ProjectPage({
   const rooms = await getCurrentRooms(project.id, token);
 
   return (
-    <section className="max-w-[100vw] space-y-8 px-2">
+    <section className="max-w-[100vw] space-y-8 px-2 py-6">
       {/* //? Общая информация */}
       <InfoBlock className="h-fit">
         <InfoBlockTitle>Общая информация</InfoBlockTitle>
@@ -204,33 +204,6 @@ async function ProjectPage({
         </InfoBlockContent>
       </InfoBlock>
 
-      {/* <article className="space-y-2">
-          <h3 className="font-semibold text-lg">Информация по монтажу</h3>
-          <div className="space-y-2 border dark:border-none dark:border-neutral-800 dark:bg-neutral-900 rounded-xl py-4 pl-4">
-            <div className="grid gap-x-2 md:grid-cols-[1fr_2fr]">
-              <span className="text-neutral-400">Материал перегородок:</span>
-              <span>{project.wallsMaterial.join(", ")}</span>
-            </div>
-            <Separator />
-            <div className="grid gap-x-2 md:grid-cols-[1fr_2fr]">
-              <span className="text-neutral-400">Материал потолка:</span>
-              <span>{project.ceilingMaterial.join(", ")}</span>
-            </div>
-            <Separator />
-            <div className="grid gap-x-2 md:grid-cols-[1fr_2fr]">
-              <span className="text-neutral-400">Напольные покрытия:</span>
-              <span>{project.floorMaterial.join(", ")}</span>
-            </div>
-            <Separator />
-            <div className="grid gap-x-2 md:grid-cols-[1fr_2fr]">
-              <span className="text-neutral-400">
-                Звукоизоляционные материалы:
-              </span>
-              <span>{project.isolationMaterials || "Не применяются"}</span>
-            </div>
-          </div>
-        </article> */}
-      {/* </div> */}
       <PDFDowloader project={project} rooms={rooms} />
       {/* <PDFPage project={project} rooms={rooms} /> */}
     </section>
