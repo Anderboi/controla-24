@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center gap-6 py-6 sm:h-[90vh]">
       <div className="container">
-        {/* <SignedIn>{redirect("/dashboard")}</SignedIn> */}
+        <SignedIn>{redirect("/dashboard")}</SignedIn>
         <SignedOut>
           <div className="relative mx-auto max-w-7xl items-center px-4 py-8 md:px-12 lg:px-16">
             <div className="mx-auto max-w-3xl text-center">
