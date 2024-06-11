@@ -48,12 +48,12 @@ const MenuProjectButton = ({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={() => {}}>
-          <Pencil className="mr-2 size-4" strokeWidth={1.5} />
+          <Pencil className="mr-2 size-3" strokeWidth={2} />
           Редактировать проект
         </DropdownMenuItem>
 
-        <DropdownMenuItem onClick={handleRemove}>
-          <Trash className="mr-2 size-4" strokeWidth={1.5} />
+        <DropdownMenuItem onClick={handleRemove} className="text-red-500">
+          <Trash className="mr-2 size-3" strokeWidth={2} />
           <span>Удалить проект</span>
         </DropdownMenuItem>
       </DropdownMenuContent>

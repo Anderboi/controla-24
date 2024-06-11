@@ -1,9 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  SignedIn,
-  SignedOut,
-  SignUpButton,
-} from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignUpButton } from "@clerk/nextjs";
 import Link from "next/link";
 
 export default function Home() {
@@ -25,8 +21,15 @@ export default function Home() {
                 </span>
               </h1>
               <p className="mx-auto mt-8 max-w-xl text-balance text-base dark:text-neutral-300 lg:text-xl">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Laudantium voluptate laborum veniam ipsum soluta ducimus fuga
+                Откройте для себя Controla — ваш идеальный инструмент для
+                создания профессиональных брифов!
+              </p>
+              <p className="mx-auto mt-2 max-w-xl text-balance text-base dark:text-neutral-300 lg:text-xl">
+                Создавайте подробные брифы и мгновенно загружайте их в формате
+                PDF.
+              </p>
+              <p className="mx-auto mt-2 max-w-xl text-balance text-base dark:text-neutral-300 lg:text-xl">
+                Controla — это ваш ключ к эффективной и продуктивной работе!
               </p>
             </div>
             <div className="mx-auto mt-10 flex max-w-sm justify-center">
