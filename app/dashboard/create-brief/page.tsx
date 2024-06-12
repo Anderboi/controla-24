@@ -44,7 +44,6 @@ import {
   GripVertical,
   Heater,
   Info,
-  Plus,
   TrashIcon,
 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
@@ -70,9 +69,9 @@ import {
 } from "@/components/ui/sortable";
 import { Skeleton } from "@/components/ui/skeleton";
 import CreatableSelect from "react-select/creatable";
-import Stepper from "../components/Stepper";
+import Stepper from "../../components/Stepper";
 import { PhoneInput } from "@/components/ui/phone-input";
-import AddressSuggest from '@/components/ui/address-suggest';
+import AddressSuggest from "@/components/ui/address-suggest";
 
 export type Inputs = z.infer<typeof formSchema>;
 type FieldName = keyof Inputs;
@@ -174,7 +173,7 @@ const CreateBrief = () => {
       hasPets: false,
       pets: "",
       hobbies: "",
-      purpose: "Жилое помещение",
+      purpose: "Жилое",
       projectName: "",
       contractId: "",
       address: "",
@@ -301,7 +300,7 @@ const CreateBrief = () => {
   }
 
   return (
-    <section className="//mt-[10vh] flex h-full rounded-lg p-4 dark:border-neutral-800 dark:bg-neutral-900 sm:m-auto sm:max-w-[900px] sm:border sm:p-6 md:flex-col">
+    <section className="flex h-full rounded-lg p-4 dark:border-neutral-800 dark:bg-neutral-900 sm:m-auto sm:max-w-[900px] sm:border sm:p-6 md:flex-col">
       <Stepper currentStep={currentStep} steps={steps} />
       <Form {...form}>
         <form className="w-full space-y-6">
@@ -446,7 +445,7 @@ const CreateBrief = () => {
                     <FormItem className="sm:col-span-2">
                       <FormLabel>Адрес</FormLabel>
                       <FormControl>
-                          <AddressSuggest {...field}/>
+                        <AddressSuggest {...field} />
                       </FormControl>
                       <FormDescription>
                         Укажите адрес объекта проектирования.
@@ -466,7 +465,11 @@ const CreateBrief = () => {
                     <FormItem>
                       <FormLabel>Площадь</FormLabel>
                       <FormControl>
-                        <Input type="number" {...field} />
+                        <Input
+                          type="number"
+                          onFocus={(e) => e.target.select()}
+                          {...field}
+                        />
                       </FormControl>
                       <FormDescription>
                         Площадь подлежащая проектированию.
@@ -591,7 +594,13 @@ const CreateBrief = () => {
                     <FormItem>
                       <FormLabel>Взрослые</FormLabel>
                       <FormControl>
-                        <Input step={1} min={1} type="number" {...field} />
+                        <Input
+                          onFocus={(e) => e.target.select()}
+                          step={1}
+                          min={1}
+                          type="number"
+                          {...field}
+                        />
                       </FormControl>
                       {/* <FormDescription>
                             
@@ -608,7 +617,13 @@ const CreateBrief = () => {
                       <FormItem>
                         <FormLabel>Дети</FormLabel>
                         <FormControl>
-                          <Input step={1} min={0} type="number" {...field} />
+                          <Input
+                            onFocus={(e) => e.target.select()}
+                            step={1}
+                            min={0}
+                            type="number"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -621,7 +636,7 @@ const CreateBrief = () => {
                       <>
                         {/* @ts-ignore */}
                         {form.watch("children") > 0 && (
-                          <FormItem>
+                          <FormItem className="pt-6">
                             <FormLabel>Возраст</FormLabel>
                             <FormControl>
                               <Input

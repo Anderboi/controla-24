@@ -15,7 +15,7 @@ export const formSchema = z.object({
   //Project additional info
   area: z.coerce.number().min(1, { message: "Необходимо указать площадь" }),
   floorsNumber: z.coerce.number().optional(),
-  purpose: z.string().optional(),
+  purpose: z.string().default("Жилое").optional(),
   approxBudget: z.coerce.number().array().optional(),
   //Inhabitant Info
   adults: z.coerce.number().positive(),

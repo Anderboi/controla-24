@@ -19,7 +19,7 @@ function DashboardPage({
         <Search />
         <Button className="flex items-center gap-2 max-sm:w-full">
           <FilePlus2 />
-          <Link href="/create-brief">Создать новое задание</Link>
+          <Link href="/dashboard/create-brief">Создать новое задание</Link>
         </Button>
         <ProjectsBlock
           query={searchParams?.query || ""}
