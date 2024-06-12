@@ -71,7 +71,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import CreatableSelect from "react-select/creatable";
 import Stepper from "../components/Stepper";
-import { PhoneInput } from '@/components/ui/phone-input';
+import { PhoneInput } from "@/components/ui/phone-input";
+import AddressSuggest from '@/components/ui/address-suggest';
 
 export type Inputs = z.infer<typeof formSchema>;
 type FieldName = keyof Inputs;
@@ -233,7 +234,7 @@ const CreateBrief = () => {
   const next = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
-    console.log(form.getValues("equipment"));
+    console.log(`Address: ${form.getValues("address")}`);
 
     const fields = steps[currentStep].fields;
     const output = await form.trigger(fields as FieldName[], {
@@ -388,7 +389,7 @@ const CreateBrief = () => {
                     <FormItem>
                       <FormLabel>Номер телефона</FormLabel>
                       <FormControl>
-                        <PhoneInput {...field} defaultCountry='RU' />
+                        <PhoneInput {...field} defaultCountry="RU" />
                       </FormControl>
                       <FormMessage>
                         {form.formState.errors.phone?.message}
@@ -445,10 +446,7 @@ const CreateBrief = () => {
                     <FormItem className="sm:col-span-2">
                       <FormLabel>Адрес</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Москва, ул. Пушкина 1/1"
-                          {...field}
-                        />
+                          <AddressSuggest {...field}/>
                       </FormControl>
                       <FormDescription>
                         Укажите адрес объекта проектирования.
@@ -497,17 +495,6 @@ const CreateBrief = () => {
                           </SelectContent>
                         </Select>
                       </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="approxBudget"
-                  render={({ field: { value, onChange } }) => (
-                    <FormItem>
-                      <FormControl></FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
