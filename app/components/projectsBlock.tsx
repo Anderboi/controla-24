@@ -1,19 +1,18 @@
-import { getProjectsByTitle, removeProject } from "@/utils/requests";
+import { getProjectsByTitle } from "@/utils/requests";
 
 import type { Database } from "@/utils/database.types";
 import Link from "next/link";
 import { formatDate } from "@/utils/utils";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { auth } from "@clerk/nextjs/server";
-import { Files } from 'lucide-react';
-import MenuProjectButton from './MenuProjectButton';
+import { Files } from "lucide-react";
+import MenuProjectButton from "./MenuProjectButton";
 
 export type Project = Database["public"]["Tables"]["projects"]["Row"];
 
@@ -48,7 +47,6 @@ async function ProjectsBlock({
                       {project.address}
                     </CardDescription>
                   </CardHeader>
-                  {/* <CardContent></CardContent> */}
                   <CardFooter className="items-end justify-between">
                     <span className="text-sm dark:text-neutral-500">
                       {formatDate(project.created_at)}

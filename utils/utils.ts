@@ -13,6 +13,15 @@ export function formatDate(date: string | null) {
     year: "numeric",
   });
 }
+export function formatCurrency(value?: number) {
+  if (!value) return;
+  return value.toLocaleString("ru-RU", {
+    currency: "RUB",
+    style: "currency",
+    maximumFractionDigits: 0,
+    notation: "compact",
+  });
+}
 
 export function parseLocaleNumber(stringNumber: string, locale: string) {
   const thousandSeparator = Intl.NumberFormat(locale)

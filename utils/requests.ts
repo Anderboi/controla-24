@@ -1,9 +1,9 @@
 import { Database } from "./database.types";
 import createBrowserClient from "./supabase/browser";
 
-type Projects = Database["public"]["Tables"]["projects"]["Insert"];
-type Rooms = Database["public"]["Tables"]["rooms"]["Insert"];
-type Equipment = Database["public"]["Tables"]["equipment"]["Insert"];
+export type Project = Database["public"]["Tables"]["projects"]["Insert"];
+export type Room = Database["public"]["Tables"]["rooms"]["Insert"];
+export type Equipment = Database["public"]["Tables"]["equipment"]["Insert"];
 
 // Function to fetch todos from Supabase
 export const getProjects = async ({ userId, token }: any) => {
@@ -22,8 +22,11 @@ export const getCurrentProject = async ({
 }: {
   projectId: string;
   token: any;
-}): Promise<Database["public"]["Tables"]["projects"]["Row"] & {
-  clients: Database["public"]["Tables"]["clients"]["Row"]}> => {
+}): Promise<
+  Database["public"]["Tables"]["projects"]["Row"] & {
+    clients: Database["public"]["Tables"]["clients"]["Row"];
+  }
+> => {
   const supabase = await createBrowserClient(token);
 
   const { data: project, error } = await supabase
@@ -33,7 +36,7 @@ export const getCurrentProject = async ({
     .single();
 
   if (error) {
-    console.log(error.message);
+    throw new Error(error.message);
   }
 
   return project;
@@ -101,7 +104,7 @@ export const getProjectsByTitle = async ({
   if (!title) {
     const { data: projects } = await supabase
       .from("projects")
-      .select("*")
+      .select("id, projectName, address, created_at")
       .eq("user_id", userId);
 
     return projects;
@@ -109,7 +112,7 @@ export const getProjectsByTitle = async ({
 
   const { data, error } = await supabase
     .from("projects")
-    .select()
+    .select("id, projectName, address, created_at")
     .eq("user_id", userId)
     .or(`address.ilike.%${title}%, projectName.ilike.%${title}%`)
     // .like("address", `%${title}%`)
@@ -145,7 +148,7 @@ export const postProject = async ({
     .select()
     .single();
 
-  const formData: Projects = {
+  const formData: Project = {
     user_id: userId || "",
     address: values.address,
     area: values.area,
@@ -189,7 +192,7 @@ export const postProject = async ({
   }
 
   if (project) {
-    const roomsData: Rooms[] = [];
+    const roomsData: Room[] = [];
 
     values.rooms.map(
       (room: { name: string; area: number; number: string }, index: number) => {
