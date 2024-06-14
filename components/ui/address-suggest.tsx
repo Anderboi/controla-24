@@ -81,4 +81,6 @@ const AddressSuggest = forwardRef<HTMLInputElement, UseControllerProps>(
   },
 );
 
+AddressSuggest.displayName = "AddressSuggest";
+
 export default AddressSuggest;

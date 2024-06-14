@@ -20,6 +20,7 @@ import {
   InfoBlockItem,
   InfoBlockLabel,
   InfoBlockTitle,
+  InfoBlockValue,
 } from "@/components/ui/infoBlock";
 
 async function ProjectPage({
@@ -47,34 +48,36 @@ async function ProjectPage({
         <InfoBlockContent>
           <InfoBlockItem>
             <InfoBlockLabel>Номер договора</InfoBlockLabel>
-            <span>{project?.contractId}</span>
+            <InfoBlockValue>{project?.contractId}</InfoBlockValue>
           </InfoBlockItem>
           <Separator />
           <InfoBlockItem>
             <InfoBlockLabel>Адрес</InfoBlockLabel>
-            <span>{project?.address}</span>
+            <InfoBlockValue>{project?.address}</InfoBlockValue>
           </InfoBlockItem>
           <Separator />
           <InfoBlockItem>
             <InfoBlockLabel>Площадь объекта</InfoBlockLabel>
-            <span>{project?.area}</span>
+            <InfoBlockValue>{project?.area}</InfoBlockValue>
           </InfoBlockItem>
           <Separator />
           <InfoBlockItem>
             <InfoBlockLabel>Назначение объекта</InfoBlockLabel>
-            <span>{project?.purpose}</span>
+            <InfoBlockValue>{project?.purpose}</InfoBlockValue>
           </InfoBlockItem>
           <Separator />
           <InfoBlockItem>
             <InfoBlockLabel>Количество проживающих</InfoBlockLabel>
-            {project && project.residing !== null && project.children !== null
-              ? project.residing + project.children
-              : null}
+            <InfoBlockValue>
+              {project && project.residing !== null && project.children !== null
+                ? project.residing + project.children
+                : null}
+            </InfoBlockValue>
           </InfoBlockItem>
           <Separator />
           <InfoBlockItem>
             <InfoBlockLabel>Бюджет</InfoBlockLabel>
-            <div>
+            <InfoBlockValue>
               <span>
                 {project?.approxBudget?.[0].toLocaleString("ru-RU", {
                   currency: "RUB",
@@ -92,7 +95,7 @@ async function ProjectPage({
                   notation: "compact",
                 }) ?? "100+"}
               </span>
-            </div>
+            </InfoBlockValue>
           </InfoBlockItem>
         </InfoBlockContent>
       </InfoBlock>
@@ -121,16 +124,16 @@ async function ProjectPage({
                   <TableCell role="contentinfo" className="text-right">
                     {room.room_number}
                   </TableCell>
-                  <TableCell>{room.name}</TableCell>
+                  <TableCell className="font-medium">{room.name}</TableCell>
                   <TableCell className="text-right">
                     {room.area || 0}
                     {` м.кв.`}
                   </TableCell>
                   <TableCell role="checkbox">
-                    <Checkbox checked={room.hasWarmFloor} />
+                    <Checkbox className="size-5" checked={room.hasWarmFloor} />
                   </TableCell>
                   <TableCell role="checkbox">
-                    <Checkbox checked={room.hasIsolation} />
+                    <Checkbox className="size-5" checked={room.hasIsolation} />
                   </TableCell>
                 </TableRow>
               ))}
@@ -141,37 +144,37 @@ async function ProjectPage({
 
       {/* <div className="md:grid grid-cols-2 gap-4 space-y-8 md:space-y-0 //h-fit"> */}
       {/* //? Информация по демонтажу */}
-      <InfoBlock className="">
+      <InfoBlock>
         <InfoBlockTitle>Информация по демонтажу</InfoBlockTitle>
         <InfoBlockContent className="">
-          <InfoBlockItem className="flex">
-            <InfoBlockLabel>Демонтаж перегородок:</InfoBlockLabel>
+          <InfoBlockItem className="flex justify-between sm:justify-start">
+            <InfoBlockLabel>Демонтаж перегородок</InfoBlockLabel>
             <Checkbox
-              className="place-content-end"
+              className="size-5 place-content-end"
               checked={project.planChange}
             />
           </InfoBlockItem>
           <Separator />
-          <InfoBlockItem className="flex">
-            <InfoBlockLabel>Замена входной двери:</InfoBlockLabel>
+          <InfoBlockItem className="flex justify-between sm:justify-start">
+            <InfoBlockLabel>Замена входной двери</InfoBlockLabel>
             <Checkbox
-              className="place-content-end"
+              className="size-5 place-content-end"
               checked={project.entranceDoorChange}
             />
           </InfoBlockItem>
           <Separator />
-          <InfoBlockItem className="flex">
-            <InfoBlockLabel>Замена окон:</InfoBlockLabel>
+          <InfoBlockItem className="flex justify-between sm:justify-start">
+            <InfoBlockLabel>Замена окон</InfoBlockLabel>
             <Checkbox
-              className="place-content-end"
+              className="size-5 place-content-end"
               checked={project.windowsChange}
             />
           </InfoBlockItem>
           <Separator />
-          <InfoBlockItem className="flex">
-            <InfoBlockLabel>Демонтаж встроенной мебели:</InfoBlockLabel>
+          <InfoBlockItem className="flex justify-between sm:justify-start">
+            <InfoBlockLabel>Демонтаж встроенной мебели</InfoBlockLabel>
             <Checkbox
-              className="place-content-end"
+              className="size-5 place-content-end"
               checked={project.furnitureDemolition}
             />
           </InfoBlockItem>
@@ -183,23 +186,27 @@ async function ProjectPage({
         <InfoBlockTitle>Информация по монтажу</InfoBlockTitle>
         <InfoBlockContent>
           <InfoBlockItem>
-            <InfoBlockLabel>Материал перегородок:</InfoBlockLabel>
-            <span>{project.wallsMaterial.join(", ")}</span>
+            <InfoBlockLabel>Материал перегородок</InfoBlockLabel>
+            <InfoBlockValue>{project.wallsMaterial.join(", ")}</InfoBlockValue>
           </InfoBlockItem>
           <Separator />
           <InfoBlockItem>
-            <InfoBlockLabel>Материал потолка:</InfoBlockLabel>
-            <span>{project.ceilingMaterial.join(", ")}</span>
+            <InfoBlockLabel>Материал потолка</InfoBlockLabel>
+            <InfoBlockValue>
+              {project.ceilingMaterial.join(", ")}
+            </InfoBlockValue>
           </InfoBlockItem>
           <Separator />
           <InfoBlockItem>
-            <InfoBlockLabel>Напольные покрытия:</InfoBlockLabel>
-            <span>{project.floorMaterial.join(", ")}</span>
+            <InfoBlockLabel>Напольные покрытия</InfoBlockLabel>
+            <InfoBlockValue>{project.floorMaterial.join(", ")}</InfoBlockValue>
           </InfoBlockItem>
           <Separator />
           <InfoBlockItem>
-            <InfoBlockLabel>Звукоизоляционные материалы:</InfoBlockLabel>
-            <span>{project.isolationMaterials || "Не применяются"}</span>
+            <InfoBlockLabel>Звукоизоляционные материалы</InfoBlockLabel>
+            <InfoBlockValue>
+              {project.isolationMaterials || "Не применяются"}
+            </InfoBlockValue>
           </InfoBlockItem>
         </InfoBlockContent>
       </InfoBlock>
