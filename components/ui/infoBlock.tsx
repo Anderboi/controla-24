@@ -45,7 +45,7 @@ const InfoBlockItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("/justify-between gap-x-2 pr-4 sm:flex gap-y-4", className)}
+    className={cn("gap-x-2 pr-4 md:grid gap-y-4 grid-cols-[1fr_2fr]", className)}
     {...props}
   />
 ));
@@ -57,7 +57,7 @@ const InfoBlockLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("w-[280px] text-sm font-medium text-black dark:text-neutral-200", className)}
+    className={cn("/w-[280px] text-sm font-medium text-black dark:text-neutral-200", className)}
     {...props}
   />
 ));

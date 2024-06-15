@@ -24,12 +24,12 @@ const DemolitionInfoBlock = memo(
     <InfoBlock>
       <InfoBlockTitle>Информация по демонтажу</InfoBlockTitle>
       <InfoBlockContent>
-        <InfoBlockItem className="flex justify-between sm:justify-start">
+        <InfoBlockItem className="flex justify-between md:justify-start">
           <InfoBlockLabel>Демонтаж перегородок</InfoBlockLabel>
           <Checkbox className="size-5 place-content-end" checked={planChange} />
         </InfoBlockItem>
         <Separator />
-        <InfoBlockItem className="flex justify-between sm:justify-start">
+        <InfoBlockItem className="flex justify-between md:justify-start">
           <InfoBlockLabel>Замена входной двери</InfoBlockLabel>
           <Checkbox
             className="size-5 place-content-end"
@@ -37,7 +37,7 @@ const DemolitionInfoBlock = memo(
           />
         </InfoBlockItem>
         <Separator />
-        <InfoBlockItem className="flex justify-between sm:justify-start">
+        <InfoBlockItem className="flex justify-between md:justify-start">
           <InfoBlockLabel>Замена окон</InfoBlockLabel>
           <Checkbox
             className="size-5 place-content-end"
@@ -45,7 +45,7 @@ const DemolitionInfoBlock = memo(
           />
         </InfoBlockItem>
         <Separator />
-        <InfoBlockItem className="flex justify-between sm:justify-start">
+        <InfoBlockItem className="flex justify-between md:justify-start">
           <InfoBlockLabel>Демонтаж встроенной мебели</InfoBlockLabel>
           <Checkbox
             className="size-5 place-content-end"
