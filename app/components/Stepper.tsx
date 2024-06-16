@@ -8,7 +8,7 @@ const Stepper = ({
   currentStep: number;
 }) => {
   return (
-    <nav aria-label="Progress" className='hidden sm:block'>
+    <nav aria-label="Progress" className='hidden md:block'>
       <ol
         role="list"
         className="mb-4 space-y-2 md:flex md:space-x-2 md:space-y-0"

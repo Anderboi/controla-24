@@ -72,6 +72,11 @@ import CreatableSelect from "react-select/creatable";
 import Stepper from "../../components/Stepper";
 import { PhoneInput } from "@/components/ui/phone-input";
 import AddressSuggest from "@/components/ui/address-suggest";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 export type Inputs = z.infer<typeof formSchema>;
 type FieldName = keyof Inputs;
@@ -96,7 +101,7 @@ const steps = [
   {
     id: "Шаг 4",
     name: "Кто будет проживать?",
-    fields: ["pets", "children", "adults", "childrenAge"],
+    fields: ["pets", "children", "adults", "adultHeight", "childrenAge"],
   },
   {
     id: "Шаг 5",
@@ -168,8 +173,9 @@ const CreateBrief = () => {
       innerDoorsHeight: [2100],
       healthFeatures: "",
       adults: 1,
+      adultHeight: [],
       children: 0,
-      childrenAge: "",
+      childrenAge: [],
       hasPets: false,
       pets: "",
       hobbies: "",
@@ -202,8 +208,9 @@ const CreateBrief = () => {
     },
   });
 
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(3);
   const [submitting, setSubmitting] = useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const router = useRouter();
   const { userId, getToken } = useAuth();
@@ -233,7 +240,7 @@ const CreateBrief = () => {
   const next = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
-    console.log(`Address: ${form.getValues("address")}`);
+    console.log(form.getValues("adultHeight"));
 
     const fields = steps[currentStep].fields;
     const output = await form.trigger(fields as FieldName[], {
@@ -280,7 +287,7 @@ const CreateBrief = () => {
       if (uploadedProject) {
         form.reset();
         router.push("/");
-        toast("Вы создали тхническое задание для проекта", {
+        toast.success("Вы создали тхническое задание для проекта", {
           description: new Date().toLocaleString(),
           action: {
             label: "Перейти к проекту",
@@ -602,56 +609,110 @@ const CreateBrief = () => {
                           {...field}
                         />
                       </FormControl>
-                      {/* <FormDescription>
-                            
-                          </FormDescription> */}
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                <div>
-                  <FormField
-                    control={form.control}
-                    name="children"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Дети</FormLabel>
-                        <FormControl>
-                          <Input
-                            onFocus={(e) => e.target.select()}
-                            step={1}
-                            min={0}
-                            type="number"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="childrenAge"
-                    render={({ field }) => (
-                      <>
-                        {/* @ts-ignore */}
-                        {form.watch("children") > 0 && (
-                          <FormItem className="pt-6">
-                            <FormLabel>Возраст</FormLabel>
-                            <FormControl>
-                              <Input
-                                placeholder="3, 10"
-                                type="text"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
+                <FormField
+                  control={form.control}
+                  name="children"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Дети</FormLabel>
+                      <FormControl>
+                        <Input
+                          onFocus={(e) => e.target.select()}
+                          step={1}
+                          min={0}
+                          type="number"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Collapsible
+                  open={isOpen}
+                  onOpenChange={setIsOpen}
+                  className="sm:col-span-2"
+                >
+                  <CollapsibleTrigger asChild className="text-sm text-teal-500">
+                    <Button
+                      variant={"link"}
+                      size={"sm"}
+                      className="p-0 text-xs text-teal-500"
+                    >
+                      + Дополнительная информация
+                      <span className="sr-only">Toggle</span>
+                    </Button>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="grid gap-x-6 md:grid-cols-2">
+                    <>
+                      <div className="space-y-4">
+                        <FormLabel>Рост проживающих, см</FormLabel>
+                        {Array.from(Array(Number(form.watch("adults")))).map(
+                          (item, adultIndex) => (
+                            <FormField
+                              defaultValue={0}
+                              key={adultIndex}
+                              control={form.control}
+                              name={`adultHeight.${adultIndex}`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormControl>
+                                    <Input
+                                      onFocus={(e) => e.target.select()}
+                                      placeholder="175 см"
+                                      type="number"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          ),
                         )}
-                      </>
-                    )}
-                  />
-                </div>
+                        <FormDescription>
+                          Позволит определить высоту поверхностей.
+                        </FormDescription>
+                      </div>
+                      {form.watch("children") > 0 && (
+                        <div className="space-y-4">
+                          <FormLabel>Возраст детей</FormLabel>
+                          {Array.from(
+                            Array(Number(form.watch("children"))),
+                          ).map((item, adultIndex) => (
+                            <FormField
+                              defaultValue={0}
+                              key={adultIndex}
+                              control={form.control}
+                              name={`childrenAge.${adultIndex}`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormControl>
+                                    <Input
+                                      onFocus={(e) => e.target.select()}
+                                      placeholder="3"
+                                      type="number"
+                                      {...field}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          ))}
+                          <FormDescription>
+                            Поможет при планировании детских комнат.
+                          </FormDescription>
+                        </div>
+                      )}
+                    </>
+                  </CollapsibleContent>
+                </Collapsible>
+
                 <div className="space-y-4 rounded-lg border border-neutral-600 p-4 sm:col-span-2">
                   <FormField
                     control={form.control}
@@ -910,7 +971,6 @@ const CreateBrief = () => {
                         name: "",
                         area: 0,
                         number: "",
-                        // floor: floorindex+1,
                       })
                     }
                   >

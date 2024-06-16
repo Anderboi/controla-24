@@ -119,11 +119,12 @@ export type Database = {
       projects: {
         Row: {
           address: string
+          adultHeight: number[]
           approxBudget: number[] | null
           area: number | null
           ceilingMaterial: string[]
           children: number
-          childrenAge: string | null
+          childrenAge: number[] | null
           client: number | null
           conditioningSystem: string[] | null
           contractId: string | null
@@ -152,6 +153,7 @@ export type Database = {
         }
         Insert: {
           address: string
+          adultHeight?: number[]
           approxBudget?: number[] | null
           area?: number | null
           ceilingMaterial?: string[]
@@ -185,6 +187,7 @@ export type Database = {
         }
         Update: {
           address?: string
+          adultHeight?: number[]
           approxBudget?: number[] | null
           area?: number | null
           ceilingMaterial?: string[]

@@ -19,8 +19,9 @@ export const formSchema = z.object({
   approxBudget: z.coerce.number().array().optional(),
   //Inhabitant Info
   adults: z.coerce.number().positive(),
-  children: z.coerce.number().optional(),
-  childrenAge: z.string().trim().optional(),
+  adultHeight: z.array(z.coerce.number().optional()).optional(),
+  children: z.coerce.number(),
+  childrenAge: z.array(z.coerce.number()).optional(),
   hasPets: z.boolean().optional(),
   pets: z.string().trim().optional(),
   hobbies: z.string().trim().optional(),
