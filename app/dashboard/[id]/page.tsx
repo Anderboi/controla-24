@@ -31,34 +31,16 @@ async function ProjectPage({
   return (
     <section className="max-w-[100vw] space-y-8 px-2 py-6">
       {/* //? Общая информация */}
-      <CommonInfoBlock
-        address={project.address}
-        approxBudget={project.approxBudget}
-        area={project.area}
-        contractId={project.contractId}
-        purpose={project.purpose}
-        residing={project.residing}
-        children={project.children}
-      />
+      <CommonInfoBlock {...project} />
 
       {/* //? Состав помещений */}
       <RoomsBlock rooms={rooms} />
 
       {/* //? Информация по демонтажу */}
-      <DemolitionInfoBlock
-        planChange={project.planChange}
-        entranceDoorChange={project.entranceDoorChange}
-        windowsChange={project.windowsChange}
-        furnitureDemolition={project.furnitureDemolition}
-      />
+      <DemolitionInfoBlock {...project} />
 
       {/* //? Информация по монтажу */}
-      <ConstructionBlock
-        ceilingMaterial={project.ceilingMaterial}
-        wallsMaterial={project.wallsMaterial}
-        floorMaterial={project.floorMaterial}
-        isolationMaterials={project.isolationMaterials}
-      />
+      <ConstructionBlock {...project} />
 
       <PDFDowloader project={project} rooms={rooms} />
       {/* <PDFPage project={project} rooms={rooms} /> */}

@@ -286,7 +286,7 @@ const CreateBrief = () => {
       const uploadedProject = await postProject({ values, userId, token });
       if (uploadedProject) {
         form.reset();
-        router.push("/");
+        router.push("/dashboard");
         toast.success("Вы создали тхническое задание для проекта", {
           description: new Date().toLocaleString(),
           action: {

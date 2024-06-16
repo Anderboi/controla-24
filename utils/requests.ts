@@ -155,6 +155,7 @@ export const postProject = async ({
     contractId: values.contractId,
     projectName: values.projectName,
     residing: values.adults,
+    adultHeight: values.adultHeight,
     children: values.children,
     childrenAge: values.childrenAge,
     purpose: values.purpose,
