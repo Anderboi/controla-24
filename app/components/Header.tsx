@@ -12,25 +12,28 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 function Header() {
   const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <nav className="items-center px-4 pt-4 dark:border-neutral-800 sm:flex sm:h-[10vh] sm:border-b sm:p-0">
       <div className="flex items-center justify-between sm:container">
         <div className="flex items-center gap-2">
-          <Button
-            onClick={() => router.back()}
-            className="size-8"
-            size={"icon"}
-            variant={"outline"}
-          >
-            <ChevronLeft />
-          </Button>
+          {pathname !== "/dashboard" && pathname !== "/" && (
+            <Button
+              onClick={() => router.back()}
+              className="size-8"
+              size={"icon"}
+              variant={"outline"}
+            >
+              <ChevronLeft />
+            </Button>
+          )}
 
-          <Link href="/">
+          <Link href="/dashboard">
             <h1 className="hidden text-2xl font-bold text-teal-600 dark:text-teal-400 sm:block">
               Controla
             </h1>

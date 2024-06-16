@@ -27,10 +27,7 @@ async function ProjectsBlock({
   const token = await getToken({ template: "supabase" });
 
   const projects = await getProjectsByTitle({ title: query, userId, token });
-
-  console.log(projects);
   
-
   return (
     <ul className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-4">
       {projects.length > 0 ? (
@@ -43,7 +40,7 @@ async function ProjectsBlock({
               <Card className="shadow-lg hover:shadow-xl dark:shadow-none dark:hover:bg-neutral-900">
                 <CardHeader>
                   <CardTitle className="line-clamp-1 sm:line-clamp-2 sm:min-h-[2lh]">
-                    {project.projectName}
+                    {project.projectName ?? project.address}
                   </CardTitle>
                   <CardDescription className="line-clamp-2 text-sm sm:min-h-[2lh]">
                     {project.address}
