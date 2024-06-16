@@ -6,7 +6,6 @@ import { removeProject } from "@/utils/requests";
 import { EllipsisVertical, Pencil, Trash } from "lucide-react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { auth } from "@clerk/nextjs/server";
 import {
   DropdownMenu,
   DropdownMenuContent,

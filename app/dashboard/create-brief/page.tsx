@@ -208,7 +208,7 @@ const CreateBrief = () => {
     },
   });
 
-  const [currentStep, setCurrentStep] = useState(3);
+  const [currentStep, setCurrentStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
 
@@ -240,7 +240,7 @@ const CreateBrief = () => {
   const next = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
-    console.log(form.getValues("adultHeight"));
+    // console.log(form.getValues("adultHeight"));
 
     const fields = steps[currentStep].fields;
     const output = await form.trigger(fields as FieldName[], {
@@ -509,87 +509,111 @@ const CreateBrief = () => {
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="approxBudget"
-                  render={({ field: { value, onChange } }) => (
-                    <FormItem className="sm:col-span-2">
-                      <FormLabel>Бюджет</FormLabel>
-                      <FormControl>
-                        <>
-                          <Slider
-                            min={1000000}
-                            max={100000000}
-                            step={1000000}
-                            defaultValue={[1000000, 10000000]}
-                            value={value}
-                            minStepsBetweenThumbs={1}
-                            onValueChange={onChange}
-                          />
-                          <div className="flex justify-between gap-6 pt-4">
-                            <div className="w-full rounded-lg border dark:border-neutral-800">
-                              <label className="px-3 text-xs">
-                                Минимальная сумма
-                              </label>
-                              <Input
-                                className="border-none"
-                                min={2000000}
+                <Collapsible
+                  open={isOpen}
+                  onOpenChange={setIsOpen}
+                  className="sm:col-span-2"
+                >
+                  <CollapsibleTrigger asChild className="text-sm text-teal-500">
+                    <Button
+                      variant={"link"}
+                      size={"sm"}
+                      className="p-0 text-xs text-teal-500"
+                    >
+                      + Добавить предусматриваемый бюджет
+                      <span className="sr-only">Toggle</span>
+                    </Button>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="grid gap-x-6 md:grid-cols-2">
+                    <FormField
+                      control={form.control}
+                      name="approxBudget"
+                      render={({ field: { value, onChange } }) => (
+                        <FormItem className="sm:col-span-2">
+                          <FormLabel>Бюджет</FormLabel>
+                          <FormControl>
+                            <>
+                              <Slider
+                                min={1000000}
                                 max={100000000}
                                 step={1000000}
-                                value={value?.[0].toLocaleString("ru-RU", {
-                                  currency: "RUB",
-                                  style: "currency",
-                                  maximumFractionDigits: 0,
-                                  useGrouping: true,
-                                  notation: "compact",
-                                })}
-                                onChange={(i) =>
-                                  onChange([
-                                    parseLocaleNumber(i.target.value, "ru-RU"),
-                                    value?.[1],
-                                  ])
-                                }
+                                defaultValue={[1000000, 10000000]}
+                                value={value}
+                                minStepsBetweenThumbs={1}
+                                onValueChange={onChange}
                               />
-                            </div>
-                            <div className="w-full rounded-lg border dark:border-neutral-800">
-                              <label className="px-3 text-xs">
-                                Максимальная сумма
-                              </label>
-                              <div className="flex items-center">
-                                <Input
-                                  className="border-none"
-                                  min={2000000}
-                                  max={100000000}
-                                  step={1000000}
-                                  value={value?.[1].toLocaleString("ru-RU", {
-                                    currency: "RUB",
-                                    style: "currency",
-                                    maximumFractionDigits: 0,
-                                    useGrouping: true,
-                                    notation: "compact",
-                                  })}
-                                  onChange={(i) => {
-                                    onChange([
-                                      value?.[0],
-                                      parseLocaleNumber(
-                                        i.target.value,
+                              <div className="flex justify-between gap-6 pt-4">
+                                <div className="w-full rounded-lg border dark:border-neutral-800">
+                                  <label className="px-3 text-xs">
+                                    Минимальная сумма
+                                  </label>
+                                  <Input
+                                    className="border-none"
+                                    min={2000000}
+                                    max={100000000}
+                                    step={1000000}
+                                    value={value?.[0].toLocaleString("ru-RU", {
+                                      currency: "RUB",
+                                      style: "currency",
+                                      maximumFractionDigits: 0,
+                                      useGrouping: true,
+                                      notation: "compact",
+                                    })}
+                                    onChange={(i) =>
+                                      onChange([
+                                        parseLocaleNumber(
+                                          i.target.value,
+                                          "ru-RU",
+                                        ),
+                                        value?.[1],
+                                      ])
+                                    }
+                                  />
+                                </div>
+                                <div className="w-full rounded-lg border dark:border-neutral-800">
+                                  <label className="px-3 text-xs">
+                                    Максимальная сумма
+                                  </label>
+                                  <div className="flex items-center">
+                                    <Input
+                                      className="border-none"
+                                      min={2000000}
+                                      max={100000000}
+                                      step={1000000}
+                                      value={value?.[1].toLocaleString(
                                         "ru-RU",
-                                      ),
-                                    ]);
-                                  }}
-                                />
+                                        {
+                                          currency: "RUB",
+                                          style: "currency",
+                                          maximumFractionDigits: 0,
+                                          useGrouping: true,
+                                          notation: "compact",
+                                        },
+                                      )}
+                                      onChange={(i) => {
+                                        onChange([
+                                          value?.[0],
+                                          parseLocaleNumber(
+                                            i.target.value,
+                                            "ru-RU",
+                                          ),
+                                        ]);
+                                      }}
+                                    />
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
-                        </>
-                      </FormControl>
-                      <FormDescription>
-                        Позволит более точно составить смету по проекту.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                            </>
+                          </FormControl>
+                          <FormDescription>
+                            Позволит более точно составить смету по проекту.
+                          </FormDescription>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </CollapsibleContent>
+                </Collapsible>
               </>
             )}
             {currentStep === 3 && (
