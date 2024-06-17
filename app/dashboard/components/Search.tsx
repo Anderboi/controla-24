@@ -3,7 +3,7 @@
 import React from "react";
 import { twMerge } from "tailwind-merge";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { Input } from "../../components/ui/input";
+import { Input } from "../../../components/ui/input";
 import { useDebouncedCallback } from "use-debounce";
 
 const Search = ({ className }: { className?: string }) => {
@@ -26,8 +26,8 @@ const Search = ({ className }: { className?: string }) => {
       type="search"
       placeholder="Найти ..."
       className={twMerge(
-        "text-primary-text-light dark:text-primary-text-dark dark:bg-transparent bg-transparent",
-        className
+        "text-primary-text-light dark:text-primary-text-dark bg-transparent dark:bg-transparent",
+        className,
       )}
       onChange={(e) => handleSearch(e.target.value)}
       defaultValue={searchParams.get("query")?.toString()}

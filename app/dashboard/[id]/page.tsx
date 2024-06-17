@@ -1,7 +1,7 @@
 import React from "react";
 import { getCurrentProject, getCurrentRooms } from "@/utils/requests";
 import { auth } from "@clerk/nextjs/server";
-import PDFDowloader from "@/app/components/PDFDowloader";
+import PDFDowloader from "@/app/dashboard/components/PDFDowloader";
 import RoomsBlock from "./components/roomsBlock";
 import CommonInfoBlock from "./components/commonInfoBlock";
 import DemolitionInfoBlock from "./components/demolitionInfoBlock";

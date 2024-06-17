@@ -1,9 +1,9 @@
 import React from "react";
-import ProjectsBlock from "../components/projectsBlock";
+import ProjectsBlock from "./components/ProjectsBlock";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import Search from "../components/search";
-import { FilePlus2, Plus } from 'lucide-react';
+import Search from "./components/Search";
+import { FilePlus2, Plus } from "lucide-react";
 
 function DashboardPage({
   searchParams,

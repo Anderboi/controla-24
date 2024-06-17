@@ -124,7 +124,7 @@ export type Database = {
           area: number | null
           ceilingMaterial: string[]
           children: number
-          childrenAge: number[] | null
+          childrenAge: number[]
           client: number | null
           conditioningSystem: string[] | null
           contractId: string | null
@@ -158,7 +158,7 @@ export type Database = {
           area?: number | null
           ceilingMaterial?: string[]
           children?: number
-          childrenAge?: string | null
+          childrenAge?: number[]
           client?: number | null
           conditioningSystem?: string[] | null
           contractId?: string | null
@@ -192,7 +192,7 @@ export type Database = {
           area?: number | null
           ceilingMaterial?: string[]
           children?: number
-          childrenAge?: string | null
+          childrenAge?: number[]
           client?: number | null
           conditioningSystem?: string[] | null
           contractId?: string | null
