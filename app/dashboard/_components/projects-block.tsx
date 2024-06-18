@@ -1,5 +1,4 @@
 import { getProjectsByTitle } from "@/utils/requests";
-
 import type { Database } from "@/utils/database.types";
 import Link from "next/link";
 import { formatDate } from "@/utils/utils";

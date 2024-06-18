@@ -14,26 +14,28 @@ export default function Home() {
                   Структурируйте свои пожелания
                 </span>
               </span>
-              <h1 className="mt-8 text-3xl font-extrabold tracking-tight lg:text-6xl">
+              <h1 className="mt-8 text-3xl font-bold tracking-tighter md:text-5xl lg:text-6xl lg:leading-[1.1]">
                 Создавайте брифы{" "}
                 <span className="bg-gradient-to-r from-teal-300 to-teal-700 bg-clip-text text-transparent">
                   играючи
                 </span>
               </h1>
-              <p className="mx-auto mt-8 max-w-xl text-balance text-base dark:text-neutral-300 lg:text-xl">
-                Откройте для себя Controla — ваш идеальный инструмент для
-                создания профессиональных брифов!
-              </p>
-              <p className="mx-auto mt-2 max-w-xl text-balance text-base dark:text-neutral-300 lg:text-xl">
-                Создавайте подробные брифы и мгновенно загружайте их в формате
-                PDF.
-              </p>
-              <p className="mx-auto mt-2 max-w-xl text-balance text-base dark:text-neutral-300 lg:text-xl">
-                Controla — это ваш ключ к эффективной и продуктивной работе!
-              </p>
+              <div className="text-balance dark:text-neutral-400">
+                <p className="mx-auto mt-8 max-w-xl text-base lg:text-xl">
+                  Откройте для себя Controla — ваш идеальный инструмент для
+                  создания профессиональных брифов!
+                </p>
+                <p className="mx-auto mt-2 max-w-xl text-base lg:text-xl">
+                  Создавайте подробные брифы и мгновенно загружайте их в формате
+                  PDF.
+                </p>
+                <p className="mx-auto mt-2 max-w-xl  text-base lg:text-xl">
+                  Controla — это ваш ключ к эффективной и продуктивной работе!
+                </p>
+              </div>
             </div>
             <div className="mx-auto mt-10 flex max-w-sm justify-center">
-              <Button size="lg" className="dark:bg-teal-500">
+              <Button size="default" className="dark:bg-teal-500">
                 <SignedIn>
                   <Link href={"/dashboard"}>Приступить</Link>
                 </SignedIn>

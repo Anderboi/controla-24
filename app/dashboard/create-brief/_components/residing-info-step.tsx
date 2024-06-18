@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import {
   FormControl,
   FormDescription,
@@ -11,17 +11,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useFormContext } from "react-hook-form";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import AdditionalInfoButton from '@/components/ui/additional-info-button';
 
 const ResidingInfoStep = () => {
-  const [isOpen, setIsOpen] = useState(false);
 
   const {
     control,
@@ -68,38 +62,60 @@ const ResidingInfoStep = () => {
           </FormItem>
         )}
       />
-      <Collapsible
-        open={isOpen}
-        onOpenChange={setIsOpen}
-        className="sm:col-span-2"
-      >
-        <CollapsibleTrigger asChild className="text-sm text-teal-500">
-          <Button
-            variant={"link"}
-            size={"sm"}
-            className="p-0 text-xs text-teal-500"
-          >
-            + Дополнительная информация
-            <span className="sr-only">Toggle</span>
-          </Button>
-        </CollapsibleTrigger>
-        <CollapsibleContent className="grid gap-x-6 md:grid-cols-2">
-          <>
+      <AdditionalInfoButton title="+ Дополнительная информация">
+        <>
+          {/* //? If you wish, you can add adults heights */}
+          <div className="space-y-4">
+            <FormLabel>Рост проживающих, см</FormLabel>
+            {Array.from({ length: Number(watch("adults")) }).map(
+              (_, adultIndex) => (
+                <FormField
+                  defaultValue={0}
+                  key={adultIndex}
+                  control={control}
+                  name={`adultHeight.${adultIndex}`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Input
+                          onFocus={(e) => e.target.select()}
+                          placeholder="175 см"
+                          min={70}
+                          max={240}
+                          step={1}
+                          type="number"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              ),
+            )}
+            <FormDescription>
+              Позволит определить высоту поверхностей.
+            </FormDescription>
+          </div>
+          {/* //? If there are children, you can add their ages */}
+          {watch("children") > 0 && (
             <div className="space-y-4">
-              <FormLabel>Рост проживающих, см</FormLabel>
-              {Array.from({ length: Number(watch("adults")) }).map(
+              <FormLabel>Возраст детей</FormLabel>
+              {Array.from({ length: Number(watch("children")) }).map(
                 (_, adultIndex) => (
                   <FormField
                     defaultValue={0}
                     key={adultIndex}
                     control={control}
-                    name={`adultHeight.${adultIndex}`}
+                    name={`childrenAge.${adultIndex}`}
                     render={({ field }) => (
                       <FormItem>
                         <FormControl>
                           <Input
                             onFocus={(e) => e.target.select()}
-                            placeholder="175 см"
+                            placeholder="3"
+                            min={0}
+                            max={18}
                             type="number"
                             {...field}
                           />
@@ -111,44 +127,12 @@ const ResidingInfoStep = () => {
                 ),
               )}
               <FormDescription>
-                Позволит определить высоту поверхностей.
+                Поможет при планировании детских комнат.
               </FormDescription>
             </div>
-            {watch("children") > 0 && (
-              <div className="space-y-4">
-                <FormLabel>Возраст детей</FormLabel>
-                {Array.from({ length: Number(watch("children")) }).map(
-                  (_, adultIndex) => (
-                    <FormField
-                      defaultValue={0}
-                      key={adultIndex}
-                      control={control}
-                      name={`childrenAge.${adultIndex}`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormControl>
-                            <Input
-                              onFocus={(e) => e.target.select()}
-                              placeholder="3"
-                              type="number"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  ),
-                )}
-                <FormDescription>
-                  Поможет при планировании детских комнат.
-                </FormDescription>
-              </div>
-            )}
-          </>
-        </CollapsibleContent>
-      </Collapsible>
-
+          )}
+        </>
+      </AdditionalInfoButton>
       <div className="space-y-4 rounded-lg border border-neutral-600 p-4 dark:border-neutral-800 sm:col-span-2">
         <FormField
           control={control}

@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import { twMerge } from "tailwind-merge";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { Input } from "../../../components/ui/input";
 import { useDebouncedCallback } from "use-debounce";
+import { cn } from '@/utils/utils';
 
 const Search = ({ className }: { className?: string }) => {
   const searchParams = useSearchParams();
@@ -25,7 +25,7 @@ const Search = ({ className }: { className?: string }) => {
     <Input
       type="search"
       placeholder="Найти ..."
-      className={twMerge(
+      className={cn(
         "text-primary-text-light dark:text-primary-text-dark bg-transparent dark:bg-transparent",
         className,
       )}
