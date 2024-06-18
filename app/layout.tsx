@@ -3,9 +3,9 @@ import { Rubik as FontSans } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { cn } from "@/utils/utils";
-import { ThemeProvider } from "@/app/dashboard/components/ThemeProvider";
+import { ThemeProvider } from "@/app/dashboard/_components/theme-provider";
 import { ruRU } from "@clerk/localizations";
-import Header from "./dashboard/components/Header";
+import Header from "./dashboard/_components/header";
 import { Toaster } from "@/components/ui/sonner";
 
 const fontSans = FontSans({ subsets: ["cyrillic"], variable: "--font-sans" });

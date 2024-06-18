@@ -4,7 +4,7 @@ import {
   InfoBlock,
   InfoBlockContent,
   InfoBlockTitle,
-} from "@/components/ui/infoBlock";
+} from "@/components/ui/info-block";
 import {
   Table,
   TableBody,

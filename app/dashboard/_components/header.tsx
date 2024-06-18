@@ -3,7 +3,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
-import { ModeToggle } from "@/components/ui/themeToggle";
+import { ModeToggle } from "@/components/ui/theme-toggle";
 import {
   SignInButton,
   SignUpButton,

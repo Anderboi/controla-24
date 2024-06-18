@@ -1,4 +1,4 @@
-import { Option } from "@/components/ui/multiSelector";
+import { Option } from "@/components/ui/multi-selector";
 import { z } from "zod";
 
 export const formSchema = z.object({

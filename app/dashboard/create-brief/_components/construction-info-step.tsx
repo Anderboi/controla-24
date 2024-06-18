@@ -20,7 +20,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import MultipleSelector from "@/components/ui/multiSelector";
+import MultipleSelector from "@/components/ui/multi-selector";
 import {
   ceilingMaterials,
   floorMaterials,

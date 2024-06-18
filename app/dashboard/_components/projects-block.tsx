@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { auth } from "@clerk/nextjs/server";
 import { Files } from "lucide-react";
-import MenuProjectButton from "./MenuProjectButton";
+import MenuProjectButton from "./menu-project-button";
 
 export type Project = Database["public"]["Tables"]["projects"]["Row"];
 

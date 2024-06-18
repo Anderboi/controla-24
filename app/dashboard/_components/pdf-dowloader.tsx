@@ -2,11 +2,10 @@
 
 // import { PDFDownloadLink } from '@react-pdf/renderer';
 import React from "react";
-import PDFPage, { PDFProps } from "./PDFFile";
+import PDFPage, { PDFProps } from "./pdf-file";
 import { Button } from "@/components/ui/button";
 
 import dynamic from "next/dynamic";
-import { Database } from "@/utils/database.types";
 
 function PDFDowloader({ project, rooms }: PDFProps) {
   const PDFDownloadLink = dynamic(

@@ -16,7 +16,7 @@ import {
 } from "@/utils/formSchema";
 import { Heater } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import DataCard from "@/components/ui/dataCard";
+import DataCard from "@/components/ui/data-card";
 
 const EngeneeringInfoStep = () => {
   const {

@@ -1,11 +1,11 @@
 import React from "react";
 import { getCurrentProject, getCurrentRooms } from "@/utils/requests";
 import { auth } from "@clerk/nextjs/server";
-import PDFDowloader from "@/app/dashboard/components/PDFDowloader";
-import RoomsBlock from "./components/roomsBlock";
-import CommonInfoBlock from "./components/commonInfoBlock";
-import DemolitionInfoBlock from "./components/demolitionInfoBlock";
-import ConstructionBlock from "./components/constructionBlock";
+import PDFDowloader from "@/app/dashboard/_components/pdf-dowloader";
+import RoomsBlock from "./_components/rooms-block";
+import CommonInfoBlock from "./_components/common-info-block";
+import DemolitionInfoBlock from "./_components/demolition-info-block";
+import ConstructionBlock from "./_components/construction-block";
 
 async function ProjectPage({
   searchParams,
@@ -42,6 +42,7 @@ async function ProjectPage({
       {/* //? Информация по монтажу */}
       <ConstructionBlock {...project} />
 
+      {/* //? Кнопка - Скачать PDF */}
       <PDFDowloader project={project} rooms={rooms} />
       {/* <PDFPage project={project} rooms={rooms} /> */}
     </section>

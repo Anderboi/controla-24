@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# [Controla](https://controla-24-leu2awpq9-anderbois-projects.vercel.app/)
 
-## Getting Started
+Наше приложение "Controla" создано, чтобы облегчить процесс планирования и организации дизайн-проектов. Оно позволяет вам быстро и легко заполнить многоступенчатую форму брифа, собрать всю необходимую информацию и получить её в удобном формате PDF. Все ваши проекты будут надежно сохранены в базе данных, и вы сможете в любой момент вернуться к ним и обновить информацию.
 
-First, run the development server:
+[![Controla](./public/images/screenshot.jpg)](https://controla-24-leu2awpq9-anderbois-projects.vercel.app/)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+> **Warning**
+> This project is still in development and is not ready for production use.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework:** [Next.js](https://nextjs.org)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com)
+- **Component library:** [Shadcn UI](https://ui.shadcn.com/)
+- **UI Components:** [shadcn/ui](https://ui.shadcn.com)
+- **Form:** [React hook form](https://react-hook-form.com/)
+- **Form validation:** [Zod](https://zod.dev/)
+- **Database:** [Supabase](https://supabase.com/)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Features to be implemented
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [x] Authentication with **Clerk**
+- [x] Database on **Supabase**
+- [x] Validation with **Zod**
+- [x] Download PDF file with project date with **React-PDF**
+- [ ] File uploads with **uploadthing**
+- [ ] Newsletter subscription with **React Email** and **Resend**
+- [ ] ORM using **Drizzle ORM**
+- [ ] Chat
+- [ ] Project task manager

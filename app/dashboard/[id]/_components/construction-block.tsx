@@ -6,7 +6,7 @@ import {
   InfoBlockLabel,
   InfoBlockTitle,
   InfoBlockValue,
-} from "@/components/ui/infoBlock";
+} from "@/components/ui/info-block";
 import { Separator } from "@/components/ui/separator";
 
 const ConstructionBlock = memo(

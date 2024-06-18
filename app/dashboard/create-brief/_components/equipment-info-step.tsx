@@ -11,7 +11,7 @@ import {
   equipment,
 } from "@/utils/formSchema";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import MultipleSelector from '@/components/ui/multiSelector';
+import MultipleSelector from '@/components/ui/multi-selector';
 import { Button } from '@/components/ui/button';
 import { TrashIcon } from 'lucide-react';
 
