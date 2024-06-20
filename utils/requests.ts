@@ -1,3 +1,4 @@
+import { cache } from 'react';
 import { Database } from "./database.types";
 import createBrowserClient from "./supabase/browser";
 
@@ -16,7 +17,7 @@ export const getProjects = async ({ userId, token }: any) => {
   return projects;
 };
 
-export const getCurrentProject = async ({
+export const getCurrentProject = cache(async ({
   projectId,
   token,
 }: {
@@ -40,7 +41,7 @@ export const getCurrentProject = async ({
   }
 
   return project;
-};
+});
 export const removeProject = async (projectId: number, token: any) => {
   const supabase = await createBrowserClient(token);
 
@@ -55,7 +56,7 @@ export const removeProject = async (projectId: number, token: any) => {
   }
 };
 
-export const getCurrentRooms = async (
+export const getCurrentRooms = cache(async (
   projectId: number,
   token: any,
 ): Promise<Database["public"]["Tables"]["rooms"]["Row"][]> => {
@@ -71,7 +72,7 @@ export const getCurrentRooms = async (
   }
 
   return rooms || [];
-};
+});
 export const getCurrentProjectEquipment = async (
   roomId: number,
   token: any,

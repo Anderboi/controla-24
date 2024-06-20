@@ -17,32 +17,26 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  modal,
 }: Readonly<{
   children: React.ReactNode;
   modal: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" suppressHydrationWarning>
-      <ClerkProvider localization={ruRU}>
+    <ClerkProvider localization={ruRU}>
+      <html lang="ru" suppressHydrationWarning>
         <body
           className={cn(
             "font-sans antialiased dark:bg-neutral-950",
             fontSans.className,
           )}
         >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-          >
-            {/* {modal} */}
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <Header />
             {children}
             <Toaster />
           </ThemeProvider>
         </body>
-      </ClerkProvider>
-    </html>
+      </html>
+    </ClerkProvider>
   );
 }
