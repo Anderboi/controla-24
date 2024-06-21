@@ -50,14 +50,16 @@ function Header() {
           </SignedIn>
           <SignedOut>
             <Button size={"sm"}>
-              <SignInButton forceRedirectUrl={"/dashboard"} mode="modal">
+              <Link href="/sign-in">Вход</Link>
+              {/* <SignInButton forceRedirectUrl={"/dashboard"} mode="modal">
                 Вход
-              </SignInButton>
+              </SignInButton> */}
             </Button>
             <Button size={"sm"} variant={"secondary"}>
-              <SignUpButton forceRedirectUrl={"/dashboard"} mode="modal">
+              <Link href="/sign-up">Регистрация</Link>
+              {/* <SignUpButton forceRedirectUrl={"/dashboard"} mode="modal">
                 Регистрация
-              </SignUpButton>
+              </SignUpButton> */}
             </Button>
           </SignedOut>
         </div>

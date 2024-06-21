@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { cn } from "@/utils/utils";
 import { ThemeProvider } from "@/app/dashboard/_components/theme-provider";
+import { dark } from "@clerk/themes";
 import { ruRU } from "@clerk/localizations";
 import Header from "./dashboard/_components/header";
 import { Toaster } from "@/components/ui/sonner";
@@ -22,7 +23,7 @@ export default function RootLayout({
   modal: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider localization={ruRU}>
+    <ClerkProvider localization={ruRU} appearance={{baseTheme: [dark]}}>
       <html lang="ru" suppressHydrationWarning>
         <body
           className={cn(
