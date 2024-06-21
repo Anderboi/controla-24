@@ -39,7 +39,7 @@ async function ProjectsBlock({
               <Card className="shadow-lg hover:shadow-xl dark:shadow-none dark:hover:bg-neutral-900">
                 <CardHeader>
                   <CardTitle className="line-clamp-1 sm:line-clamp-2 sm:min-h-[2lh]">
-                    {project.projectName ?? project.address}
+                    {project.projectName || `Проект №${project.id}`}
                   </CardTitle>
                   <CardDescription className="line-clamp-2 text-sm sm:min-h-[2lh]">
                     {project.address}
