@@ -32,7 +32,7 @@ export const formSchema = z.object({
       z.object({
         name: z.string().trim(),
         area: z.coerce.number(),
-        number: z.string(),
+        // number: z.string(),
         // floor: z.coerce.number(),
       }),
     )

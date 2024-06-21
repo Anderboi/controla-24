@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   FormControl,
   FormDescription,
@@ -37,6 +37,8 @@ const DemolitionInfoStep = () => {
     watch,
     formState: { errors },
   } = useFormContext();
+
+  const [roomsWithIsolation, setRoomsWithIsolation] = useState<string[]>([]);
 
   return (
     <>
@@ -216,7 +218,6 @@ const DemolitionInfoStep = () => {
                 </FormItem>
               )}
             />
-            {/* //TODO: Add rooms selector */}
             <FormField
               control={control}
               name="roomsForIsolation"
@@ -226,29 +227,39 @@ const DemolitionInfoStep = () => {
                     <>
                       {getValues("rooms")?.map(
                         (
-                          { name }: { name: string; label: string },
+                          {
+                            name,
+                            number,
+                          }: { name: string; area: number; number: string },
                           index: number,
                         ) => (
                           <Badge
-                            id={name}
+                            id={`${number}. ${name}`}
                             key={index}
                             variant={
-                              field.value?.includes(name)
+                              field.value?.includes(`${index+1}. ${name}`)
                                 ? "default"
                                 : "outline"
                             }
-                            className="cursor-pointer mr-2"
-                            onClick={() => {
+                            className="mr-2 cursor-pointer"
+                            onClick={(val: any) => {
                               field.onChange(
-                                field.value?.includes(name)
+                                field.value?.includes(`${index+1}. ${name}`)
                                   ? field.value?.filter(
-                                      (v: string) => v !== name,
+                                      (v: string) => v !== `${index+1}. ${name}`,
                                     )
-                                  : [...(field.value || []), name],
+                                  : [
+                                      ...(field.value || []),
+                                      `${index+1}. ${name}`,
+                                    ],
                               );
                             }}
                           >
-                            {name}
+                            {`${(index+1).toLocaleString("ru-RU", {
+                              minimumIntegerDigits: 2,
+                            })}` +
+                              ". " +
+                              ` ${name}`}
                           </Badge>
                         ),
                       )}

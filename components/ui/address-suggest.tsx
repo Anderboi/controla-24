@@ -68,7 +68,7 @@ const AddressSuggest = forwardRef<HTMLInputElement, UseControllerProps>(
               <CommandEmpty>Нет результатов.</CommandEmpty>
               {suggestions.map((suggestion, index) => (
                 <CommandItem key={index}>
-                  <span onClick={() => handleSuggestionClick(suggestion)}>
+                  <span className='w-full' onClick={() => handleSuggestionClick(suggestion)}>
                     {suggestion}
                   </span>
                 </CommandItem>

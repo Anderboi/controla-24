@@ -23,8 +23,8 @@ import ConstructionInfoStep from "./_components/construction-info-step";
 import EngeneeringInfoStep from "./_components/engeneering-info-step";
 import EquipmentInfoStep from "./_components/equipment-info-step";
 import FormBottomNav from "./_components/form-bottom-navigation";
-import SuccessStep from './_components/success-step';
-import Stepper from './_components/stepper';
+import SuccessStep from "./_components/success-step";
+import Stepper from "./_components/stepper";
 
 export type Inputs = z.infer<typeof formSchema>;
 type FieldName = keyof Inputs;
@@ -137,7 +137,7 @@ const CreateBrief = () => {
       windowsChange: false,
       furnitureDemolition: false,
       approxBudget: [1000000, 100000000],
-      rooms: [{ name: "", area: 0, number: "" }],
+      rooms: [{ name: "", area: 0 }],
       hasIsolationSurfaces: false,
       roomsForIsolation: [],
       kitchenEquipment: [],
@@ -164,7 +164,7 @@ const CreateBrief = () => {
   const next = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
-    console.log(form.getValues("lastName"));
+    // console.log(form.getValues("roomsForIsolation"));
 
     const fields = steps[currentStep].fields;
     const output = await form.trigger(fields as FieldName[], {
@@ -249,7 +249,7 @@ const CreateBrief = () => {
             {currentStep === 7 && <ConstructionInfoStep />}
             {currentStep === 8 && <EngeneeringInfoStep />}
             {currentStep === 9 && <EquipmentInfoStep />}
-            {currentStep === 10 && <SuccessStep steps={steps}/>}
+            {currentStep === 10 && <SuccessStep steps={steps} />}
           </article>
           <FormBottomNav
             currentStep={currentStep}

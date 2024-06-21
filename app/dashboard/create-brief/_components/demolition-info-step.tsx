@@ -22,7 +22,7 @@ const DemolitionInfoStep = () => {
 
   return (
     <>
-      <div className="space-y-4 rounded-lg border border-neutral-600 p-4 dark:border-neutral-800 sm:col-span-2">
+      <div className="space-y-4 rounded-lg border p-4 dark:border-neutral-800 sm:col-span-2">
         <FormField
           control={control}
           name="planChange"
@@ -44,7 +44,7 @@ const DemolitionInfoStep = () => {
         control={control}
         name="entranceDoorChange"
         render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between space-y-4 rounded-lg border border-neutral-600 p-4 dark:border-neutral-800 sm:col-span-2">
+          <FormItem className="flex flex-row items-center justify-between space-y-4 rounded-lg border p-4 dark:border-neutral-800 sm:col-span-2">
             <FormLabel>Замена входной двери</FormLabel>
             <FormControl>
               <Switch
@@ -60,7 +60,7 @@ const DemolitionInfoStep = () => {
         control={control}
         name="windowsChange"
         render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between space-y-4 rounded-lg border border-neutral-600 p-4 dark:border-neutral-800 sm:col-span-2">
+          <FormItem className="flex flex-row items-center justify-between space-y-4 rounded-lg border p-4 dark:border-neutral-800 sm:col-span-2">
             <FormLabel>Замена окон</FormLabel>
             <FormControl>
               <Switch
@@ -72,7 +72,7 @@ const DemolitionInfoStep = () => {
           </FormItem>
         )}
       />
-      <div className="space-y-4 rounded-lg border border-neutral-600 p-4 dark:border-neutral-800 sm:col-span-2">
+      <div className="space-y-4 rounded-lg border p-4 dark:border-neutral-800 sm:col-span-2">
         <FormField
           control={control}
           name="furnitureDemolition"

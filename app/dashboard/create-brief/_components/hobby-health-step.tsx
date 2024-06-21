@@ -21,6 +21,7 @@ const HobbyHealthStep = () => {
             <FormLabel>Увлечения</FormLabel>
             <FormControl>
               <Textarea
+                maxLength={500}
                 placeholder="Игра на гитаре. Предусмотреть место для гитарной стойки и усилителя."
                 {...field}
               />
@@ -41,6 +42,7 @@ const HobbyHealthStep = () => {
             <FormLabel>Особенности здоровья</FormLabel>
             <FormControl>
               <Textarea
+                maxLength={500}
                 placeholder="Аллергия на шерсть. Не использовать ковры из шерсти."
                 {...field}
               />
