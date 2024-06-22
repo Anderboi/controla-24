@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import {
   FormControl,
   FormDescription,
@@ -20,15 +20,15 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import MultipleSelector from "@/components/ui/multi-selector";
 import {
   ceilingMaterials,
   floorMaterials,
-  wallsMaterials,
+  wallMaterials,
 } from "@/utils/formSchema";
 import { Info } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
+import { DataCard, DataCardLayout } from "@/components/ui/data-card";
 
 const DemolitionInfoStep = () => {
   const {
@@ -38,14 +38,12 @@ const DemolitionInfoStep = () => {
     formState: { errors },
   } = useFormContext();
 
-  const [roomsWithIsolation, setRoomsWithIsolation] = useState<string[]>([]);
-
   return (
     <>
       <FormField
         control={control}
         name="wallsMaterial"
-        render={({ field: { onChange, value } }) => (
+        render={({ field }) => (
           <FormItem className="sm:col-span-2">
             <div className="flex items-center justify-between">
               <FormLabel>Материал перегородок</FormLabel>
@@ -73,19 +71,18 @@ const DemolitionInfoStep = () => {
               </Sheet>
             </div>
             <FormControl>
-              <MultipleSelector
-                onChange={(val: any) =>
-                  onChange(val.map((item: any) => item.value))
-                }
-                defaultOptions={wallsMaterials}
-                placeholder="Укажите один или несколько материалов..."
-                creatable
-                emptyIndicator={
-                  <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                    Не найдено.
-                  </p>
-                }
-              />
+              <DataCardLayout>
+                {wallMaterials.map((system, index) => (
+                  <DataCard
+                    key={index}
+                    value={field.value}
+                    name={system}
+                    isChecked={field.value?.includes(system) || false}
+                    onChange={field.onChange}
+                    icon={<Info size={44} strokeWidth={1} />}
+                  />
+                ))}
+              </DataCardLayout>
             </FormControl>
           </FormItem>
         )}
@@ -121,17 +118,18 @@ const DemolitionInfoStep = () => {
               </Sheet>
             </div>
             <FormControl>
-              <MultipleSelector
-                onChange={(val) => onChange(val.map((item: any) => item.value))}
-                defaultOptions={ceilingMaterials}
-                placeholder="Укажите один или несколько материалов..."
-                creatable
-                emptyIndicator={
-                  <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                    Не найдено.
-                  </p>
-                }
-              />
+              <DataCardLayout>
+                {ceilingMaterials.map((system, index) => (
+                  <DataCard
+                    key={index}
+                    value={value}
+                    name={system}
+                    isChecked={value?.includes(system) || false}
+                    onChange={onChange}
+                    icon={<Info size={44} strokeWidth={1} />}
+                  />
+                ))}
+              </DataCardLayout>
             </FormControl>
           </FormItem>
         )}
@@ -167,19 +165,18 @@ const DemolitionInfoStep = () => {
               </Sheet>
             </div>
             <FormControl>
-              <MultipleSelector
-                onChange={(val) =>
-                  field.onChange(val.map((item: any) => item.value))
-                }
-                defaultOptions={floorMaterials}
-                placeholder="Укажите один или несколько материалов..."
-                creatable
-                emptyIndicator={
-                  <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                    Не найдено.
-                  </p>
-                }
-              />
+              <DataCardLayout>
+                {floorMaterials.map((system, index) => (
+                  <DataCard
+                    key={index}
+                    value={field.value}
+                    name={system}
+                    isChecked={field.value?.includes(system) || false}
+                    onChange={field.onChange}
+                    icon={<Info size={44} strokeWidth={1} />}
+                  />
+                ))}
+              </DataCardLayout>
             </FormControl>
           </FormItem>
         )}
@@ -237,25 +234,26 @@ const DemolitionInfoStep = () => {
                             id={`${number}. ${name}`}
                             key={index}
                             variant={
-                              field.value?.includes(`${index+1}. ${name}`)
+                              field.value?.includes(`${index + 1}. ${name}`)
                                 ? "default"
                                 : "outline"
                             }
                             className="mr-2 cursor-pointer"
                             onClick={(val: any) => {
                               field.onChange(
-                                field.value?.includes(`${index+1}. ${name}`)
+                                field.value?.includes(`${index + 1}. ${name}`)
                                   ? field.value?.filter(
-                                      (v: string) => v !== `${index+1}. ${name}`,
+                                      (v: string) =>
+                                        v !== `${index + 1}. ${name}`,
                                     )
                                   : [
                                       ...(field.value || []),
-                                      `${index+1}. ${name}`,
+                                      `${index + 1}. ${name}`,
                                     ],
                               );
                             }}
                           >
-                            {`${(index+1).toLocaleString("ru-RU", {
+                            {`${(index + 1).toLocaleString("ru-RU", {
                               minimumIntegerDigits: 2,
                             })}` +
                               ". " +

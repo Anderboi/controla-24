@@ -1,6 +1,10 @@
-import { cn } from "@/utils/utils";
 import React from "react";
+import { cn } from "@/utils/utils";
 
+interface DataCardLayoutProps {
+  children: React.ReactNode;
+  className?: string;
+}
 interface DataCardProps {
   name: string;
   isChecked: boolean;
@@ -10,7 +14,20 @@ interface DataCardProps {
   description?: string;
 }
 
-const DataCard = ({
+export const DataCardLayout = ({
+  children,
+  className,
+}: DataCardLayoutProps) => {
+  return (
+    <div className={cn("flex flex-wrap gap-2", className)}>
+      {children}
+    </div>
+  );
+};
+
+DataCardLayout.displayName = "DataCardLayout";
+
+export const DataCard = ({
   name,
   isChecked = false,
   onChange,
@@ -29,26 +46,23 @@ const DataCard = ({
         );
       }}
       className={cn(
-        "/p-4 peer flex h-[60px] cursor-pointer items-center gap-2 overflow-clip rounded-lg border sm:items-start",
+        "peer flex cursor-pointer items-center gap-2 overflow-clip rounded-lg border px-2 py-1",
         isChecked
-          ? "border-teal-500 dark:border-teal-600"
-          : "shadow-md shadow-neutral-800/10 dark:border-neutral-800",
+          ? "border-transparent bg-neutral-900 dark:bg-neutral-100"
+          : "/shadow-md border-neutral-500 shadow-neutral-800/10 dark:border-neutral-500",
       )}
     >
-      {/* {icon} */}
-      <div
+      <span
         className={cn(
-          !isChecked
-            ? `bg-gradient-to-r from-violet-200 to-pink-200`
-            : `bg-gradient-to-r from-teal-200 to-teal-500`,
-          "h-full w-3",
+          "line-clamp-2 h-fit text-sm",
+          isChecked
+            ? "text-white dark:text-black"
+            : "text-neutral-800 dark:text-neutral-500",
         )}
-      ></div>
-      {/* <Image src={""} className="aspect-square" alt="info-image" /> */}
-      <h3 className="line-clamp-2 h-fit py-2 pr-2 text-xs">{name}</h3>
-      {/* <p className="text-xs text-neutral-500">{description}</p> */}
+      >
+        {name}
+      </span>
     </div>
   );
 };
-
-export default DataCard;
+DataCard.displayName = "DataCard";

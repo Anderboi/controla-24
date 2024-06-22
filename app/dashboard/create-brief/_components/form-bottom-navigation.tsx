@@ -1,23 +1,31 @@
-import React from 'react'
-import { Button } from '@/components/ui/button';
-import { ChevronLeft } from 'lucide-react';
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft } from "lucide-react";
+import { cn } from "@/utils/utils";
 
 interface FormBottomNavProps {
   skipAll: (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => Promise<void>;
-  previous: (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => void;
+  previous: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   next: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => Promise<void>;
   submitting: boolean;
   currentStep: number;
   steps: { id: string; name: string; fields?: string[] }[];
+  className?: string;
 }
 
-const FormBottomNav = ({currentStep, next, previous, skipAll, submitting, steps}: FormBottomNavProps): JSX.Element => {
+const FormBottomNav = ({
+  currentStep,
+  next,
+  previous,
+  skipAll,
+  submitting,
+  steps,
+  className,
+}: FormBottomNavProps): JSX.Element => {
   return (
-    <div className="flex w-full justify-between gap-4">
+    <div className={cn("flex w-full justify-between gap-4", className)}>
       <Button
         variant="link"
         onClick={skipAll}
@@ -42,4 +50,4 @@ const FormBottomNav = ({currentStep, next, previous, skipAll, submitting, steps}
   );
 };
 
-export default FormBottomNav
+export default FormBottomNav;

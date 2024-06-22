@@ -155,7 +155,7 @@ const CreateBrief = () => {
     },
   });
 
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(8);
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
@@ -164,7 +164,7 @@ const CreateBrief = () => {
   const next = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
-    // console.log(form.getValues("roomsForIsolation"));
+    console.log(form.getValues("wallsMaterial"));
 
     const fields = steps[currentStep].fields;
     const output = await form.trigger(fields as FieldName[], {

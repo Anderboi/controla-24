@@ -110,7 +110,11 @@ export const roomList: Option[] = [
     label: "Постирочная",
   },
 ];
-
+export const wallMaterials: string[] = [
+  "Кирпич",
+  "Пазогребневые плиты (ПГП)",
+  "Керамзитобетонные блоки",
+];
 export const wallsMaterials: Option[] = [
   {
     value: "Кирпич",
@@ -193,24 +197,39 @@ export const wallsMaterials: Option[] = [
   },
 ];
 
-export const floorMaterials: Option[] = [
-  {
-    value: "Инженерная доска",
-    label: "Инженерная доска",
-  },
-  { value: "Паркетная доска", label: "Паркетная доска" },
-  { value: "Ламинат", label: "Ламинат" },
-  { value: "Кварцвинил", label: "Кварцвинил" },
-  { value: "Керамогранит", label: "Керамогранит" },
-  { value: "Натуральный камень", label: "Натуральный камень" },
-];
-export const ceilingMaterials: Option[] = [
-  { value: "Гипсокартон", label: "Гипсокартон" },
-  { value: "Натяжной потолок", label: "Натяжной потолок" },
-  { value: "Без подшивки", label: "Без подшивки" },
+export const floorMaterials: string[] = [
+  "Инженерная доска",
+  "Паркетная доска",
+  "Ламинат",
+  "Кварцвинил",
+  "Керамогранит",
+  "Натуральный камень",
 ];
 
-export const heatingSystems = [
+// export const floorMaterials: Option[] = [
+//   {
+//     value: "Инженерная доска",
+//     label: "Инженерная доска",
+//   },
+//   { value: "Паркетная доска", label: "Паркетная доска" },
+//   { value: "Ламинат", label: "Ламинат" },
+//   { value: "Кварцвинил", label: "Кварцвинил" },
+//   { value: "Керамогранит", label: "Керамогранит" },
+//   { value: "Натуральный камень", label: "Натуральный камень" },
+// ];
+
+export const ceilingMaterials: string[] = [
+  "Гипсокартон",
+  "Натяжной потолок",
+  "Без подшивки",
+];
+// export const ceilingMaterials: Option[] = [
+//   { value: "Гипсокартон", label: "Гипсокартон" },
+//   { value: "Натяжной потолок", label: "Натяжной потолок" },
+//   { value: "Без подшивки", label: "Без подшивки" },
+// ];
+
+export const heatingSystems: string[] = [
   "Радиаторы",
   "Конвекторы",
   "Воздушная система отопления",
@@ -218,16 +237,15 @@ export const heatingSystems = [
   "Теплый пол",
 ];
 
-export const conditioningSystems = [
+export const conditioningSystems: string[] = [
   "Сплит-система кондиционирования",
-  "Канальная система кондиционирования",
-  "Приточно-вытяжная система вентиляции",
+  "Канальное кондиционирование",
+  "Приточно-вытяжная",
   "Бризер",
-  "Увлажнитель воздуха канальный",
-  "Увлажнитель воздуха ультразвуковой",
+  "Увлажнитель воздуха",
 ];
 
-export const electricSystems = [
+export const electricSystems: string[] = [
   "Управление климатом",
   "Управление отоплением",
   "Управление освещением",
@@ -239,14 +257,14 @@ export const electricSystems = [
   "Установка RJ45 розеток (интернет)",
 ];
 
-export const plumbingSystems = [
+export const plumbingSystems: string[] = [
   "Станция очистки воды",
   "Магистральные фильтры",
   "Фильтр обратного осмоса",
   "УФ очистка воды",
 ];
 
-export const equipment = [
+export const equipment: Option[] = [
   { value: "Холодильник", label: "Холодильник", group: "Кухня" },
   { value: "Духовой шкаф", label: "Духовой шкаф", group: "Кухня" },
   { value: "Варочная панель", label: "Варочная панель", group: "Кухня" },
@@ -281,7 +299,7 @@ export const equipment = [
   },
 ];
 
-export const sanitaryEquipment = [
+export const sanitaryEquipment: Option[] = [
   { value: "Унитаз", label: "Унитаз" },
   { value: "Биде", label: "Биде" },
   { value: "Гигиенический душ", label: "Гигиенический душ" },

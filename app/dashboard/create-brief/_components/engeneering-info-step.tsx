@@ -16,7 +16,7 @@ import {
 } from "@/utils/formSchema";
 import { Heater } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import DataCard from "@/components/ui/data-card";
+import { DataCard, DataCardLayout } from "@/components/ui/data-card";
 
 const EngeneeringInfoStep = () => {
   const {
@@ -35,7 +35,7 @@ const EngeneeringInfoStep = () => {
           <FormItem className="sm:col-span-2">
             <FormLabel>Система отопления</FormLabel>
             <FormControl>
-              <div className="grid gap-2 sm:grid-cols-3">
+              <DataCardLayout>
                 {heatingSystems.map((system, index) => (
                   <DataCard
                     key={index}
@@ -46,7 +46,7 @@ const EngeneeringInfoStep = () => {
                     icon={<Heater size={44} strokeWidth={1} />}
                   />
                 ))}
-              </div>
+              </DataCardLayout>
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -62,7 +62,7 @@ const EngeneeringInfoStep = () => {
                 <>
                   <FormItem className="col-span-2">
                     <FormLabel>Помещения с теплым полом</FormLabel>
-                    <br/>
+                    <br />
                     <FormControl className="flex flex-wrap gap-2">
                       <>
                         {getValues("rooms")?.map(
@@ -111,7 +111,7 @@ const EngeneeringInfoStep = () => {
           <FormItem className="sm:col-span-2">
             <FormLabel>Система кондиционирования</FormLabel>
             <FormControl>
-              <div className="grid gap-2 sm:grid-cols-3">
+              <DataCardLayout>
                 {conditioningSystems.map((system, index) => (
                   <DataCard
                     key={index}
@@ -122,7 +122,7 @@ const EngeneeringInfoStep = () => {
                     icon={<Heater size={44} strokeWidth={1} />}
                   />
                 ))}
-              </div>
+              </DataCardLayout>
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -135,7 +135,7 @@ const EngeneeringInfoStep = () => {
           <FormItem className="sm:col-span-2">
             <FormLabel>Система водоснабжения</FormLabel>
             <FormControl>
-              <div className="grid gap-2 sm:grid-cols-3">
+              <DataCardLayout>
                 {plumbingSystems.map((system, index) => (
                   <DataCard
                     key={index}
@@ -146,7 +146,7 @@ const EngeneeringInfoStep = () => {
                     icon={<Heater size={44} strokeWidth={1} />}
                   />
                 ))}
-              </div>
+              </DataCardLayout>
             </FormControl>
             <FormMessage />
           </FormItem>
