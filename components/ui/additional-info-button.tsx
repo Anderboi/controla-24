@@ -25,7 +25,7 @@ const AdditionalInfoButton = ({ children, title }: Props) => {
         <Button
           variant={"link"}
           size={"sm"}
-          className="p-0 text-xs text-teal-500"
+          className="p-0 sm:text-xs text-teal-500"
         >
           {title}
           <span className="sr-only">Toggle</span>

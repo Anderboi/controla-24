@@ -30,7 +30,7 @@ import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { DataCard, DataCardLayout } from "@/components/ui/data-card";
 
-const DemolitionInfoStep = () => {
+const ConstructionInfoStep = () => {
   const {
     control,
     getValues,
@@ -305,4 +305,4 @@ const DemolitionInfoStep = () => {
   );
 };
 
-export default DemolitionInfoStep;
+export default ConstructionInfoStep;

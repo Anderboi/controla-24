@@ -33,7 +33,7 @@ const PremisesStep = () => {
   });
 
   return (
-    <div className="space-y-4 sm:col-span-2">
+    <div className="h-fit space-y-4 sm:col-span-2">
       <Sortable
         value={roomFields}
         onMove={({ activeIndex, overIndex }) => {
@@ -48,8 +48,8 @@ const PremisesStep = () => {
           </div>
         }
       >
-        <div className="w-full space-y-2">
-          <div className="grid grid-cols-[40px,2fr,0.5fr,40px] items-center gap-2 text-xs text-neutral-500">
+        <div className="w-full space-y-4 sm:space-y-2">
+          <div className="grid grid-cols-[40px,2fr,0.5fr,40px] items-center gap-2 text-neutral-400 sm:text-xs">
             <span>№</span>
             <span>Наименование</span>
             <span>м2</span>
@@ -74,15 +74,14 @@ const PremisesStep = () => {
                   className="size-8 shrink-0 justify-start"
                 >
                   <>
-                    <GripVertical className="text-neutral-500" size={16} />
-                    <span className="text-xs text-neutral-500">
+                    <GripVertical className="text-neutral-400" size={16} />
+                    <span className="text-neutral-400 sm:text-xs">
                       {(index + 1).toLocaleString("ru-RU", {
                         minimumIntegerDigits: 2,
                       })}
                     </span>
                   </>
                 </SortableDragHandle>
-
                 <FormField
                   control={control}
                   name={`rooms.${index}.name`}
@@ -90,6 +89,11 @@ const PremisesStep = () => {
                     <FormItem>
                       <FormControl>
                         <CreatableSelect
+                          blurInputOnSelect
+                          captureMenuScroll
+                          closeMenuOnSelect
+                          minMenuHeight={800}
+                          menuPlacement={"auto"}
                           formatCreateLabel={(value) => `Создать '${value}'`}
                           value={
                             roomList.find(
@@ -108,7 +112,8 @@ const PremisesStep = () => {
                                                   dark:bg-neutral-900 
                                                   dark:!text-neutral-50 dark:!border-neutral-800`,
 
-                            input: (state) => "text-sm dark:text-neutral-50",
+                            input: (state) =>
+                              "text-base sm:text-sm dark:text-neutral-200",
                             valueContainer: (state) => "",
                             singleValue: (state) =>
                               "text-sm dark:text-neutral-50",
@@ -118,7 +123,7 @@ const PremisesStep = () => {
                               "text-sm dark:text-neutral-50 dark:!bg-neutral-800",
                             option: (state) =>
                               state.isFocused
-                                ? "text-sm dark:text-neutral-50 !bg-teal-200 dark:!bg-neutral-600 //dark:text-red-400 !text-black"
+                                ? "text-sm dark:text-neutral-50 !bg-teal-200 dark:!bg-neutral-600 !text-black"
                                 : state.isSelected
                                   ? "!bg-teal-500 hover:!bg-teal-600"
                                   : "dark:!bg-neutral-800",
@@ -168,8 +173,8 @@ const PremisesStep = () => {
         <Button
           type="button"
           variant="outline"
-          size="sm"
-          className="w-fit dark:bg-transparent"
+          size="default"
+          className="w-full dark:bg-transparent sm:w-fit"
           onClick={() =>
             append({
               name: "",

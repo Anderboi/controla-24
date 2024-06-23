@@ -17,7 +17,7 @@ const HobbyHealthStep = () => {
         control={control}
         name="hobbies"
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="col-span-2">
             <FormLabel>Увлечения</FormLabel>
             <FormControl>
               <Textarea
@@ -38,7 +38,7 @@ const HobbyHealthStep = () => {
         control={control}
         name="healthFeatures"
         render={({ field }) => (
-          <FormItem>
+          <FormItem className="col-span-2">
             <FormLabel>Особенности здоровья</FormLabel>
             <FormControl>
               <Textarea

@@ -5,7 +5,7 @@ const LayoutPage = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  return <section className='px-2 py-4 sm:p-0'>{children}</section>;
+  return <section className='px-2 py-4 sm:p-0 '>{children}</section>;
 };
 
 export default LayoutPage

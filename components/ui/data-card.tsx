@@ -19,7 +19,7 @@ export const DataCardLayout = ({
   className,
 }: DataCardLayoutProps) => {
   return (
-    <div className={cn("flex flex-wrap gap-2", className)}>
+    <div className={cn("flex flex-wrap gap-3 sm:gap-2", className)}>
       {children}
     </div>
   );
@@ -48,16 +48,16 @@ export const DataCard = ({
       className={cn(
         "peer flex cursor-pointer items-center gap-2 overflow-clip rounded-lg border px-2 py-1",
         isChecked
-          ? "border-transparent bg-neutral-900 dark:bg-neutral-100"
-          : "/shadow-md border-neutral-500 shadow-neutral-800/10 dark:border-neutral-500",
+          ? "bg-neutral-900 dark:bg-neutral-100"
+          : "border-neutral-500 dark:border-neutral-500",
       )}
     >
       <span
         className={cn(
-          "line-clamp-2 h-fit text-sm",
+          "line-clamp-2 h-fit sm:text-sm",
           isChecked
             ? "text-white dark:text-black"
-            : "text-neutral-800 dark:text-neutral-500",
+            : "text-neutral-800 dark:text-neutral-400",
         )}
       >
         {name}

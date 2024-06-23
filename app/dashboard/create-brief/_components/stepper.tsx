@@ -1,20 +1,29 @@
-import React from "react";
+import { cn } from '@/utils/utils';
+import React, { MouseEventHandler } from "react";
 
 const Stepper = ({
   steps,
   currentStep,
+  className,
+  setCurrentStep,
 }: {
   steps: { id: string; name: string; fields?: string[] }[];
   currentStep: number;
+  className?: string;
+  setCurrentStep: (step: number) => void;
 }) => {
   return (
-    <nav aria-label="Progress" className='hidden md:block'>
+    <nav aria-label="Progress" className={cn("hidden md:block", className)}>
       <ol
         role="list"
         className="mb-4 space-y-2 md:flex md:space-x-2 md:space-y-0"
       >
         {steps.map((step, index) => (
-          <li key={step.name} className="md:flex-1">
+          <li
+            key={step.name}
+            className="md:flex-1 cursor-pointer"
+            onClick={()=>setCurrentStep(index)}
+          >
             {currentStep > index ? (
               <div className="group flex w-full min-w-2 flex-col border-l-4 border-teal-800 py-2 pl-4 transition-colors md:border-b-4 md:border-l-0 md:pb-2 md:pl-0 md:pt-0">
                 <span className="hidden text-xs font-medium text-teal-600 transition-colors md:block">

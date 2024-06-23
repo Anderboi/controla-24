@@ -231,14 +231,19 @@ const CreateBrief = () => {
   }
 
   return (
-    <section className="flex h-full rounded-lg p-4 dark:border-neutral-800 dark:bg-neutral-900 sm:m-auto sm:max-w-[900px] sm:border sm:p-6 md:flex-col">
-      <Stepper currentStep={currentStep} steps={steps} />
+    <section className="relative flex h-[calc(100svh-80px)] rounded-lg p-4 dark:border-neutral-800 dark:bg-neutral-900 sm:m-auto sm:max-h-[75svh] sm:max-w-[900px] sm:flex-col sm:p-6">
+      <Stepper
+        setCurrentStep={setCurrentStep}
+        currentStep={currentStep}
+        steps={steps}
+        className="absolute left-0 right-0 top-0 px-6 pt-4"
+      />
       <Form {...form}>
-        <form className="w-full space-y-6">
+        <form className="h-[calc(100%)] w-full space-y-6 overflow-y-scroll no-scrollbar sm:mb-[60px] sm:mt-[60px] sm:h-[calc(100%-120px)]">
           <h2 className="text-balance text-3xl font-bold tracking-tight">
             {steps[currentStep].name}
           </h2>
-          <article className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
+          <article className="grid grid-cols-1 gap-y-6 pb-[60px] sm:grid-cols-2 sm:gap-x-6">
             {currentStep === 0 && <ClientInfoStep />}
             {currentStep === 1 && <ProjectMainInfoStep />}
             {currentStep === 2 && <ProjectAdditionalInfoStep />}
@@ -251,16 +256,17 @@ const CreateBrief = () => {
             {currentStep === 9 && <EquipmentInfoStep />}
             {currentStep === 10 && <SuccessStep steps={steps} />}
           </article>
-          <FormBottomNav
-            currentStep={currentStep}
-            next={next}
-            previous={previous}
-            skipAll={skipAll}
-            submitting={submitting}
-            steps={steps}
-          />
         </form>
       </Form>
+      <FormBottomNav
+        className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white from-80% to-transparent px-4 pb-4 pt-6 dark:from-neutral-900 dark:from-80% dark:to-transparent sm:p-6"
+        currentStep={currentStep}
+        next={next}
+        previous={previous}
+        skipAll={skipAll}
+        submitting={submitting}
+        steps={steps}
+      />
     </section>
   );
 };

@@ -114,6 +114,8 @@ export const wallMaterials: string[] = [
   "Кирпич",
   "Пазогребневые плиты (ПГП)",
   "Керамзитобетонные блоки",
+  "Газобетон или пенобетон",
+  "Гипсокартон",
 ];
 export const wallsMaterials: Option[] = [
   {
