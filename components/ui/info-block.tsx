@@ -5,9 +5,17 @@ const InfoBlock = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <article ref={ref} className={cn("", className)} {...props} />
+  <article ref={ref} className={cn("space-y-4", className)} {...props} />
 ));
 InfoBlock.displayName = "InfoBlock";
+
+const InfoBlockIcon = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <article ref={ref} className={cn("", className)} {...props} />
+));
+InfoBlockIcon.displayName = "InfoBlockIcon";
 
 const InfoBlockTitle = React.forwardRef<
   HTMLParagraphElement,
@@ -16,7 +24,7 @@ const InfoBlockTitle = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      "mb-4 text-lg font-semibold leading-none tracking-tight",
+      "mb-2 text-xl font-medium leading-none tracking-tight",
       className,
     )}
     {...props}
@@ -31,7 +39,7 @@ const InfoBlockContent = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      "relative space-y-2 rounded-xl border py-4 pl-4 dark:border-none dark:bg-neutral-900",
+      "relative space-y-2 rounded-xl dark:border py-4 pl-4 bg-white dark:border-none dark:bg-neutral-900",
       className,
     )}
     {...props}
@@ -57,7 +65,7 @@ const InfoBlockLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("/w-[280px] text-sm font-medium text-black dark:text-neutral-200", className)}
+    className={cn("text-lg sm:text-base text-black dark:text-neutral-200", className)}
     {...props}
   />
 ));
@@ -70,7 +78,7 @@ const InfoBlockValue = React.forwardRef<
   <p
     ref={ref}
     className={cn(
-      "dark:text-text-neutral-400 text-sm text-neutral-500",
+      "dark:text-text-neutral-400 text-lg sm:text-base text-neutral-500",
       className,
     )}
     {...props}
@@ -85,4 +93,5 @@ export {
   InfoBlockLabel,
   InfoBlockValue,
   InfoBlockItem,
+  InfoBlockIcon,
 };

@@ -12,6 +12,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { postProject } from "@/utils/requests";
 import { toast } from "sonner";
+
 import ClientInfoStep from "./_components/client-info-step";
 import ProjectMainInfoStep from "./_components/project-main-info-step";
 import ProjectAdditionalInfoStep from "./_components/project-additional-info-step";
@@ -155,7 +156,7 @@ const CreateBrief = () => {
     },
   });
 
-  const [currentStep, setCurrentStep] = useState(8);
+  const [currentStep, setCurrentStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();

@@ -24,7 +24,7 @@ function PDFDowloader({ project, rooms }: PDFProps) {
         fileName="Техническое задание.pdf"
       >
         {({ blob, url, loading, error }) => (
-          <Button size={"lg"} variant={"default"} className="/w-full my-4">
+          <Button size={"lg"} variant={"default"} disabled={loading} className="w-full sm:w-fit my-4">
             {loading ? "Загрузка ..." : "Скачать PDF"}
           </Button>
         )}

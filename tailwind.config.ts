@@ -1,6 +1,36 @@
 import type { Config } from "tailwindcss";
 const { fontFamily } = require("tailwindcss/defaultTheme");
 const plugin = require("tailwindcss/plugin");
+// const { colors: defaultColors } = require('tailwindcss/defaultTheme')
+
+// const colors = {
+//   ...defaultColors,
+//   ...{'primary': {
+//         light: "#F7F7F7",
+//         dark: "#0C0C0E",
+//         DEFAULT: "#F7F7F7",
+//       },
+//       'secondary': {
+//         light: "#FFFFFF",
+//         dark: "#1E1F22",
+//         DEFAULT: "#FFFFFF",
+//       },
+//       'textPrimary': {
+//         light: "#000000",
+//         dark: "#E1E3E6",
+//         DEFAULT: "#000000",
+//       },
+//       'textSecondary': {
+//         light: "neutral-500",
+//         dark: "#5D5F61",
+//         DEFAULT: "#neutral-500",
+//       },
+//       'accent': {
+//         light: "#EFC89C",
+//         dark: "#EFC89C",
+//         DEFAULT: "#EFC89C",
+//       },}
+// }
 
 const config = {
   darkMode: ["class"],
@@ -38,6 +68,7 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
+    // colors: colors,
   },
   plugins: [
     plugin(function ({ addUtilities }: { addUtilities: any }) {

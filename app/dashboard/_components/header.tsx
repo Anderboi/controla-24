@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { ModeToggle } from "@/components/ui/theme-toggle";
 import {
-  SignInButton,
-  SignUpButton,
   SignedIn,
   SignedOut,
   UserButton,
@@ -19,7 +17,7 @@ function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="items-center px-4 pt-4 dark:border-neutral-800 sm:flex sm:h-[10vh] sm:border-b sm:p-0">
+    <header className="items-center px-4 pt-4 dark:border-neutral-800 bg-white dark:bg-transparent sm:flex sm:h-[10vh] sm:border-b sm:p-0">
       <div className="flex items-center justify-between sm:container">
         <div className="flex items-center gap-2">
           {pathname !== "/dashboard" && pathname !== "/" && (
@@ -51,15 +49,9 @@ function Header() {
           <SignedOut>
             <Button size={"sm"}>
               <Link href="/sign-in">Вход</Link>
-              {/* <SignInButton forceRedirectUrl={"/dashboard"} mode="modal">
-                Вход
-              </SignInButton> */}
             </Button>
             <Button size={"sm"} variant={"secondary"}>
               <Link href="/sign-up">Регистрация</Link>
-              {/* <SignUpButton forceRedirectUrl={"/dashboard"} mode="modal">
-                Регистрация
-              </SignUpButton> */}
             </Button>
           </SignedOut>
         </div>

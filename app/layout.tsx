@@ -27,7 +27,7 @@ export default function RootLayout({
       <html lang="ru" suppressHydrationWarning>
         <body
           className={cn(
-            "font-sans antialiased dark:bg-neutral-950",
+            "font-sans antialiased dark:bg-neutral-950 bg-neutral-100",
             fontSans.className,
           )}
         >
