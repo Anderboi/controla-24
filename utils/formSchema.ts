@@ -32,8 +32,6 @@ export const formSchema = z.object({
       z.object({
         name: z.string().trim(),
         area: z.coerce.number(),
-        // number: z.string(),
-        // floor: z.coerce.number(),
       }),
     )
     .optional(),
@@ -96,6 +94,10 @@ export const roomList: Option[] = [
   {
     value: "Детская",
     label: "Детская",
+  },
+  {
+    value: "Гардеробная",
+    label: "Гардеробная",
   },
   {
     value: "Ванная комната",
