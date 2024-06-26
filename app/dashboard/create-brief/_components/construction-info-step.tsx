@@ -21,11 +21,21 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
+  IWallMaterialFeatures,
   ceilingMaterials,
   floorMaterials,
   wallMaterials,
+  wallsMaterials,
 } from "@/utils/formSchema";
-import { Info } from "lucide-react";
+import {
+  Cuboid,
+  DiamondMinus,
+  DiamondPlus,
+  Droplets,
+  Ear,
+  Flame,
+  Info,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { DataCard, DataCardLayout } from "@/components/ui/data-card";
@@ -49,23 +59,102 @@ const ConstructionInfoStep = () => {
               <FormLabel>Материал перегородок</FormLabel>
               <Sheet>
                 <SheetTrigger asChild className="cursor-pointer">
-                  <Info className="size-5 text-neutral-500" />
+                  <Info className="size-6 text-neutral-500" />
                 </SheetTrigger>
                 <SheetContent>
                   <SheetHeader>
-                    <SheetTitle>Материал перегородок</SheetTitle>
-                    <SheetDescription>
+                    <SheetTitle>Виды межкомнатных перегородок</SheetTitle>
+                    {/* <SheetDescription>
                       Выберите один или несколько материалов.
-                    </SheetDescription>
+                    </SheetDescription> */}
                   </SheetHeader>
-                  <div className="grid gap-4 py-4">
-                    <p>
-                      Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                      Tempora vero voluptatem ratione magnam, incidunt odit
-                      asperiores placeat eius. Numquam veritatis a earum
-                      deleniti maiores commodi iusto nemo aliquam incidunt
-                      quisquam!
-                    </p>
+                  <div className="mt-4 grid h-full gap-2 overflow-y-auto pb-6 text-sm no-scrollbar">
+                    {wallsMaterials.map((material: IWallMaterialFeatures) => (
+                      <p className="mb-4 rounded-lg p-4 dark:bg-neutral-900">
+                        <h2 className="mb-4 text-base">{material.name}</h2>
+
+                        <div className="mb-2 flex items-center gap-2">
+                          <Cuboid
+                            size={40}
+                            strokeWidth={1}
+                            className="w-fit min-w-[40px] text-neutral-500"
+                          />
+                          <div className="flex flex-col">
+                            <span>Толщина перегородки, мм:</span>
+                            <span className="text-neutral-500 dark:text-neutral-400">
+                              {material.width}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="mb-2 flex items-center gap-2">
+                          <Ear
+                            size={40}
+                            strokeWidth={1}
+                            className="min-w-[40px] text-neutral-500"
+                          />
+                          <div className="flex flex-col">
+                            <span>Индекс изоляции воздушного шума:</span>
+                            <span className="text-neutral-500 dark:text-neutral-400">
+                              {material.soundproof}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="mb-2 flex items-center gap-2">
+                          <Flame
+                            size={40}
+                            strokeWidth={1}
+                            className="min-w-[40px] text-neutral-500"
+                          />
+                          <div className="flex flex-col">
+                            <span>Огнестойкость:</span>
+                            <span className="text-neutral-500 dark:text-neutral-400">
+                              {material.fireResistance}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="mb-2 flex items-center gap-2">
+                          <Droplets
+                            size={40}
+                            strokeWidth={1}
+                            className="min-w-[40px] text-neutral-500"
+                          />
+                          <div className="flex flex-col">
+                            <span>Влагопоглащение, %:</span>
+                            <span className="text-neutral-500 dark:text-neutral-400">
+                              {material.waterResistance}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="mb-2 flex items-center gap-2">
+                          <DiamondPlus
+                            size={40}
+                            strokeWidth={1}
+                            className="min-w-[40px] text-neutral-500"
+                          />
+                          <div className="flex flex-col">
+                            <span>Приемущества:</span>
+                            <span className="text-neutral-500 dark:text-neutral-400">
+                              {material.pros.join(", ")}
+                            </span>
+                          </div>
+                        </div>
+                        <div className="mb-2 flex items-center gap-2">
+                          <DiamondMinus
+                            size={40}
+                            strokeWidth={1}
+                            className="min-w-[40px] text-neutral-500"
+                          />
+                          <div className="flex flex-col">
+                            <span>Недостатки:</span>
+                            <span className="text-neutral-500 dark:text-neutral-400">
+                              {material.cons.join(", ")}
+                            </span>
+                          </div>
+                        </div>
+                      </p>
+                    ))}
                   </div>
                 </SheetContent>
               </Sheet>

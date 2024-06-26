@@ -156,7 +156,7 @@ const CreateBrief = () => {
     },
   });
 
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(7);
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
