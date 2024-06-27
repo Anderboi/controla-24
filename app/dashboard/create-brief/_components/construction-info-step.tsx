@@ -64,13 +64,13 @@ const ConstructionInfoStep = () => {
                 <SheetContent>
                   <SheetHeader>
                     <SheetTitle>Виды межкомнатных перегородок</SheetTitle>
-                    {/* <SheetDescription>
-                      Выберите один или несколько материалов.
-                    </SheetDescription> */}
                   </SheetHeader>
                   <div className="mt-4 grid h-full gap-2 overflow-y-auto pb-6 text-sm no-scrollbar">
                     {wallsMaterials.map((material: IWallMaterialFeatures) => (
-                      <p className="mb-4 rounded-lg p-4 dark:bg-neutral-900">
+                      <p
+                        key={material.name}
+                        className="mb-4 rounded-lg p-4 dark:bg-neutral-900"
+                      >
                         <h2 className="mb-4 text-base">{material.name}</h2>
 
                         <div className="mb-2 flex items-center gap-2">

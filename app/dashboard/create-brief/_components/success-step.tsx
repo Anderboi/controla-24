@@ -7,7 +7,6 @@ interface SuccessStepProps {
 const SuccessStep = ({steps}: SuccessStepProps) => {
   return (
     <>
-      <h2 className="text-3xl font-bold">Вы успешно создали проект!</h2>
       <div className="space-y-2">
         {steps.map(
           (step, stepIndex) =>
