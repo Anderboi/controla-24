@@ -8,7 +8,7 @@ import {
   Font,
   Canvas,
 } from "@react-pdf/renderer";
-import { Database } from "@/utils/database.types";
+import { PDFProps } from '@/types';
 
 // Register font
 Font.register({
@@ -91,15 +91,8 @@ const styles = StyleSheet.create({
   thirdItem: { width: "50%" },
 });
 
-type ProjectProps = Database["public"]["Tables"]["projects"]["Row"] & {
-  clients: Database["public"]["Tables"]["clients"]["Row"];
-};
-type RoomProps = Database["public"]["Tables"]["rooms"]["Row"];
 
-export interface PDFProps {
-  project: ProjectProps;
-  rooms: RoomProps[];
-}
+
 
 function PDFPage({ project, rooms }: PDFProps) {
   return (

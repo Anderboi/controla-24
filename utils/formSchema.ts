@@ -1,4 +1,5 @@
 import { Option } from "@/components/ui/multi-selector";
+import { IWallMaterialFeatures } from '@/types';
 import { z } from "zod";
 
 export const formSchema = z.object({
@@ -120,17 +121,7 @@ export const wallMaterials: string[] = [
   "Гипсокартон",
 ];
 
-export interface IWallMaterialFeatures {
-  name: string;
-  width: string;
-  //? Индекс Изоляции воздушного шума Rw
-  soundproof: string;
-  soundproofDescription?: string;
-  waterResistance: string;
-  fireResistance: string;
-  cons: string[];
-  pros: string[];
-}
+
 
 export const wallsMaterials: IWallMaterialFeatures[] = [
   {

@@ -1,18 +1,8 @@
 import React from "react";
 import { cn } from "@/utils/utils";
+import { DataCardLayoutProps, DataCardProps } from '@/types';
 
-interface DataCardLayoutProps {
-  children: React.ReactNode;
-  className?: string;
-}
-interface DataCardProps {
-  name: string;
-  isChecked: boolean;
-  onChange: (value: string[]) => void;
-  icon: React.ReactNode;
-  value?: string[];
-  description?: string;
-}
+
 
 export const DataCardLayout = ({
   children,

@@ -2,18 +2,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { cn } from "@/utils/utils";
-
-interface FormBottomNavProps {
-  skipAll: (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => Promise<void>;
-  previous: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  next: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => Promise<void>;
-  submitting: boolean;
-  currentStep: number;
-  steps: { id: string; name: string; fields?: string[] }[];
-  className?: string;
-}
+import { FormBottomNavProps } from '@/types';
 
 const FormBottomNav = ({
   currentStep,

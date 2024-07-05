@@ -7,12 +7,13 @@ import {
   CollapsibleTrigger,
 } from "./collapsible";
 import { Button } from "./button";
+import { AdditionalInfoButtonProps } from '@/types';
 
-interface Props {
-  title: string;
-  children: React.ReactNode;
-}
-const AdditionalInfoButton = ({ children, title }: Props) => {
+
+const AdditionalInfoButton = ({
+  children,
+  title,
+}: AdditionalInfoButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -25,7 +26,7 @@ const AdditionalInfoButton = ({ children, title }: Props) => {
         <Button
           variant={"link"}
           size={"sm"}
-          className="p-0 sm:text-xs text-teal-500"
+          className="p-0 text-teal-500 sm:text-xs"
         >
           {title}
           <span className="sr-only">Toggle</span>

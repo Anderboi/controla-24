@@ -1,9 +1,8 @@
 import React from 'react'
 import { Check } from 'lucide-react';
+import { SuccessStepProps } from '@/types';
 
-interface SuccessStepProps {
-  steps: {id:string, name: string; fields?: string[] }[]
-}
+
 const SuccessStep = ({steps}: SuccessStepProps) => {
   return (
     <>
