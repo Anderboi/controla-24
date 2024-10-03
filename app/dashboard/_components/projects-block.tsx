@@ -29,7 +29,7 @@ async function ProjectsBlock({
   
   return (
     <ul className="grid w-full gap-2 md:grid-cols-2 lg:grid-cols-4">
-      {projects.length > 0 ? (
+      {projects && projects.length > 0 ? (
         <>
           {projects.map((project: Project, index: number) => (
             <Link
