@@ -90,7 +90,7 @@ const ProjectAdditionalInfoStep = () => {
                     onValueChange={onChange}
                   />
                   <div className="flex justify-between gap-6 pt-4">
-                    <div className="w-full rounded-lg border dark:border-neutral-800">
+                    <div className="w-full rounded-lg border dark:border-neutral-600">
                       <label className="text-balance px-3 text-xs">
                         Мин. сумма
                       </label>
@@ -114,7 +114,7 @@ const ProjectAdditionalInfoStep = () => {
                         }
                       />
                     </div>
-                    <div className="w-full rounded-lg border dark:border-neutral-800">
+                    <div className="w-full rounded-lg border dark:border-neutral-600">
                       <label className="px-3 text-xs">Макс. сумма</label>
                       <div className="flex items-center">
                         <Input

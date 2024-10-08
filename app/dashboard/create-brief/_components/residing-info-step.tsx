@@ -133,7 +133,7 @@ const ResidingInfoStep = () => {
           )}
         </>
       </AdditionalInfoButton>
-      <div className="space-y-4 rounded-lg border  p-4 dark:border-neutral-800 sm:col-span-2">
+      <div className="space-y-4 rounded-lg border  p-4 dark:border-neutral-600 sm:col-span-2">
         <FormField
           control={control}
           name="hasPets"

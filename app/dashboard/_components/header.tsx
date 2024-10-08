@@ -17,7 +17,7 @@ function Header() {
   const pathname = usePathname();
 
   return (
-    <header className="items-center px-4 pt-4 dark:border-neutral-800 bg-white dark:bg-transparent sm:flex h-[80px] sm:border-b sm:p-0">
+    <header className="items-center px-4 pt-4 dark:border-neutral-600 bg-white dark:bg-transparent sm:flex h-[80px] sm:border-b sm:p-0">
       <div className="flex items-center justify-between sm:container">
         <div className="flex items-center gap-2">
           {pathname !== "/dashboard" && pathname !== "/" && (

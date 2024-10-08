@@ -92,6 +92,7 @@ const PremisesStep = () => {
                           blurInputOnSelect
                           captureMenuScroll
                           closeMenuOnSelect
+                          isClearable
                           minMenuHeight={800}
                           menuPlacement={"auto"}
                           formatCreateLabel={(value) => `Создать '${value}'`}
@@ -110,7 +111,7 @@ const PremisesStep = () => {
                             ) => `h-8 !rounded-md border-red-300 !border-neutral-200 !focused:border-teal-500
                                                   !focused:ring-teal-500 
                                                   dark:bg-neutral-900 
-                                                  dark:!text-neutral-50 dark:!border-neutral-800`,
+                                                  dark:!text-neutral-50 dark:!border-neutral-600`,
 
                             input: (state) =>
                               "text-base sm:text-sm dark:text-neutral-200",

@@ -1,16 +1,23 @@
-'use client'
+"use client";
 
-import React from 'react'
-import { FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { useFormContext } from 'react-hook-form';
-import { Textarea } from '@/components/ui/textarea';
+import React from "react";
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useFormContext } from "react-hook-form";
+import { Textarea } from "@/components/ui/textarea";
 
 const HobbyHealthStep = () => {
   const {
     control,
     formState: { errors },
   } = useFormContext();
-  
+
   return (
     <>
       <FormField
@@ -39,7 +46,7 @@ const HobbyHealthStep = () => {
         name="healthFeatures"
         render={({ field }) => (
           <FormItem className="col-span-2">
-            <FormLabel>Особенности здоровья</FormLabel>
+            <FormLabel>Ограничения по здоровью</FormLabel>
             <FormControl>
               <Textarea
                 maxLength={500}
@@ -48,8 +55,10 @@ const HobbyHealthStep = () => {
               />
             </FormControl>
             <FormDescription>
-              Есть ли аллергия у проживающих? Что может помешать использовать
-              определенные материалы
+              Есть ли ограничения по здоровью у проживающих, которые могут
+              повлиять на дизайн-проект? Что может помешать использовать
+              определенные материалы? Какие необходимо создать условия для более
+              комфортного проживания?
             </FormDescription>
             <FormMessage />
           </FormItem>
@@ -57,6 +66,6 @@ const HobbyHealthStep = () => {
       />
     </>
   );
-}
+};
 
-export default HobbyHealthStep
+export default HobbyHealthStep;
