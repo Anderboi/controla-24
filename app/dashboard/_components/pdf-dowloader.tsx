@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import PDFPage, { PDFProps } from "./pdf-file";
+import PDFPage  from "./pdf-file";
 import { Button } from "@/components/ui/button";
 
 import dynamic from "next/dynamic";
+import { PDFProps } from '@/types';
 
 function PDFDowloader({ project, rooms }: PDFProps) {
   const PDFDownloadLink = dynamic(

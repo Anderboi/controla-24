@@ -38,7 +38,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { DataCard, DataCardLayout } from "@/components/ui/data-card";
-import { IWallMaterialFeatures } from '@/types';
+import { IWallMaterialFeatures } from "@/types";
 
 const ConstructionInfoStep = () => {
   const {
