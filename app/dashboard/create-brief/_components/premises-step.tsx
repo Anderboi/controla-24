@@ -91,7 +91,7 @@ const PremisesStep = () => {
                         <CreatableSelect
                           blurInputOnSelect
                           captureMenuScroll
-                          closeMenuOnSelect
+                          //closeMenuOnSelect
                           isClearable
                           minMenuHeight={800}
                           menuPlacement={"auto"}

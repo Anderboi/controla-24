@@ -17,6 +17,7 @@ import {
 import { Heater } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { DataCard, DataCardLayout } from "@/components/ui/data-card";
+import { Input } from '@/components/ui/input';
 
 const EngeneeringInfoStep = () => {
   const {
@@ -49,6 +50,15 @@ const EngeneeringInfoStep = () => {
               </DataCardLayout>
             </FormControl>
             <FormMessage />
+            <Input
+              placeholder="Прочее"
+              onBlur={(e: any) => {
+                if (e.target.value) {
+                  onChange([...(value || []), e.target.value]);
+                  e.target.value = ""; // Сброс поля после добавления
+                }
+              }}
+            />
           </FormItem>
         )}
       />
@@ -125,6 +135,15 @@ const EngeneeringInfoStep = () => {
               </DataCardLayout>
             </FormControl>
             <FormMessage />
+            <Input
+              placeholder="Прочее"
+              onBlur={(e: any) => {
+                if (e.target.value) {
+                  onChange([...(value || []), e.target.value]);
+                  e.target.value = ""; // Сброс поля после добавления
+                }
+              }}
+            />
           </FormItem>
         )}
       />
@@ -149,6 +168,15 @@ const EngeneeringInfoStep = () => {
               </DataCardLayout>
             </FormControl>
             <FormMessage />
+            <Input
+              placeholder="Прочее"
+              onBlur={(e: any) => {
+                if (e.target.value) {
+                  onChange([...(value || []), e.target.value]);
+                  e.target.value = ""; // Сброс поля после добавления
+                }
+              }}
+            />
           </FormItem>
         )}
       />

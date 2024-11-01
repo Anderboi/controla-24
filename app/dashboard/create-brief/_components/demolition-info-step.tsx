@@ -40,38 +40,77 @@ const DemolitionInfoStep = () => {
           )}
         />
       </div>
-      <FormField
-        control={control}
-        name="entranceDoorChange"
-        render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between space-y-4 rounded-lg border p-4 dark:border-neutral-600 sm:col-span-2">
-            <FormLabel>Замена входной двери</FormLabel>
-            <FormControl>
-              <Switch
-                className="!m-0"
-                checked={field.value}
-                onCheckedChange={field.onChange}
-              />
-            </FormControl>
-          </FormItem>
+      <div className="space-y-4 rounded-lg border p-4 dark:border-neutral-600 sm:col-span-2">
+        <FormField
+          control={control}
+          name="entranceDoorChange"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between">
+              <FormLabel>Замена входной двери</FormLabel>
+              <FormControl>
+                <Switch
+                  className="!m-0"
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        {watch("entranceDoorChange") && (
+          <FormField
+            control={control}
+            // TODO Change pets
+            name="enteranceDoorType"
+            render={({ field }) => (
+              <FormItem className="sm:col-span-2">
+                <FormControl>
+                  <Textarea placeholder="" {...field} />
+                </FormControl>
+                <FormDescription>
+                  Предпочтительный тип входной двери. Более подробное описание.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         )}
-      />
-      <FormField
-        control={control}
-        name="windowsChange"
-        render={({ field }) => (
-          <FormItem className="flex flex-row items-center justify-between space-y-4 rounded-lg border p-4 dark:border-neutral-600 sm:col-span-2">
-            <FormLabel>Замена окон</FormLabel>
-            <FormControl>
-              <Switch
-                className="!m-0"
-                checked={field.value}
-                onCheckedChange={field.onChange}
-              />
-            </FormControl>
-          </FormItem>
+      </div>
+      <div className="space-y-4 rounded-lg border p-4 dark:border-neutral-600 sm:col-span-2">
+        <FormField
+          control={control}
+          name="windowsChange"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between">
+              <FormLabel>Замена окон</FormLabel>
+              <FormControl>
+                <Switch
+                  className="!m-0"
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        {watch("windowsChange") && (
+          <FormField
+            control={control}
+            name="windowsType"
+            render={({ field }) => (
+              <FormItem className="sm:col-span-2">
+                <FormControl>
+                  <Textarea placeholder="" {...field} />
+                </FormControl>
+                <FormDescription>
+                  Предпочтительный тип окон. Более подробное описание.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         )}
-      />
+      </div>
       <div className="space-y-4 rounded-lg border p-4 dark:border-neutral-600 sm:col-span-2">
         <FormField
           control={control}
@@ -93,14 +132,14 @@ const DemolitionInfoStep = () => {
           <FormField
             control={control}
             // TODO Change pets
-            name="pets"
+            name="furnitureToDemolish"
             render={({ field }) => (
               <FormItem className="sm:col-span-2">
                 <FormControl>
                   <Textarea placeholder="" {...field} />
                 </FormControl>
                 <FormDescription>
-                  Вид домашнего животного, особенности размещения.
+                  Описание демонтируемой мебели.
                 </FormDescription>
                 <FormMessage />
               </FormItem>

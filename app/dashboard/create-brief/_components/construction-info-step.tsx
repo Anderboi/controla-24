@@ -36,9 +36,9 @@ import {
   Info,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Slider } from "@/components/ui/slider";
 import { DataCard, DataCardLayout } from "@/components/ui/data-card";
 import { IWallMaterialFeatures } from "@/types";
+import { Input } from "@/components/ui/input";
 
 const ConstructionInfoStep = () => {
   const {
@@ -53,7 +53,7 @@ const ConstructionInfoStep = () => {
       <FormField
         control={control}
         name="wallsMaterial"
-        render={({ field }) => (
+        render={({ field: { onChange, value } }) => (
           <FormItem className="sm:col-span-2">
             <div className="flex items-center justify-between">
               <FormLabel>Материал перегородок</FormLabel>
@@ -67,7 +67,7 @@ const ConstructionInfoStep = () => {
                   </SheetHeader>
                   <div className="mt-4 grid h-full gap-2 overflow-y-auto pb-6 text-sm no-scrollbar">
                     {wallsMaterials.map((material: IWallMaterialFeatures) => (
-                      <p
+                      <div
                         key={material.name}
                         className="mb-4 rounded-lg p-4 dark:bg-neutral-900"
                       >
@@ -153,7 +153,7 @@ const ConstructionInfoStep = () => {
                             </span>
                           </div>
                         </div>
-                      </p>
+                      </div>
                     ))}
                   </div>
                 </SheetContent>
@@ -164,15 +164,24 @@ const ConstructionInfoStep = () => {
                 {wallMaterials.map((system, index) => (
                   <DataCard
                     key={index}
-                    value={field.value}
+                    value={value}
                     name={system}
-                    isChecked={field.value?.includes(system) || false}
-                    onChange={field.onChange}
+                    isChecked={value?.includes(system) || false}
+                    onChange={onChange}
                     icon={<Info size={44} strokeWidth={1} />}
                   />
                 ))}
               </DataCardLayout>
             </FormControl>
+            <Input
+              placeholder="Прочее"
+              onBlur={(e: any) => {
+                if (e.target.value) {
+                  onChange([...(value || []), e.target.value]);
+                  e.target.value = ""; // Сброс поля после добавления
+                }
+              }}
+            />
           </FormItem>
         )}
       />
@@ -185,7 +194,7 @@ const ConstructionInfoStep = () => {
               <FormLabel>Потолок</FormLabel>
               <Sheet>
                 <SheetTrigger asChild className="cursor-pointer">
-                  <Info className="size-5 text-neutral-500" />
+                  <Info className="size-6 text-neutral-500" />
                 </SheetTrigger>
                 <SheetContent>
                   <SheetHeader>
@@ -220,19 +229,28 @@ const ConstructionInfoStep = () => {
                 ))}
               </DataCardLayout>
             </FormControl>
+            <Input
+              placeholder="Прочее"
+              onBlur={(e: any) => {
+                if (e.target.value) {
+                  onChange([...(value || []), e.target.value]);
+                  e.target.value = ""; // Сброс поля после добавления
+                }
+              }}
+            />
           </FormItem>
         )}
       />
       <FormField
         control={control}
         name="floorMaterial"
-        render={({ field }) => (
+        render={({ field: { onChange, value } }) => (
           <FormItem className="sm:col-span-2">
             <div className="flex items-center justify-between">
               <FormLabel>Напольные покрытия</FormLabel>
               <Sheet>
                 <SheetTrigger asChild className="cursor-pointer">
-                  <Info className="size-5 text-neutral-500" />
+                  <Info className="size-6 text-neutral-500" />
                 </SheetTrigger>
                 <SheetContent>
                   <SheetHeader>
@@ -241,15 +259,12 @@ const ConstructionInfoStep = () => {
                       Выберите один или несколько материалов.
                     </SheetDescription>
                   </SheetHeader>
-                  <div className="grid gap-4 py-4">
-                    <p>
-                      Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                      Tempora vero voluptatem ratione magnam, incidunt odit
-                      asperiores placeat eius. Numquam veritatis a earum
-                      deleniti maiores commodi iusto nemo aliquam incidunt
-                      quisquam!
-                    </p>
-                  </div>
+                  <p className="grid gap-4 py-4">
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                    Tempora vero voluptatem ratione magnam, incidunt odit
+                    asperiores placeat eius. Numquam veritatis a earum deleniti
+                    maiores commodi iusto nemo aliquam incidunt quisquam!
+                  </p>
                 </SheetContent>
               </Sheet>
             </div>
@@ -258,15 +273,24 @@ const ConstructionInfoStep = () => {
                 {floorMaterials.map((system, index) => (
                   <DataCard
                     key={index}
-                    value={field.value}
+                    value={value}
                     name={system}
-                    isChecked={field.value?.includes(system) || false}
-                    onChange={field.onChange}
+                    isChecked={value?.includes(system) || false}
+                    onChange={onChange}
                     icon={<Info size={44} strokeWidth={1} />}
                   />
                 ))}
               </DataCardLayout>
             </FormControl>
+            <Input
+              placeholder="Прочее"
+              onBlur={(e: any) => {
+                if (e.target.value) {
+                  onChange([...(value || []), e.target.value]);
+                  e.target.value = ""; // Сброс поля после добавления
+                }
+              }}
+            />
           </FormItem>
         )}
       />
@@ -362,7 +386,8 @@ const ConstructionInfoStep = () => {
           </>
         )}
       </div>
-      <FormField
+      {/* Высота дверей */}
+      {/* <FormField
         control={control}
         name="innerDoorsHeight"
         render={({ field: { onChange, value } }) => (
@@ -389,7 +414,7 @@ const ConstructionInfoStep = () => {
             <FormMessage />
           </FormItem>
         )}
-      />
+      /> */}
     </>
   );
 };

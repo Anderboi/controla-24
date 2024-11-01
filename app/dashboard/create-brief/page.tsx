@@ -165,8 +165,8 @@ const CreateBrief = () => {
   const next = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
-    console.log(form.getValues("wallsMaterial"));
-
+    
+    
     const fields = steps[currentStep].fields;
     const output = await form.trigger(fields as FieldName[], {
       shouldFocus: true,
@@ -212,7 +212,7 @@ const CreateBrief = () => {
       if (uploadedProject) {
         form.reset();
         router.push("/dashboard");
-        toast.success("Вы создали тхническое задание для проекта", {
+        toast.success("Вы создали техническое задание для проекта", {
           description: new Date().toLocaleString(),
           action: {
             label: "Перейти к проекту",
