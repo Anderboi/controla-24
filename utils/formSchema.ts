@@ -123,7 +123,7 @@ export const wallMaterials: string[] = [
 
 
 
-export const wallsMaterials: IWallMaterialFeatures[] = [
+export const wallMaterialInfo: IWallMaterialFeatures[] = [
   {
     name: "Кирпичная перегородка",
     width: "65 - 120 мм",
@@ -194,6 +194,7 @@ export const floorMaterials: string[] = [
   "Кварцвинил",
   "Керамогранит",
   "Натуральный камень",
+  "Микроцемент",
 ];
 
 // export const floorMaterials: Option[] = [

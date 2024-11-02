@@ -24,7 +24,7 @@ import {
   ceilingMaterials,
   floorMaterials,
   wallMaterials,
-  wallsMaterials,
+  wallMaterialInfo,
 } from "@/utils/formSchema";
 import {
   Cuboid,
@@ -66,7 +66,7 @@ const ConstructionInfoStep = () => {
                     <SheetTitle>Виды межкомнатных перегородок</SheetTitle>
                   </SheetHeader>
                   <div className="mt-4 grid h-full gap-2 overflow-y-auto pb-6 text-sm no-scrollbar">
-                    {wallsMaterials.map((material: IWallMaterialFeatures) => (
+                    {wallMaterialInfo.map((material: IWallMaterialFeatures) => (
                       <div
                         key={material.name}
                         className="mb-4 rounded-lg p-4 dark:bg-neutral-900"
@@ -332,7 +332,7 @@ const ConstructionInfoStep = () => {
               control={control}
               name="roomsForIsolation"
               render={({ field }) => (
-                <FormItem className="gap-2 sm:col-span-2">
+                <FormItem className="flex flex-col gap-0 sm:col-span-2">
                   <FormControl>
                     <>
                       {getValues("rooms")?.map(
@@ -343,35 +343,38 @@ const ConstructionInfoStep = () => {
                           }: { name: string; area: number; number: string },
                           index: number,
                         ) => (
-                          <Badge
-                            id={`${number}. ${name}`}
-                            key={index}
-                            variant={
-                              field.value?.includes(`${index + 1}. ${name}`)
-                                ? "default"
-                                : "outline"
-                            }
-                            className="mr-2 cursor-pointer"
-                            onClick={(val: any) => {
-                              field.onChange(
+                          <>
+                            <Badge
+                              id={`${number}. ${name}`}
+                              key={index}
+                              variant={
                                 field.value?.includes(`${index + 1}. ${name}`)
-                                  ? field.value?.filter(
-                                      (v: string) =>
-                                        v !== `${index + 1}. ${name}`,
-                                    )
-                                  : [
-                                      ...(field.value || []),
-                                      `${index + 1}. ${name}`,
-                                    ],
-                              );
-                            }}
-                          >
-                            {`${(index + 1).toLocaleString("ru-RU", {
-                              minimumIntegerDigits: 2,
-                            })}` +
-                              ". " +
-                              ` ${name}`}
-                          </Badge>
+                                  ? "default"
+                                  : "secondary"
+                              }
+                              className="sm:cursor-pointer"
+                              onClick={(val: any) => {
+                                field.onChange(
+                                  field.value?.includes(`${index + 1}. ${name}`)
+                                    ? field.value?.filter(
+                                        (v: string) =>
+                                          v !== `${index + 1}. ${name}`,
+                                      )
+                                    : [
+                                        ...(field.value || []),
+                                        `${index + 1}. ${name}`,
+                                      ],
+                                );
+                              }}
+                            >
+                              {`${(index + 1).toLocaleString("ru-RU", {
+                                minimumIntegerDigits: 2,
+                              })}` +
+                                ". " +
+                                ` ${name}`}
+                            </Badge>
+                            {watch(`${number}. ${name}`) && <div>1</div>}
+                          </>
                         ),
                       )}
                     </>

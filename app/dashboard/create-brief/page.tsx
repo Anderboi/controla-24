@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
@@ -109,6 +109,13 @@ const steps = [
 ];
 
 const CreateBrief = () => {
+  const [hasMounted, setHasMounted] = useState(false);
+
+  //! Set hasMounted to true only after the component mounts in the browser
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
   const form = useForm<Inputs>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -156,17 +163,47 @@ const CreateBrief = () => {
     },
   });
 
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState<number>(() => {
+    if (typeof window !== "undefined") {
+      return Number(localStorage.getItem("currentStep")) || 0;
+    }
+    return 0;
+  });
   const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
   const { userId, getToken } = useAuth();
 
+  //! Load saved form values on component mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedFormData = localStorage.getItem("formData");
+      if (savedFormData) {
+        form.reset(JSON.parse(savedFormData)); // Load saved values
+      }
+    }
+  }, []);
+
+  //! Save currentStep to localStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("currentStep", currentStep.toString());
+    }
+  }, [currentStep]);
+
+  //! Save form values to localStorage whenever they change
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const subscription = form.watch((values) => {
+        localStorage.setItem("formData", JSON.stringify(values));
+      });
+      return () => subscription.unsubscribe();
+    }
+  }, [form]);
+
   const next = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
 
-    
-    
     const fields = steps[currentStep].fields;
     const output = await form.trigger(fields as FieldName[], {
       shouldFocus: true,
@@ -231,6 +268,9 @@ const CreateBrief = () => {
     }
   }
 
+  // Only render the form once the component has mounted
+  if (!hasMounted) return null;
+
   return (
     <>
       <Stepper
@@ -240,11 +280,11 @@ const CreateBrief = () => {
         className="absolute left-0 right-0 top-0 px-6 pt-4"
       />
       <Form {...form}>
-        <form className="h-full w-full space-y-6 overflow-y-scroll no-scrollbar sm:mb-[60px] md:mt-[60px] sm:h-[calc(100%-120px)]">
+        <form className="h-full w-full space-y-6 overflow-y-scroll no-scrollbar sm:mb-[60px] sm:h-[calc(100%-120px)] md:mt-[60px]">
           <h2 className="text-balance text-3xl font-bold tracking-tight">
             {steps[currentStep].name}
           </h2>
-          <article className="grid grid-cols-1 gap-y-6 pb-[100px] sm:pb-4 sm:grid-cols-2 sm:gap-x-6">
+          <article className="grid grid-cols-1 gap-y-6 pb-[100px] sm:grid-cols-2 sm:gap-x-6 sm:pb-4">
             {currentStep === 0 && <ClientInfoStep />}
             {currentStep === 1 && <ProjectMainInfoStep />}
             {currentStep === 2 && <ProjectAdditionalInfoStep />}
@@ -260,7 +300,7 @@ const CreateBrief = () => {
         </form>
       </Form>
       <FormBottomNav
-        className="from-white to-transparent dark:from-neutral-900 dark:to-transparent absolute bottom-0 left-0 right-0 bg-gradient-to-t from-80% px-4 pb-4 pt-6 dark:from-80% sm:p-6"
+        className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white from-80% to-transparent px-4 pb-4 pt-6 dark:from-neutral-900 dark:from-80% dark:to-transparent sm:p-6"
         currentStep={currentStep}
         next={next}
         previous={previous}
